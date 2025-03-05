@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import ItemCard from "./item-card";
+import ItemCard from "../item-card";
 
 interface Product {
   id: number;
@@ -32,7 +32,13 @@ export default function ProductList({ products }: ProductListProps) {
     <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {displayedProducts.map((product) => (
-          <ItemCard key={product.id} {...product} onAddToCart={() => {}} />
+          <ItemCard
+            key={product.id}
+            {...product}
+            onAddToCart={() => {
+              alert("Added to cart");
+            }}
+          />
         ))}
       </div>
 

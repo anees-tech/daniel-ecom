@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import "../style/HeroStyle.css";
-import Button from "./button";
+import "../../style/HeroStyle.css";
+import Button from "../button";
 import Carousel from "./carousel";
 
 const carouselData = [
