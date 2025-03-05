@@ -1,6 +1,7 @@
 "use client";
 
-import ItemCard from "@/components/item-card";
+import FlashSaleItems from "@/components/flashSaleItems";
+import ProductsPage from "@/components/homePage-products";
 import Hero from "@/components/mainHero";
 import NavBar from "@/components/navbar";
 
@@ -13,6 +14,8 @@ export default function Home() {
     <main className="min-h-screen">
       <NavBar />
       <Hero />
+      <FlashSaleItems />
+      <ProductsPage />
       {/* <ItemCard
         name="Lady Bag"
         image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-k1hQUeDnIuTL0QElljeErCclfYgZQ8.png"

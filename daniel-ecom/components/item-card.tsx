@@ -5,8 +5,8 @@ import { Star } from "lucide-react";
 interface ProductCardProps {
   name: string;
   image: string;
-  currentPrice: number;
-  originalPrice: number;
+  currentPrice: number | string;
+  originalPrice: number | string;
   discount?: number;
   stock: number;
   rating: number;
