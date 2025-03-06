@@ -53,7 +53,7 @@ const Hero = () => {
               width={80}
               height={80}
               alt={"location"}
-              className="w-10 h-10 md:w-20 md:h-20 absolute top-5 left-50"
+              className="w-10 h-10 md:w-20 md:h-20 absolute top-5 left-0 md:left-50"
             />
             <Image
               src={"/location2.svg"}

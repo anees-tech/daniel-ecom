@@ -5,6 +5,7 @@ import HomeServices from "@/components/homeComponents/home-services";
 import ProductsPage from "@/components/homeComponents/homePage-products";
 import Hero from "@/components/homeComponents/mainHero";
 import NavBar from "@/components/navbar";
+import TextBox from "@/components/text-box";
 
 export default function Home() {
   // const handleAddToCart = () => {
@@ -15,6 +16,7 @@ export default function Home() {
     <main className="min-h-screen w-full">
       <NavBar />
       <Hero />
+      <TextBox text={"Today's"} />
       <FlashSaleItems />
       <ProductsPage />
       <HomeServices />
