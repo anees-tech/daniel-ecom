@@ -19,6 +19,7 @@ export default function Home() {
       <TextBox text={"Today's"} />
       <FlashSaleItems />
       <ProductsPage />
+      <TextBox text={"Services"} />
       <HomeServices />
       {/* <ItemCard
         name="Lady Bag"
