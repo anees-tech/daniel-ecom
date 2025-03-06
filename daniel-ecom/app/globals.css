@@ -5,3 +5,17 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+
+.slick-dots li {
+      margin: 0 4px;
+    }
+
+    .slick-dots li button:before {
+      font-size: 10px;
+      color: gray;
+      opacity: 1;
+    }
+
+    .slick-dots li.slick-active button:before {
+      color: black;
+    }

@@ -17,8 +17,8 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-6 py-3 text-white font-semibold rounded-full shadow-md transition-all
-        bg-[linear-gradient(90deg,#eb5757,#f2994a)] hover:opacity-90"
+      className="flex items-center gap-2 px-3 py-1 text-white font-semibold rounded-full shadow-md transition-all
+        bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-md"
     >
       {text}
       {showIcon && Icon && <Icon size={20} />}

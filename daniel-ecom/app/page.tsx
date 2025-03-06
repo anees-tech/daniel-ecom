@@ -7,12 +7,12 @@ import Hero from "@/components/homeComponents/mainHero";
 import NavBar from "@/components/navbar";
 
 export default function Home() {
-  const handleAddToCart = () => {
-    alert("Product added to cart!");
-  };
+  // const handleAddToCart = () => {
+  //   alert("Product added to cart!");
+  // };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen w-full">
       <NavBar />
       <Hero />
       <FlashSaleItems />

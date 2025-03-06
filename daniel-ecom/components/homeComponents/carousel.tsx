@@ -1,7 +1,6 @@
 import React from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { IoPaperPlane } from "react-icons/io5";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -21,22 +20,24 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
     autoplay: true,
     autoplaySpeed: 3000,
     arrows: false,
-    dotsClass: "slick-dots slick-thumb",
+    dotsClass: "slick-dots flex justify-center gap-2 absolute bottom-4 w-full",
+    customPaging: (i: number) => (
+      <button className="w-3 h-3 rounded-full bg-gray-400 transition-all duration-300"></button>
+    ),
   };
 
   return (
-    <div className="relative w-full max-w-lg mx-auto overflow-hidden">
+    <div className="relative w-full max-w-md mx-auto overflow-hidden">
       {/* Background Shape & Icon */}
-
 
       {/* Slider */}
       <Slider ref={sliderRef} {...settings}>
         {data.map((item) => (
-          <div key={item.id} className="px-8 py-6">
+          <div key={item.id} className="px-4 py-2">
             <img
               src={item.image}
               alt={item.title || "Carousel Image"}
-              className="w-full h-auto object-contain rounded-lg shadow-lg"
+              className="w-1/2 h-auto object-contain m-auto"
             />
           </div>
         ))}
@@ -44,17 +45,17 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
 
       {/* Custom Navigation Buttons */}
       <button
-        className="absolute left-5 top-1/2 -translate-y-1/2 p-4 bg-gray-800/50 text-white rounded-full hover:bg-gray-900 transition"
+        className="absolute left-5 top-1/2 -translate-y-1/2 p-2 bg-gray-800/50 text-white rounded-full hover:bg-gray-900 transition"
         onClick={() => sliderRef.current?.slickPrev()}
       >
-        <FaChevronLeft size={24} />
+        <FaChevronLeft size={18} color="black hover:white" />
       </button>
 
       <button
-        className="absolute right-5 top-1/2 -translate-y-1/2 p-4 bg-gray-800/50 text-white rounded-full hover:bg-gray-900 transition"
+        className="absolute right-5 top-1/2 -translate-y-1/2 p-2 bg-gray-800/50 text-white rounded-full hover:bg-gray-900 transition"
         onClick={() => sliderRef.current?.slickNext()}
       >
-        <FaChevronRight size={24} />
+        <FaChevronRight size={18} color="black hover:white" />
       </button>
     </div>
   );
