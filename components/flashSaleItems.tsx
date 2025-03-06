@@ -9,48 +9,63 @@ import Button from "./button";
 const products = [
   {
     id: 1,
-    image: "/pngegg.png",
     name: "Lady Bag",
-    price: 375,
-    oldPrice: 400,
-    rating: "4.9",
-    reviews: "98",
+    category: "women",
+    image: "/pngegg.png",
+    currentPrice: 375,
+    originalPrice: 400,
+    discount: 25,
+    stock: 10,
+    rating: 4.3,
+    reviews: 98,
   },
   {
     id: 2,
+    name: "Men's Jacket",
+    category: "men",
     image: "/pngegg.png",
-    name: "Lady Bag",
-    price: "$375",
-    oldPrice: "$400",
-    rating: "4.9",
-    reviews: "98",
+    currentPrice: 120,
+    originalPrice: 150,
+    discount: 20,
+    stock: 15,
+    rating: 4.6,
+    reviews: 120,
   },
   {
     id: 3,
+    name: "Kids Sneakers",
+    category: "kids",
     image: "/pngegg.png",
-    name: "Lady Bag",
-    price: "$375",
-    oldPrice: "$400",
-    rating: "4.9",
-    reviews: "98",
+    currentPrice: 55,
+    originalPrice: 70,
+    discount: 10,
+    stock: 25,
+    rating: 4.5,
+    reviews: 75,
   },
   {
     id: 4,
+    name: "Women’s Handbag",
+    category: "women",
     image: "/pngegg.png",
-    name: "Lady Bag",
-    price: "$375",
-    oldPrice: "$400",
-    rating: "4.9",
-    reviews: "98",
+    currentPrice: 280,
+    originalPrice: 350,
+    discount: 15,
+    stock: 5,
+    rating: 4.7,
+    reviews: 130,
   },
   {
     id: 5,
+    name: "Women’s Handbag",
+    category: "women",
     image: "/pngegg.png",
-    name: "Lady Bag",
-    price: "$375",
-    oldPrice: "$400",
-    rating: "2.9",
-    reviews: "98",
+    currentPrice: 280,
+    originalPrice: 350,
+    discount: 15,
+    stock: 5,
+    rating: 4.7,
+    reviews: 130,
   },
 ];
 
@@ -71,9 +86,9 @@ const FlashSaleCarousel = () => {
   };
 
   return (
-    <div className="relative px-4">
+    <div className="relative px-12">
       {/* Header Section with Title & Navigation */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 mt-3 px-2">
         <h2 className="text-2xl font-bold">Flash Sales</h2>
         <div className="flex gap-2">
           <button
@@ -94,19 +109,21 @@ const FlashSaleCarousel = () => {
       {/* Carousel */}
       <Slider ref={sliderRef} {...settings}>
         {products.map((product) => (
-          <ItemCard
-            key={product.id}
-            image={product.image}
-            name={product.name}
-            currentPrice={product.price}
-            originalPrice={product.oldPrice}
-            rating={parseFloat(product.rating)}
-            reviews={parseInt(product.reviews)}
-            stock={0}
-            onAddToCart={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-          />
+          <div key={product.id} className="px-2">
+            <ItemCard
+              image={product.image}
+              name={product.name}
+              discount={product.discount}
+              currentPrice={product.currentPrice}
+              originalPrice={product.originalPrice}
+              rating={product.rating}
+              reviews={product.reviews}
+              stock={0}
+              onAddToCart={() => {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
         ))}
       </Slider>
       <div className="flex justify-center my-4">

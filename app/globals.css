@@ -19,3 +19,10 @@
     .slick-dots li.slick-active button:before {
       color: black;
     }
+.slick-slide {
+  margin: 0 0px;
+}
+
+.slick-list {
+  margin: 0 -5px;
+}
