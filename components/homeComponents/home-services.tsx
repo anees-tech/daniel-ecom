@@ -4,7 +4,7 @@ import TextBox from "../text-box";
 
 export default function HomeServices() {
   return (
-    <section className="py-12 bg-gray-100">
+    <section className="py-12 bg-gray-100 container mx-auto">
       <TextBox text="Services" />
       <div className="container mx-auto px-6 lg:px-20 flex flex-col lg:flex-row items-center gap-8">
         {/* Left Side: Features */}

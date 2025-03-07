@@ -37,12 +37,12 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex justify-center space-x-4 w-auto px-8 gap-3 py-2 text-sm font-medium bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] focus:outline-none rounded-full text-white"
+        className="flex justify-between items-center min-w-[180px] px-4 py-2 text-sm font-medium bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] focus:outline-none rounded-full text-white"
       >
-        {selectedFilter || "Filters"}
-        <div className="flex justify-between gap-3 pr-3">
-          <Image src="/filter.svg" alt="DropDown" width={70} height={70} />
-          <Image src="/dropdown.svg" alt="DropDown" width={20} height={20} />
+        <span className="truncate">{selectedFilter || "Filters"}</span>
+        <div className="flex items-center gap-2">
+          <Image src="/filter.svg" alt="Filter" width={20} height={20} />
+          <Image src="/dropdown.svg" alt="Dropdown" width={15} height={15} />
         </div>
       </button>
 

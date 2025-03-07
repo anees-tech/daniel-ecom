@@ -1,9 +1,11 @@
+"use client";
+
 import React, { useRef, useEffect, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ItemCard from "./item-card";
+import ItemCard from "@/components/item-card";
 import TextBox from "@/components/text-box";
 import Image from "next/image";
 
@@ -82,7 +84,7 @@ const FlashSaleCarousel = () => {
   }, []);
 
   const settings = {
-    infinite: false,
+    infinite: true, // Ensures smooth looping
     speed: 500,
     slidesToShow: isMobile ? 2 : 4,
     slidesToScroll: 1,
@@ -118,7 +120,11 @@ const FlashSaleCarousel = () => {
       </div>
 
       {/* Slider */}
-      <Slider ref={sliderRef} {...settings} className="overflow-hidden">
+      <Slider
+        ref={sliderRef}
+        {...settings}
+        key={isMobile ? "mobile" : "desktop"}
+      >
         {products.map((product) => (
           <div key={product.id} className="px-2">
             <ItemCard

@@ -30,7 +30,7 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
   };
 
   return (
-    <div className="relative py-16">
+    <div className="relative py-16 container mx-auto">
       <h2 className="text-4xl">Customer Reviews</h2>
       {/* Background Image */}
       <div className="absolute inset-0 -z-10">

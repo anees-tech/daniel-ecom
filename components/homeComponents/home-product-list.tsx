@@ -20,7 +20,7 @@ interface Product {
   description: string;
   material: string;
   features: string[];
-  onAddToCart: () => void;
+  onAddToCart?: () => void;
 }
 interface ProductListProps {
   products: Product[];

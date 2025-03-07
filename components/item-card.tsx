@@ -1,6 +1,8 @@
 "use client";
 import Image from "next/image";
 import { Star } from "lucide-react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 interface Product {
   id: number;
@@ -13,14 +15,14 @@ interface Product {
   stock: number;
   rating: number;
   reviewsCount: number;
-  brand: string;
-  sku: string;
-  sizes: string[] | number[];
-  outOfStockSizes: string[] | number[];
-  description: string;
-  material: string;
-  features: string[];
-  onAddToCart: () => void;
+  brand?: string;
+  sku?: string;
+  sizes?: string[] | number[];
+  outOfStockSizes?: string[] | number[];
+  description?: string;
+  material?: string;
+  features?: string[];
+  onAddToCart?: () => void;
 }
 
 export default function ItemCard({

@@ -6,7 +6,7 @@ interface ShippingPartnersProps {
 
 export default function ShippingPartners({ images }: ShippingPartnersProps) {
   return (
-    <div className="bg-white py-4 shadow-gray-300 shadow-lg my-10 overflow-hidden">
+    <div className="bg-white py-4 container mx-auto shadow-gray-300 shadow-lg my-10 overflow-hidden">
       <div className="max-w-7xl mx-auto">
         <div className="flex gap-10 justify-center items-center">
           {Array.from({ length: 10 }).map((_, index) => (

@@ -18,16 +18,15 @@ export default function Home() {
   // };
 
   return (
-    <main className="min-h-screen container mx-auto">
+    <main className="min-h-screen">
       <NavBar />
       <Hero />
       <FlashSaleItems />
       <ProductsPage />
-      <TextBox text={"Services"} />
       <HomeServices />
       <ShippingPartners images={shippingPartnersImages} />
       <CustomerReviews reviews={reviews} />
-      <Footer/>
+      <Footer />
     </main>
   );
 }
