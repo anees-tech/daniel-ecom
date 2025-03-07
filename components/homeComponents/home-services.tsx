@@ -5,7 +5,7 @@ import TextBox from "../text-box";
 export default function HomeServices() {
   return (
     <section className="py-12 bg-gray-100">
-        <TextBox text="Services" />
+      <TextBox text="Services" />
       <div className="container mx-auto px-6 lg:px-20 flex flex-col lg:flex-row items-center gap-8">
         {/* Left Side: Features */}
         <div className="flex flex-col gap-6 lg:w-1/2">
@@ -16,7 +16,7 @@ export default function HomeServices() {
           <div className="flex gap-6">
             {/* Personal Pick Up */}
             <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-start border-t-4 border-red-400">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-between gap-2">
                 <FaWalking className="text-red-500 text-2xl" />
                 <span className="text-gray-300 text-2xl font-extrabold">
                   01

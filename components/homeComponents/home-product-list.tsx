@@ -2,18 +2,6 @@
 import { useState } from "react";
 import ItemCard from "../item-card";
 
-interface Review {
-  id: number;
-  name: string;
-  rating: number;
-  comment: string;
-}
-
-interface Color {
-  name: string;
-  hex: string;
-}
-
 interface Product {
   id: number;
   name: string;
@@ -29,13 +17,11 @@ interface Product {
   sku: string;
   sizes: string[] | number[];
   outOfStockSizes: string[] | number[];
-  colors: Color[];
   description: string;
   material: string;
   features: string[];
-  reviews: Review[];
+  onAddToCart: () => void;
 }
-
 interface ProductListProps {
   products: Product[];
 }

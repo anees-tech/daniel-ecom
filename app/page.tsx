@@ -8,6 +8,7 @@ import ShippingPartners from "@/components/homeComponents/home-shipping-partners
 import ProductsPage from "@/components/homeComponents/homePage-products";
 import Hero from "@/components/homeComponents/mainHero";
 import NavBar from "@/components/navbar";
+import TextBox from "@/components/text-box";
 import { reviews } from "@/data/customerReviews";
 import { shippingPartnersImages } from "@/data/shippingPartnersImages";
 
@@ -22,6 +23,7 @@ export default function Home() {
       <Hero />
       <FlashSaleItems />
       <ProductsPage />
+      <TextBox text={"Services"} />
       <HomeServices />
       <ShippingPartners images={shippingPartnersImages} />
       <CustomerReviews reviews={reviews} />

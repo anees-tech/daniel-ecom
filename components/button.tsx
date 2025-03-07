@@ -17,7 +17,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-3 py-1 text-white font-semibold rounded-full shadow-md transition-all
+      className="flex items-center gap-2 px-3 md:px-5 py-1 md:py-2 text-white font-semibold rounded-full shadow-md transition-all
         bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-md"
     >
       {text}

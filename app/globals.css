@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @tailwind utilities;
 
+body{
+  background-color: rgb(249, 249, 249);
+}
+
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -18,4 +22,8 @@
 
     .slick-dots li.slick-active button:before {
       color: black;
+    }
+    .slick-track {
+      display: flex !important;
+      touch-action: pan-y !important;
     }
