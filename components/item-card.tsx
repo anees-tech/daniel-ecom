@@ -2,15 +2,24 @@
 import Image from "next/image";
 import { Star } from "lucide-react";
 
-interface ProductCardProps {
+interface Product {
+  id: number;
   name: string;
+  category: string;
   image: string;
-  currentPrice: number | string;
-  originalPrice: number | string;
-  discount?: number;
+  currentPrice: number;
+  originalPrice: number;
+  discount: number;
   stock: number;
   rating: number;
-  reviews: number;
+  reviewsCount: number;
+  brand: string;
+  sku: string;
+  sizes: string[] | number[];
+  outOfStockSizes: string[] | number[];
+  description: string;
+  material: string;
+  features: string[];
   onAddToCart: () => void;
 }
 
@@ -22,60 +31,61 @@ export default function ItemCard({
   discount,
   stock,
   rating,
-  reviews,
+  reviewsCount,
   onAddToCart,
-}: ProductCardProps) {
+}: Product) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden max-w-sm w-full">
-      <div className="p-4 flex justify-center bg-[#f9f9f9] rounded-lg shadow-sm">
+      {/* Image */}
+      <div className="p-4 flex justify-center bg-gray-100 rounded-lg">
         <Image
           src={image || "/placeholder.svg"}
           alt={name}
-          width={400}
-          height={300}
+          width={250}
+          height={250}
           className="object-contain"
         />
       </div>
 
+      {/* Content */}
       <div className="p-5">
         {/* Name + Discount */}
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-2xl font-bold text-gray-800">{name}</h3>
-          {discount && (
-            <span className="bg-black text-white px-2 py-1 rounded-full text-sm font-medium">
+        <div className="flex justify-between items-center mb-2">
+          <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
+          {discount > 0 && (
+            <span className="bg-black text-white px-2 py-1 rounded-full text-xs font-medium">
               -{discount}%
             </span>
           )}
         </div>
 
-        {/* Price + Add to Cart Button */}
-        <div className="flex justify-between items-center mb-4 w-full">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl font-bold text-green-500">
+        {/* Price + Add to Cart */}
+        <div className="flex justify-between items-center mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold text-green-600">
               ${currentPrice}
             </span>
             {originalPrice > currentPrice && (
-              <span className="text-xl text-red-400 line-through">
+              <span className="text-sm text-red-400 line-through">
                 ${originalPrice}
               </span>
             )}
           </div>
-
           <button
             onClick={onAddToCart}
-            className="py-1 px-3 bg-[#ffa300] hover:bg-amber-500 text-white font-medium rounded-full transition-colors"
+            className="py-1 px-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-full text-sm transition"
           >
             Add to cart
           </button>
         </div>
 
         {/* Stock + Rating */}
-        <div className="flex justify-between items-center mt-5 w-full">
-          <p className="text-gray-700">Stock ({stock})</p>
+        <div className="flex justify-between items-center text-sm text-gray-600">
+          <p>{stock > 0 ? `Stock: ${stock}` : "Out of Stock"}</p>
           <div className="flex items-center gap-1">
-            <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-            <span className="text-gray-600">
-              {rating} ({reviews} reviews)
+            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+            <span>
+              {rating} ({reviewsCount} reviews)
             </span>
           </div>
         </div>

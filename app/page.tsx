@@ -1,11 +1,15 @@
 "use client";
 
 import FlashSaleItems from "@/components/flashSaleItems";
+import Footer from "@/components/footer";
+import CustomerReviews from "@/components/homeComponents/home-customer-review";
 import HomeServices from "@/components/homeComponents/home-services";
+import ShippingPartners from "@/components/homeComponents/home-shipping-partners";
 import ProductsPage from "@/components/homeComponents/homePage-products";
 import Hero from "@/components/homeComponents/mainHero";
 import NavBar from "@/components/navbar";
-import TextBox from "@/components/text-box";
+import { reviews } from "@/data/customerReviews";
+import { shippingPartnersImages } from "@/data/shippingPartnersImages";
 
 export default function Home() {
   // const handleAddToCart = () => {
@@ -13,24 +17,15 @@ export default function Home() {
   // };
 
   return (
-    <main className="min-h-screen w-full">
+    <main className="min-h-screen container mx-auto">
       <NavBar />
       <Hero />
-      <TextBox text={"Today's"} />
       <FlashSaleItems />
       <ProductsPage />
       <HomeServices />
-      {/* <ItemCard
-        name="Lady Bag"
-        image="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-k1hQUeDnIuTL0QElljeErCclfYgZQ8.png"
-        currentPrice={375}
-        originalPrice={400}
-        discount={40}
-        stock={10}
-        rating={4.9}
-        reviews={98}
-        onAddToCart={handleAddToCart} // ✅ This will now work
-      /> */}
+      <ShippingPartners images={shippingPartnersImages} />
+      <CustomerReviews reviews={reviews} />
+      <Footer/>
     </main>
   );
 }

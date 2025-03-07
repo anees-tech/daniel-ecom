@@ -1,10 +1,11 @@
 "use client";
 import { FaWalking, FaTruck } from "react-icons/fa";
+import TextBox from "../text-box";
 
 export default function HomeServices() {
   return (
     <section className="py-12 bg-gray-100">
-        <h2 className="">Services</h2>
+        <TextBox text="Services" />
       <div className="container mx-auto px-6 lg:px-20 flex flex-col lg:flex-row items-center gap-8">
         {/* Left Side: Features */}
         <div className="flex flex-col gap-6 lg:w-1/2">

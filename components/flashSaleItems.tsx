@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ItemCard from "./item-card";
 import Button from "./button";
+import TextBox from "@/components/text-box";
 
 const products = [
   {
@@ -71,7 +72,8 @@ const FlashSaleCarousel = () => {
   };
 
   return (
-    <div className="relative px-4">
+    <div className="relative px- container mx-auto">
+      <TextBox text={"Today's"} />
       {/* Header Section with Title & Navigation */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Flash Sales</h2>

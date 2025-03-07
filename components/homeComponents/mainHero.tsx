@@ -23,7 +23,7 @@ const carouselData = [
 const Hero = () => {
   return (
     <div>
-      <div className="h-screen flex justify-center items-center w-full m-0 p-0 md:mt-25 px-2 md:p-0">
+      <div className="h-screen flex justify-center items-center  m-0 p-0 md:mt-25 px-2 md:p-0">
         <div className="text-center md:text-left flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between h-screen">
           {/* Left Side - Text Content */}
           <div className="w-full md:w-1/2 h-1/2 md:h-screen relative pt-40 md:pt-30 lg:pt-40 md:p-10 pr-0 md:pr-20">

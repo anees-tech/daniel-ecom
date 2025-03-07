@@ -2,16 +2,38 @@
 import { useState } from "react";
 import ItemCard from "../item-card";
 
+interface Review {
+  id: number;
+  name: string;
+  rating: number;
+  comment: string;
+}
+
+interface Color {
+  name: string;
+  hex: string;
+}
+
 interface Product {
   id: number;
   name: string;
+  category: string;
   image: string;
   currentPrice: number;
   originalPrice: number;
-  discount?: number;
+  discount: number;
   stock: number;
   rating: number;
-  reviews: number;
+  reviewsCount: number;
+  brand: string;
+  sku: string;
+  sizes: string[] | number[];
+  outOfStockSizes: string[] | number[];
+  colors: Color[];
+  description: string;
+  material: string;
+  features: string[];
+  reviews: Review[];
 }
 
 interface ProductListProps {
