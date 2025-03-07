@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
@@ -72,66 +72,99 @@ const products = [
 
 const FlashSaleCarousel = () => {
   const sliderRef = useRef<Slider | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const settings = {
-    // dots: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: isMobile ? 2 : 4,
     slidesToScroll: 1,
+    swipeToSlide: true, // Allows touch gestures
+    arrows: false, // Hide default arrows
     responsive: [
       { breakpoint: 1024, settings: { slidesToShow: 3 } },
       { breakpoint: 768, settings: { slidesToShow: 2 } },
-      { breakpoint: 480, settings: { slidesToShow: 1 } },
     ],
+  };
+
+  // Function to handle manual scroll
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 250;
+      scrollContainerRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+    sliderRef.current?.slickGoTo(
+      direction === "left"
+        ? Math.max(0, sliderRef.current.innerSlider.state.currentSlide - 1)
+        : sliderRef.current.innerSlider.state.currentSlide + 1
+    );
   };
 
   return (
     <div>
-      <div className="relative px-12">
+      <div className="relative px-4 md:px-12">
         {/* Header Section with Title & Navigation */}
         <div className="flex justify-between items-center mb-4 mt-3 px-2">
           <h2 className="text-2xl font-bold">Flash Sales</h2>
           <div className="flex gap-2">
             <button
-              onClick={() => sliderRef.current?.slickPrev()}
+              onClick={() => handleScroll("left")}
               className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
             >
               <FaChevronLeft size={16} />
             </button>
             <button
-              onClick={() => sliderRef.current?.slickNext()}
+              onClick={() => handleScroll("right")}
               className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
             >
               <FaChevronRight size={16} />
             </button>
           </div>
         </div>
-        {/* Carousel */}
-        <Slider ref={sliderRef} {...settings}>
-          {products.map((product) => (
-            <div key={product.id} className="px-2">
-              <ItemCard
-                image={product.image}
-                name={product.name}
-                discount={product.discount}
-                currentPrice={product.currentPrice}
-                originalPrice={product.originalPrice}
-                rating={product.rating}
-                reviews={product.reviews}
-                stock={0}
-                onAddToCart={() => {
-                  throw new Error("Function not implemented.");
-                }}
-              />
-            </div>
-          ))}
-        </Slider>
+
+        {/* Slick Slider inside Scrollable Container */}
+        <div
+          ref={scrollContainerRef}
+          className="overflow-x-auto scrollbar-hide px-2"
+          style={{ scrollBehavior: "smooth" }}
+        >
+          <Slider ref={sliderRef} {...settings}>
+            {products.map((product) => (
+              <div key={product.id} className="px-2">
+                <ItemCard
+                  image={product.image}
+                  name={product.name}
+                  discount={product.discount}
+                  currentPrice={product.currentPrice}
+                  originalPrice={product.originalPrice}
+                  rating={product.rating}
+                  reviews={product.reviews}
+                  stock={product.stock}
+                  onAddToCart={() => {}}
+                />
+              </div>
+            ))}
+          </Slider>
+        </div>
+
+        {/* View All Button */}
         <div className="flex justify-center my-4">
-          {" "}
           <Button text="View All" />
         </div>
       </div>
+
+      {/* Background Design Image */}
       <div className="relative w-full -z-50">
         <Image
           src="/design.svg"

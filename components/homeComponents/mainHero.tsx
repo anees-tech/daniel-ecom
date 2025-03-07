@@ -42,7 +42,7 @@ const Hero = () => {
               width={80}
               height={80}
               alt={"Compass"}
-              className="w-10 h-10 md:w-20 md:h-20 absolute bottom-0 right-30 md:top-75 md:right-40 md:hidden lg:block"
+              className="w-10 h-10 md:w-20 md:h-20 absolute bottom-0 right-30 md:top-75 md:right-40 md:hidden lg:block -z-50"
             />
           </div>
 
@@ -53,14 +53,14 @@ const Hero = () => {
               width={80}
               height={80}
               alt={"location"}
-              className="w-10 h-10 md:w-20 md:h-20 absolute top-5 left-0 md:left-50"
+              className="w-10 h-10 md:w-20 md:h-20 absolute top-5 left-0 md:left-50 -z-50"
             />
             <Image
               src={"/location2.svg"}
               width={40}
               height={40}
               alt={"location"}
-              className="w-5 h-5 md:w-10 md:h-10 absolute right-0 top-5 md:right-20 md:top-20 lg:top-30 lg:right-60"
+              className="w-5 h-5 md:w-10 md:h-10 absolute right-0 top-5 md:right-20 md:top-20 lg:top-30 lg:right-60 -z-50"
             />
             <Image
               src={"/cart1.svg"}
@@ -74,7 +74,7 @@ const Hero = () => {
               width={100}
               height={100}
               alt={"rectangle"}
-              className="w-10 h-10 md:w-25 md:h-25 absolute bottom-0 md:bottom-20 left-5"
+              className="w-10 h-10 md:w-25 md:h-25 absolute bottom-0 md:bottom-20 left-5 -z-50"
             />
             <div>
               <div className="relative flex justify-center items-center top-40 right-0 md:top-65 md:right-10 lg:top-75 lg:right-25">
@@ -83,7 +83,7 @@ const Hero = () => {
                   width={380}
                   height={380}
                   alt={"rectangle"}
-                  className="w-50 h-50 md:w-70 md:h-70 lg:w-90 lg:h-90 absolute"
+                  className="w-50 h-50 md:w-70 md:h-70 lg:w-90 lg:h-90 absolute -z-50"
                 />
                 <div className="absolute">
                   <Carousel data={carouselData} />

@@ -13,7 +13,7 @@ export default function Home() {
   // };
 
   return (
-    <main className="min-h-screen w-full">
+    <main className="min-h-screen max-w-full overflow-hidden">
       <NavBar />
       <Hero />
       <TextBox text={"Today's"} />

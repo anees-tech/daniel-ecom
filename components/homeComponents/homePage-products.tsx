@@ -21,7 +21,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="p-13 mt-0">
+    <div className="p-4 md:p-13 mt-0">
       <h2 className="text-2xl font-bold mb-4">What's trending now</h2>
       <p className="text-gray-500 mb-6">
         Discover the most trending products in our store.

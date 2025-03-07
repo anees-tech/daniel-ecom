@@ -17,7 +17,7 @@ export default function FilterProducts({ onFilterChange }: FilterProps) {
   };
 
   return (
-    <div className="flex gap-6 items-center justify-between px-30 border-b border-gray-400 pb-6">
+    <div className="flex gap-6 items-center justify-between m-auto border-b border-gray-400 pb-6">
       <div className="flex flex-row gap-6 justify-center items-center">
         {["All items", "Women", "Men", "Kids"].map((category) => (
           <button
