@@ -83,6 +83,27 @@ body{
   }
 }
 
+/* Further decrease height for medium-sized tablets */
+@media (max-width: 800px) and (orientation: portrait) {
+  .hero-container {
+    height: 30vh;
+  }
+}
+
+/* Reduce height even more for smaller mobile devices */
+@media (max-width: 600px) and (orientation: portrait) {
+  .hero-container {
+    height: 25vh;
+  }
+}
+
+/* Minimal height for very small screens */
+@media (max-width: 400px) and (orientation: portrait) {
+  .hero-container {
+    height: 20vh;
+  }
+}
+
 /* Reduce height even more for smaller mobile devices */
 @media (max-width: 600px) {
   .hero-container {

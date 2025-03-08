@@ -116,7 +116,7 @@ const FlashSaleCarousel = () => {
   };
 
   return (
-    <div className="relative container mx-auto mt-110 md:mt-60 w-full">
+    <div className="relative mt-110 md:mt-60 w-full">
       <TextBox text={"Today's"} />
 
       {/* Header Section */}
