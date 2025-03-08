@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Image from "next/image";
 
 interface CarouselProps {
   data: { id: number; image: string; title?: string }[];
@@ -21,9 +22,6 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
     autoplaySpeed: 3000,
     arrows: false,
     dotsClass: "slick-dots flex justify-center gap-2 absolute bottom-4 w-full",
-    customPaging: (i: number) => (
-      <button className="w-3 h-3 rounded-full bg-gray-400 transition-all duration-300"></button>
-    ),
   };
 
   return (
@@ -34,9 +32,11 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
       <Slider ref={sliderRef} {...settings}>
         {data.map((item) => (
           <div key={item.id} className="px-4 py-2">
-            <img
+            <Image
               src={item.image}
               alt={item.title || "Carousel Image"}
+              width={100} // Increased for iPad
+              height={100}
               className="w-1/3 md:w-1/3 lg:w-1/2 h-auto object-contain m-auto"
             />
           </div>

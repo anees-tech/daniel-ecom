@@ -75,7 +75,6 @@ const products = [
 const FlashSaleCarousel = () => {
   const sliderRef = useRef<Slider | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [sliderReady, setSliderReady] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -88,9 +87,7 @@ const FlashSaleCarousel = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    setSliderReady(true);
-  }, []);
+  useEffect(() => {}, []);
 
   const handlePrev = () => {
     console.log("Prev clicked", sliderRef.current);

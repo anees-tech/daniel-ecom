@@ -8,7 +8,6 @@ import ShippingPartners from "@/components/homeComponents/home-shipping-partners
 import ProductsPage from "@/components/homeComponents/homePage-products";
 import Hero from "@/components/homeComponents/mainHero";
 import NavBar from "@/components/navbar";
-import TextBox from "@/components/text-box";
 import { reviews } from "@/data/customerReviews";
 import { shippingPartnersImages } from "@/data/shippingPartnersImages";
 

@@ -28,8 +28,8 @@ export default function HomeServices() {
               </div>
               <h3 className="text-lg font-semibold mt-2">Personal Pick up</h3>
               <p className="text-gray-600 text-sm mt-1">
-                If you're located in the city, you have the convenient option to
-                personally collect your order from our office.
+                If you&apos;re located in the city, you have the convenient
+                option to personally collect your order from our office.
               </p>
             </div>
 
@@ -48,8 +48,8 @@ export default function HomeServices() {
               </div>
               <h3 className="text-lg font-semibold mt-2">Free Delivery</h3>
               <p className="text-gray-600 text-sm mt-1">
-                When you place an order above $300, you'll receive our premium
-                delivery service absolutely free.
+                When you place an order above $300, you&apos;ll receive our
+                premium delivery service absolutely free.
               </p>
             </div>
           </div>

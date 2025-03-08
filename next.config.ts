@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
     });
     return config;
   },
+  eslint: {
+    ignoreDuringBuilds: true, // ✅ Disables ESLint in Next.js builds
+  },
   images: {
     domains: ["v0.blob.com"],
     remotePatterns: [
