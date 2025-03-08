@@ -3,6 +3,7 @@ import React from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Quote } from "lucide-react";
+import TextBox from "../text-box";
 
 interface Review {
   id: number;
@@ -30,10 +31,10 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
   };
 
   return (
-    <div className="relative py-16 container mx-auto">
-      <h2 className="text-4xl">Customer Reviews</h2>
+    <div className="relative py-16 pt-0 container mx-auto">
+      <TextBox text="Customer Reviews" />
       {/* Background Image */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 -z-50">
         <Image
           src="/BG-Customer-reviews.png"
           alt="Customer Reviews Background"
@@ -43,15 +44,15 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-evenly gap-10 px-6">
+      <div className="flex flex-col md:flex-row items-center justify-evenly gap-10 px-6 pt-10">
         {/* Left Side: Profile Image */}
-        <div className="relative w-96 h-96 flex justify-center items-center">
+        <div className="relative flex justify-center items-center">
           <Image
             src="/img-Customer-Reviews.png"
             alt="Customer Review Profile"
             width={550}
             height={550}
-            className="object-contain"
+            className="object-contain w-5/6 h-5/6 md:w-full md:h-full"
           />
         </div>
 
@@ -71,16 +72,10 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
 
           {/* Navigation Arrows (Outlined) */}
           <div className="flex justify-start mt-4 space-x-4">
-            <button
-              onClick={prevSlide}
-              className="p-2 "
-            >
+            <button onClick={prevSlide} className="p-2 ">
               <ArrowLeft className="w-5 h-5 text-gray-600" />
             </button>
-            <button
-              onClick={nextSlide}
-              className="p-2 "
-            >
+            <button onClick={nextSlide} className="p-2 ">
               <ArrowRight className="w-5 h-5 text-gray-600" />
             </button>
           </div>
