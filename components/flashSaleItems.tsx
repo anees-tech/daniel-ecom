@@ -75,21 +75,43 @@ const products = [
 const FlashSaleCarousel = () => {
   const sliderRef = useRef<Slider | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [sliderReady, setSliderReady] = useState(false);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
     handleResize();
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    setSliderReady(true);
+  }, []);
+
+  const handlePrev = () => {
+    console.log("Prev clicked", sliderRef.current);
+    if (sliderRef.current) sliderRef.current.slickPrev();
+  };
+
+  const handleNext = () => {
+    console.log("Next clicked", sliderRef.current);
+    if (sliderRef.current) sliderRef.current.slickNext();
+  };
+
   const settings = {
-    infinite: true, // Ensures smooth looping
+    mobileFirst: true,
+    infinite: true,
     speed: 500,
     slidesToShow: isMobile ? 2 : 4,
     slidesToScroll: 1,
     swipeToSlide: true,
     arrows: false,
+    touchMove: true, // Ensures smooth touch scrolling
+    draggable: true,
     responsive: [
       { breakpoint: 1024, settings: { slidesToShow: 3 } },
       { breakpoint: 768, settings: { slidesToShow: 2 } },
@@ -97,21 +119,23 @@ const FlashSaleCarousel = () => {
   };
 
   return (
-    <div className="relative container mx-auto px-4">
+    <div className="relative container mx-auto mt-110 md:mt-60 w-full">
       <TextBox text={"Today's"} />
 
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 px-3 sm:px-4 lg:px-8 xl:px-12 mt-2">
         <h2 className="text-2xl font-bold">Flash Sales</h2>
         <div className="flex gap-2">
           <button
-            onClick={() => sliderRef.current?.slickPrev()}
+            type="button"
+            onClick={handlePrev}
             className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
           >
             <FaChevronLeft size={16} />
           </button>
           <button
-            onClick={() => sliderRef.current?.slickNext()}
+            type="button"
+            onClick={handleNext}
             className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
           >
             <FaChevronRight size={16} />
@@ -121,6 +145,7 @@ const FlashSaleCarousel = () => {
 
       {/* Slider */}
       <Slider
+        className="px-2 sm:px-4 lg:px-8 xl:px-12"
         ref={sliderRef}
         {...settings}
         key={isMobile ? "mobile" : "desktop"}
@@ -136,7 +161,7 @@ const FlashSaleCarousel = () => {
       </Slider>
 
       {/* Background Design */}
-      <div className="absolute right-0 -top-20 -z-10">
+      <div className="absolute right-0 -bottom-48 -z-50">
         <Image
           src="/design.svg"
           alt="Design"

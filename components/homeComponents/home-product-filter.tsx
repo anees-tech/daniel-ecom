@@ -17,15 +17,16 @@ export default function FilterProducts({ onFilterChange }: FilterProps) {
   };
 
   return (
-    <div className="flex gap-6 items-center justify-between m-auto border-b border-gray-400 pb-6">
-      <div className="flex flex-row gap-6 justify-center items-center">
+    <div className="flex flex-wrap gap-3 sm:gap-6 items-center justify-center m-auto border-b border-gray-400 pb-4 sm:pb-6 px-3 sm:px-4 lg:px-8 xl:px-12">
+      {/* Category Buttons */}
+      <div className="flex flex-wrap gap-2 sm:gap-6 justify-center items-center w-full sm:w-auto">
         {["All items", "Women", "Men", "Kids"].map((category) => (
           <button
             key={category}
-            className={`px-6 py-1.5 text-sm font-medium transition rounded-full border border-gray-500 ${
+            className={`px-3 py-1 text-xs sm:px-4 sm:py-1.5 sm:text-sm font-medium transition rounded-full border border-gray-500 ${
               selectedCategory === category.toLowerCase()
                 ? "bg-red-500 text-white border-red-500"
-                : "text-gray-700 hover:bg-gray-300 "
+                : "text-gray-700 hover:bg-gray-300"
             }`}
             onClick={() => handleCategoryChange(category.toLowerCase())}
           >
@@ -33,14 +34,16 @@ export default function FilterProducts({ onFilterChange }: FilterProps) {
           </button>
         ))}
       </div>
-      <div className="flex flex-row justify-center items-center gap-4">
-        <div className="relative mx-auto w-[100%]">
+
+      {/* Search and Filter */}
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 w-full sm:w-auto">
+        <div className="relative w-full sm:w-full md:w-1/2 lg:w-1/2">
           <input
             type="text"
             placeholder="Search"
-            className="bg-white px-4 py-2 rounded-full shadow-sm outline-none text-gray-700 w-full"
+            className="bg-white px-3 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm rounded-full shadow-sm outline-none text-gray-700 w-full"
           />
-          <SearchIcon className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer" />
+          <SearchIcon className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-500 bg-white cursor-pointer" />
         </div>
         <DropDownFilter />
       </div>

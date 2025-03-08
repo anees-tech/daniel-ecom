@@ -27,7 +27,7 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto overflow-hidden">
+    <div className="relative w-full max-w-md m-auto overflow-hidden">
       {/* Background Shape & Icon */}
 
       {/* Slider */}
@@ -37,7 +37,7 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
             <img
               src={item.image}
               alt={item.title || "Carousel Image"}
-              className="w-1/2 h-auto object-contain m-auto"
+              className="w-1/3 md:w-1/3 lg:w-1/2 h-auto object-contain m-auto"
             />
           </div>
         ))}
@@ -45,14 +45,14 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
 
       {/* Custom Navigation Buttons */}
       <button
-        className="absolute left-5 top-1/2 -translate-y-1/2 p-2 bg-gray-800/50 text-white rounded-full hover:bg-gray-900 transition"
+        className="absolute left-20 sm:left-20 md:left-5 top-1/2 -translate-y-1/2 p-2 bg-gray-800/50 text-white rounded-full hover:bg-gray-900 transition"
         onClick={() => sliderRef.current?.slickPrev()}
       >
         <FaChevronLeft size={18} color="black hover:white" />
       </button>
 
       <button
-        className="absolute right-5 top-1/2 -translate-y-1/2 p-2 bg-gray-800/50 text-white rounded-full hover:bg-gray-900 transition"
+        className="absolute right-20 sm:right-20 md:right-5 top-1/2 -translate-y-1/2 p-2 bg-gray-800/50 text-white rounded-full hover:bg-gray-900 transition"
         onClick={() => sliderRef.current?.slickNext()}
       >
         <FaChevronRight size={18} color="black hover:white" />

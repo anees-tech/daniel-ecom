@@ -41,7 +41,7 @@ export default function Navbar() {
           className={`md:flex md:items-center md:space-x-8 text-white font-medium absolute md:static md:bg-transparent top-16 left-0 w-full md:w-auto transition-all duration-300 ease-in-out ${
             isMenuOpen
               ? "opacity-100 h-auto py-4 text-center bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]"
-              : "opacity-0 h-0 md:opacity-100 md:h-auto"
+              : "hidden h-0 md:opacity-100 md:h-auto"
           }`}
         >
           {[

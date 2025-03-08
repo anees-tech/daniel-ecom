@@ -50,19 +50,25 @@ export default function ItemCard({
       </div>
 
       {/* Content */}
-      <div className="p-5">
+      <div className="px-2 py-1 md:p-5 md:py-1">
         {/* Name + Discount */}
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
+        <div className="flex justify-between items-center mb-1 md:mb-2 gap-1">
+          <h3
+            className="text-lg font-stretch-extra-condensed md:font-semibold text-gray-800 overflow-hidden whitespace-nowrap text-ellipsis"
+            title={name}
+          >
+            {name}
+          </h3>
+
           {discount > 0 && (
-            <span className="bg-black text-white px-2 py-1 rounded-full text-xs font-medium">
+            <span className="bg-black text-white px-1 md:px-2 py-1 rounded-full text-xs font-medium">
               -{discount}%
             </span>
           )}
         </div>
 
         {/* Price + Add to Cart */}
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center mb-2 md:mb-3 gap-1 md:gap-0">
           <div className="flex items-center gap-2">
             <span className="text-lg font-bold text-green-600">
               ${currentPrice}
@@ -73,16 +79,25 @@ export default function ItemCard({
               </span>
             )}
           </div>
+          <div className="md:hidden flex flex-col justify-between items-start text-sm text-gray-600 gap-1 mt-0">
+            <p>{stock > 0 ? `Stock: ${stock}` : "Out of Stock"}</p>
+            <div className="flex items-center justify-between gap-1">
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              <span className="overflow-hidden whitespace-nowrap text-ellipsis">
+                {rating} ({reviewsCount} reviews)
+              </span>
+            </div>
+          </div>
           <button
             onClick={onAddToCart}
-            className="py-1 px-3 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-full text-sm transition"
+            className="py-1 px-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-full text-sm transition w-full md:w-auto"
           >
             Add to cart
           </button>
         </div>
 
         {/* Stock + Rating */}
-        <div className="flex justify-between items-center text-sm text-gray-600">
+        <div className="hidden md:flex justify-between items-center text-sm text-gray-600">
           <p>{stock > 0 ? `Stock: ${stock}` : "Out of Stock"}</p>
           <div className="flex items-center gap-1">
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
