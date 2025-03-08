@@ -1,5 +1,4 @@
 "use client";
-import { FaWalking, FaTruck } from "react-icons/fa";
 import TextBox from "../text-box";
 import Image from "next/image";
 
