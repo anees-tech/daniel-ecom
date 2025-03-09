@@ -1,5 +1,4 @@
 "use client";
-
 import FlashSaleItems from "@/components/flashSaleItems";
 import Footer from "@/components/footer";
 import CustomerReviews from "@/components/homeComponents/home-customer-review";
@@ -12,19 +11,19 @@ import { reviews } from "@/data/customerReviews";
 import { shippingPartnersImages } from "@/data/shippingPartnersImages";
 
 export default function Home() {
-  // const handleAddToCart = () => {
-  //   alert("Product added to cart!");
-  // };
-
   return (
-    <main className="min-h-screen max-w-full overflow-hidden">
-      <NavBar />
-      <Hero />
-      <FlashSaleItems />
-      <ProductsPage />
-      <HomeServices />
-      <ShippingPartners images={shippingPartnersImages} />
-      <CustomerReviews reviews={reviews} />
+    <main className="min-h-screen">
+      <div className="container mx-auto px-6">
+        <NavBar />
+        <Hero />
+        <FlashSaleItems />
+        <ProductsPage />
+        <HomeServices />
+        <ShippingPartners images={shippingPartnersImages} />
+        <CustomerReviews reviews={reviews} />
+      </div>
+
+      {/* Footer remains full-width */}
       <Footer />
     </main>
   );
