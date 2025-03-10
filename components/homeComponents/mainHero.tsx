@@ -13,7 +13,7 @@ const carouselData = [
 
 const Hero = () => {
   return (
-    <div className="hero-container w-full min-w-full flex justify-center items-center m-0 p-0 px-2 md:pt-50 mb-10 md:mb-20 max-w-screen">
+    <div className="hero-container w-full min-w-full flex justify-center items-center m-0 p-0 px-2 md:pt-30 mb-10 md:mb-20 max-w-screen">
       <div className="hero-content w-full flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between">
         {/* Left Side - Text Content */}
         <div className="w-full md:w-1/2 relative px-2 pt-40 md:pt-30 lg:pt-40 md:p-10 md:pr-20 flex flex-col justify-center items-center md:justify-start md:items-start">
@@ -37,7 +37,7 @@ const Hero = () => {
         </div>
 
         {/* Right Side - Carousel Component */}
-        <div className="w-full md:w-1/2 relative -z-50">
+        <div className="w-full md:w-1/2 relative ">
           <Image
             src={"/location1.svg"}
             width={100} // Increased for iPad

@@ -15,13 +15,13 @@ interface Product {
   stock: number;
   rating: number;
   reviewsCount: number;
-  brand?: string;
-  sku?: string;
-  sizes?: string[] | number[];
-  outOfStockSizes?: string[] | number[];
-  description?: string;
-  material?: string;
-  features?: string[];
+  brand: string;
+  sku: string;
+  sizes: (string | number)[]; // ✅ Allow both string and number
+  outOfStockSizes: (string | number)[]; // ✅ Adjust this too
+  description: string;
+  material: string;
+  features: string[];
   onAddToCart?: () => void;
 }
 

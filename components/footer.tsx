@@ -12,7 +12,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-r from-orange-400 to-red-500 text-white py-12 rounded-t-3xl">
+    <footer className="bg-gradient-to-r from-orange-400 to-red-500 text-white py-12 rounded-t-3xl">
       <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row justify-between items-center gap-10">
         {/* Left Section - Brand */}
         <div className="max-w-xs text-center md:text-left">
