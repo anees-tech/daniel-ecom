@@ -1,16 +1,18 @@
+"use client";
+
 import { create } from "zustand";
 
 interface CategoryFilterState {
   selectedFilters: {
     price: string | null;
     sizes: string[];
-    brands: string[];
-    materials: string[];
+    brand: string | null;
+    material: string | null;
   };
   setPriceFilter: (price: string | null) => void;
   toggleSizeFilter: (size: string) => void;
-  toggleBrandFilter: (brand: string) => void;
-  toggleMaterialFilter: (material: string) => void;
+  setBrandFilter: (brand: string | null) => void;
+  setMaterialFilter: (material: string | null) => void;
   clearFilters: () => void;
 }
 
@@ -18,12 +20,15 @@ export const useCategoryFilter = create<CategoryFilterState>((set) => ({
   selectedFilters: {
     price: null,
     sizes: [],
-    brands: [],
-    materials: [],
+    brand: null, // Start with no brand filter
+    material: null, // Start with no material filter
   },
   setPriceFilter: (price) =>
     set((state) => ({
-      selectedFilters: { ...state.selectedFilters, price },
+      selectedFilters: {
+        ...state.selectedFilters,
+        price: state.selectedFilters.price === price ? null : price,
+      },
     })),
   toggleSizeFilter: (size) =>
     set((state) => ({
@@ -34,26 +39,27 @@ export const useCategoryFilter = create<CategoryFilterState>((set) => ({
           : [...state.selectedFilters.sizes, size],
       },
     })),
-  toggleBrandFilter: (brand) =>
+  setBrandFilter: (brand) =>
     set((state) => ({
       selectedFilters: {
         ...state.selectedFilters,
-        brands: state.selectedFilters.brands.includes(brand)
-          ? state.selectedFilters.brands.filter((b) => b !== brand)
-          : [...state.selectedFilters.brands, brand],
+        brand: state.selectedFilters.brand === brand ? null : brand,
       },
     })),
-  toggleMaterialFilter: (material) =>
+  setMaterialFilter: (material) =>
     set((state) => ({
       selectedFilters: {
         ...state.selectedFilters,
-        materials: state.selectedFilters.materials.includes(material)
-          ? state.selectedFilters.materials.filter((m) => m !== material)
-          : [...state.selectedFilters.materials, material],
+        material: state.selectedFilters.material === material ? null : material,
       },
     })),
   clearFilters: () =>
     set({
-      selectedFilters: { price: null, sizes: [], brands: [], materials: [] },
+      selectedFilters: {
+        price: null,
+        sizes: [],
+        brand: null,
+        material: null,
+      },
     }),
 }));

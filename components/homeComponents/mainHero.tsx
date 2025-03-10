@@ -72,7 +72,7 @@ const Hero = () => {
               width={420} // Increased for iPad
               height={420}
               alt={"rectangle"}
-              className="w-60 h-60 md:w-80 md:h-80 lg:w-100 lg:h-100 absolute -z-50"
+              className="w-60 h-60 md:w-60 md:h-60 lg:w-80 lg:h-80 absolute -z-50"
             />
             <div className="absolute">
               <Carousel data={carouselData} />

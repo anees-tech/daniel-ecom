@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
@@ -10,14 +10,7 @@ interface CarouselProps {
 }
 
 const Carousel: React.FC<CarouselProps> = ({ data }) => {
-  const sliderRef = useRef<Slider | null>(null);
-  const [sliderInstance, setSliderInstance] = useState<Slider | null>(null);
-
-  useEffect(() => {
-    if (sliderRef.current) {
-      setSliderInstance(sliderRef.current);
-    }
-  }, []);
+  const sliderRef = useRef<Slider>(null);
 
   const settings = {
     dots: true,
@@ -32,15 +25,15 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
   };
 
   return (
-    <div className="relative z-10 w-full max-w-md m-auto overflow-hidden">
+    <div className="relative w-full max-w-md mx-auto overflow-hidden">
       <Slider ref={sliderRef} {...settings}>
         {data.map((item) => (
           <div key={item.id} className="px-4 py-2">
             <Image
               src={item.image}
               alt={item.title || "Carousel Image"}
-              width={100}
-              height={100}
+              width={300} // Increased width for better image quality
+              height={200} // Increased height
               className="w-1/3 md:w-1/3 lg:w-1/2 h-auto object-contain m-auto"
             />
           </div>
@@ -49,17 +42,17 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
 
       {/* Custom Navigation Buttons */}
       <button
-        className="absolute left-5 z-10 top-1/2 -translate-y-1/2 p-2  rounded-full hover:bg-gray-400 transition"
-        onClick={() => sliderInstance?.slickPrev()}
+        className="absolute left-20 md:left-10 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md hover:bg-opacity-100 transition"
+        onClick={() => sliderRef.current?.slickPrev()}
       >
-        <FaChevronLeft size={18} />
+        <FaChevronLeft size={20} />
       </button>
 
       <button
-        className="absolute right-5 top-1/2 z-10 -translate-y-1/2 p-2  rounded-full hover:bg-gray-400 transition"
-        onClick={() => sliderInstance?.slickNext()}
+        className="absolute right-20 md:right-10 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md hover:bg-opacity-100 transition"
+        onClick={() => sliderRef.current?.slickNext()}
       >
-        <FaChevronRight size={18} />
+        <FaChevronRight size={20} />
       </button>
     </div>
   );

@@ -12,16 +12,14 @@ import { shippingPartnersImages } from "@/data/shippingPartnersImages";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <div className="container mx-auto px-6">
-        <NavBar />
-        <Hero />
-        <FlashSaleItems />
-        <ProductsPage />
-        <HomeServices />
-        <ShippingPartners images={shippingPartnersImages} />
-        <CustomerReviews reviews={reviews} />
-      </div>
+    <main className="width-full overflow-hidden">
+      <NavBar />
+      <Hero />
+      <FlashSaleItems />
+      <ProductsPage />
+      <HomeServices />
+      <ShippingPartners images={shippingPartnersImages} />
+      <CustomerReviews reviews={reviews} />
 
       {/* Footer remains full-width */}
       <Footer />
