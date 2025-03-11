@@ -7,7 +7,7 @@ import SideBar from "./SideBar";
 import CategoryProducts from "./categoryProducts";
 import Image from "next/image";
 
-const allowedCategories = ["shoes", "leather", "workwear"];
+const allowedCategories = ["shoes", "leather", "workwear", "men", "women"];
 
 export async function generateStaticParams() {
   return allowedCategories.map((slug) => ({ slug }));

@@ -5,14 +5,14 @@ import DropDownFilter from "../drop-down-filter";
 
 interface FilterProps {
   onFilterChange: (category: string) => void;
+  isLoading: boolean;
 }
 
-export default function FilterProducts({ onFilterChange }: FilterProps) {
+export default function FilterProducts({ onFilterChange, isLoading }: FilterProps) {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    console.log(category);
     onFilterChange(category);
   };
 
@@ -27,8 +27,9 @@ export default function FilterProducts({ onFilterChange }: FilterProps) {
               selectedCategory === category.toLowerCase()
                 ? "bg-red-500 text-white border-red-500"
                 : "text-gray-700 hover:bg-gray-300"
-            }`}
+            } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
             onClick={() => handleCategoryChange(category.toLowerCase())}
+            disabled={isLoading} 
           >
             {category}
           </button>
@@ -42,6 +43,7 @@ export default function FilterProducts({ onFilterChange }: FilterProps) {
             type="text"
             placeholder="Search"
             className="bg-white px-3 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm rounded-full shadow-sm outline-none text-gray-700 w-full"
+            disabled={isLoading}
           />
           <SearchIcon className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-500 bg-white cursor-pointer" />
         </div>

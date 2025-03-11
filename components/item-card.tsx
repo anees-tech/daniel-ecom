@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
+
 import { Star } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 interface Product {
-  id: number;
+  productID: number;
   name: string;
   category: string;
   image: string;
@@ -17,15 +19,16 @@ interface Product {
   reviewsCount: number;
   brand: string;
   sku: string;
-  sizes: (string | number)[]; // ✅ Allow both string and number
-  outOfStockSizes: (string | number)[]; // ✅ Adjust this too
+  sizes: (string | number)[];
+  outOfStockSizes: (string | number)[];
   description: string;
   material: string;
   features: string[];
-  onAddToCart?: () => void;
+  onBuyNow?: () => void;
 }
 
 export default function ItemCard({
+  productID,
   name,
   image,
   currentPrice,
@@ -34,21 +37,22 @@ export default function ItemCard({
   stock,
   rating,
   reviewsCount,
-  onAddToCart,
+  onBuyNow,
 }: Product) {
   return (
     <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden max-w-sm w-full">
       {/* Image */}
       <div className="p-4 flex justify-center bg-gray-100 rounded-lg">
-        <Image
-          src={image || "/placeholder.svg"}
-          alt={name}
-          width={250}
-          height={250}
-          className="object-contain"
-        />
+        <Link href={`/product/${productID}`}>
+          <Image
+            src={image || "/placeholder.svg"}
+            alt={name}
+            width={250}
+            height={250}
+            className="object-contain"
+          />
+        </Link>
       </div>
-
       {/* Content */}
       <div className="px-2 py-1 md:p-5 md:py-1">
         {/* Name + Discount */}
@@ -89,10 +93,10 @@ export default function ItemCard({
             </div>
           </div>
           <button
-            onClick={onAddToCart}
+            onClick={onBuyNow}
             className="py-1 px-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-full text-sm transition w-full md:w-auto"
           >
-            Add to cart
+            Buy Now
           </button>
         </div>
 

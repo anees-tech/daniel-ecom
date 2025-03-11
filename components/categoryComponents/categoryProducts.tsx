@@ -4,6 +4,7 @@ import { useCategoryFilter } from "@/context/useCategoryFilter";
 import { useState, useEffect } from "react";
 import ItemCard from "../item-card";
 import { Pagination } from "../pagination";
+import Loader from "../loader";
 
 interface Product {
   id: number;
@@ -23,11 +24,12 @@ interface Product {
   description: string;
   material: string;
   features: string[];
-  onAddToCart?: () => void;
+  onBuyNow?: () => void;
 }
 
 interface ProductListProps {
   productsArray: Product[];
+  setIsLoading?: (loading: boolean) => void; // Allow setIsLoading as an optional prop
 }
 
 function CategoryProducts({ productsArray }: ProductListProps) {
@@ -40,7 +42,7 @@ function CategoryProducts({ productsArray }: ProductListProps) {
 
   useEffect(() => {
     setIsLoading(true);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
 
     setTimeout(() => {
       let updatedProducts = [...productsArray];
@@ -125,7 +127,7 @@ function CategoryProducts({ productsArray }: ProductListProps) {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-40">
-          <div className="w-10 h-10 border-4 border-gray-300 border-t-red-500 rounded-full animate-spin"></div>
+          <Loader />{" "}
         </div>
       ) : (
         <>
@@ -142,7 +144,12 @@ function CategoryProducts({ productsArray }: ProductListProps) {
             <>
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
                 {displayedProducts.map((product) => (
-                  <ItemCard key={product.id} {...product} />
+                  <ItemCard
+                    productID={product.id}
+                    key={product.id}
+                    {...product}
+                    onBuyNow={() => alert("item")}
+                  />
                 ))}
               </div>
               {totalPages > 1 && (

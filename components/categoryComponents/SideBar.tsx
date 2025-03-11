@@ -52,6 +52,14 @@ const SideBar = () => {
 
   return (
     <div className="w-full font-sans">
+      {/* Clear Filters */}
+      <button
+        onClick={clearFilters}
+        className="text-lg text-white bg-gray-500 px-4 py-2 mx-5 my-3 rounded-full"
+      >
+        Clear Filters
+      </button>
+
       {/* Category Section */}
       <div className="mb-8">
         <h2 className="text-base font-medium text-gray-900 mb-3">Category</h2>
@@ -140,7 +148,7 @@ const SideBar = () => {
           </div>
         </div>
 
-        {/* Brand Filter */}
+        {/* Brand Filter - Fixed */}
         <div className="mb-6">
           <h3 className="text-base font-medium text-gray-900 mb-3">Brands</h3>
           <ul className="space-y-2">
@@ -149,8 +157,7 @@ const SideBar = () => {
                 key={brand}
                 onClick={() => setBrandFilter(brand)}
                 className={`text-sm cursor-pointer ${
-                  selectedFilters.brand === brand ||
-                  (brand === "Hermès" && !selectedFilters.brand)
+                  selectedFilters.brand === brand
                     ? "text-red-500"
                     : "text-gray-600 hover:text-red-500"
                 }`}
@@ -181,7 +188,7 @@ const SideBar = () => {
           </button>
         </div>
 
-        {/* Material Filter */}
+        {/* Material Filter - Fixed */}
         <div className="mb-6">
           <h3 className="text-base font-medium text-gray-900 mb-3">Material</h3>
           <ul className="space-y-2">
@@ -190,8 +197,7 @@ const SideBar = () => {
                 key={material}
                 onClick={() => setMaterialFilter(material)}
                 className={`text-sm cursor-pointer ${
-                  selectedFilters.material === material ||
-                  (material === "Hermès" && !selectedFilters.material)
+                  selectedFilters.material === material
                     ? "text-red-500"
                     : "text-gray-600 hover:text-red-500"
                 }`}

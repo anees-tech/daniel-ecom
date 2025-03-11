@@ -3,21 +3,25 @@ import { useState } from "react";
 import ProductList from "./home-product-list";
 import FilterProducts from "./home-product-filter";
 import products from "@/data/products";
+import Loader from "../loader";
 
 export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState(products);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleFilterChange = (category: string) => {
-    if (category === "all items") {
-      setFilteredProducts(products);
-      console.log(products);
-    } else {
-      setFilteredProducts(
-        products.filter((product) => {
-          return product.category === category;
-        })
-      );
-    }
+    setIsLoading(true);
+    setTimeout(() => {
+      // abhi yaha hum backend se data fetch nahi kar rahe hai, isliye hum setTimeout ka use kar rahe hai filhal
+      if (category === "all items") {
+        setFilteredProducts(products);
+      } else {
+        setFilteredProducts(
+          products.filter((product) => product.category === category)
+        );
+      }
+      setIsLoading(false);
+    }, 500);
   };
 
   return (
@@ -27,9 +31,19 @@ export default function ProductsPage() {
         Discover the most trending products in our store.
       </p>
 
-      <FilterProducts onFilterChange={handleFilterChange} />
+      <FilterProducts
+        onFilterChange={handleFilterChange}
+        isLoading={isLoading}
+      />
+
       <div className="mt-6">
-        <ProductList products={filteredProducts} />
+        {isLoading ? (
+          <div className="flex justify-center items-center py-12">
+            <Loader />
+          </div>
+        ) : (
+          <ProductList products={filteredProducts} />
+        )}
       </div>
     </div>
   );
