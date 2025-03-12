@@ -55,7 +55,7 @@ const SideBar = () => {
       {/* Clear Filters */}
       <button
         onClick={clearFilters}
-        className="text-lg text-white bg-gray-500 px-4 py-2 mx-5 my-3 rounded-full"
+        className="text-sm text-white bg-red-500 px-4 py-1 rounded-full"
       >
         Clear Filters
       </button>
