@@ -7,9 +7,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 interface Product {
-  productID: number;
+  id: number;
   name: string;
   category: string;
+  images:string[];
   image: string;
   currentPrice: number;
   originalPrice: number;
@@ -28,8 +29,9 @@ interface Product {
 }
 
 export default function ItemCard({
-  productID,
+  id,
   name,
+  images,
   image,
   currentPrice,
   originalPrice,
@@ -43,7 +45,7 @@ export default function ItemCard({
     <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden max-w-sm w-full">
       {/* Image */}
       <div className="p-4 flex justify-center bg-gray-100 rounded-lg">
-        <Link href={`/product/${productID}`}>
+        <Link href={`/product/${id}`}>
           <Image
             src={image || "/placeholder.svg"}
             alt={name}
