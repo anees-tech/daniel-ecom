@@ -10,6 +10,7 @@ export default function ProductsPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleFilterChange = (category: string) => {
+    console.log(category);
     setIsLoading(true);
     setTimeout(() => {
       // abhi yaha hum backend se data fetch nahi kar rahe hai, isliye hum setTimeout ka use kar rahe hai filhal

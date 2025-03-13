@@ -5,33 +5,10 @@ import Link from "next/link";
 import { Star } from "lucide-react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  images:string[];
-  image: string;
-  currentPrice: number;
-  originalPrice: number;
-  discount: number;
-  stock: number;
-  rating: number;
-  reviewsCount: number;
-  brand: string;
-  sku: string;
-  sizes: (string | number)[];
-  outOfStockSizes: (string | number)[];
-  description: string;
-  material: string;
-  features: string[];
-  onBuyNow?: () => void;
-}
-
+import ItemCardInterface from "@/interfaces/itemCardInterface";
 export default function ItemCard({
   id,
   name,
-  images,
   image,
   currentPrice,
   originalPrice,
@@ -40,7 +17,18 @@ export default function ItemCard({
   rating,
   reviewsCount,
   onBuyNow,
-}: Product) {
+}: ItemCardInterface) {
+  // console.log({
+  //   id,
+  //   name,
+  //   image,
+  //   currentPrice,
+  //   originalPrice,
+  //   discount,
+  //   stock,
+  //   rating,
+  //   reviewsCount,
+  // });
   return (
     <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden max-w-sm w-full">
       {/* Image */}

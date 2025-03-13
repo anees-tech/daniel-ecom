@@ -2,29 +2,10 @@
 import { useState } from "react";
 import ItemCard from "../item-card";
 import { Pagination } from "../pagination";
+import ItemCardInterface from "@/interfaces/itemCardInterface";
 
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  image: string;
-  currentPrice: number;
-  originalPrice: number;
-  discount: number;
-  stock: number;
-  rating: number;
-  reviewsCount: number;
-  brand: string;
-  sku: string;
-  sizes: string[] | number[];
-  outOfStockSizes: string[] | number[];
-  description: string;
-  material: string;
-  features: string[];
-  onAddToCart?: () => void;
-}
 interface ProductListProps {
-  products: Product[];
+  products: ItemCardInterface[];
 }
 
 export default function ProductList({ products }: ProductListProps) {
@@ -44,7 +25,7 @@ export default function ProductList({ products }: ProductListProps) {
           <ItemCard
             key={product.id}
             {...product}
-            onAddToCart={() => {
+            onBuyNow={() => {
               alert("Added to cart");
             }}
           />
