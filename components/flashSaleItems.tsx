@@ -150,8 +150,10 @@ const FlashSaleCarousel = () => {
         {products.map((product) => (
           <div key={product.id} className="px-2">
             <ItemCard
+              brand={""}
+              material={""}
               {...product}
-              onAddToCart={() => console.log(`Added ${product.name} to cart`)}
+              onBuyNow={() => console.log(`Added ${product.name} to cart`)}
             />
           </div>
         ))}
