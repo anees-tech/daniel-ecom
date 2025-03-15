@@ -15,11 +15,11 @@ import RelativeItems from "../relativeComponent/relative-items";
 export default function ProductDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ productId: string }>;
 }) {
-  const { id } = use(params);
-  const productId = Number.parseInt(id);
-  const product = products.find((p) => p.id === productId) || products[0]; // Fallback to first product if not found
+  const { productId } = use(params);
+  const oProductId = Number.parseInt(productId);
+  const product = products.find((p) => p.id === oProductId) || products[0]; // Fallback to first product if not found
 
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);

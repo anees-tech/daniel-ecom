@@ -1,9 +1,6 @@
 "use client";
 import ProductDetailPage from "@/components/productComponents/product-details";
 
-interface ProductPageProps {
-  params: { productId: string };
-}
 
 export default function ProductPage({ params }: { params: Promise<{ productId: string }> }) {
   return (
