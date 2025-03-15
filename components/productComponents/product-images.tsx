@@ -95,7 +95,7 @@ export default function ProductImages({
               <div
                 key={index}
                 className={cn(
-                  "border rounded-md overflow-hidden cursor-pointer h-[100px]",
+                  "border rounded-md overflow-hidden cursor-pointer h-[100px] w-[100px]",
                   selectedImage === index ? "border-red-500" : "border-gray-200"
                 )}
                 onClick={() => setSelectedImage(index)}
@@ -123,9 +123,9 @@ export default function ProductImages({
       </div>
 
       {/* Main Image with Zoom */}
-      <div className="relative w-full max-w-[400px] h-auto order-1 md:order-2">
+      <div className="relative w-full max-w-full h-auto order-1 md:order-2">
         <div
-          className="border rounded-lg overflow-hidden flex items-center justify-center relative"
+          className="border rounded-lg overflow-hidden flex items-center justify-center relative border-gray-400"
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setIsZooming(true)}
           onMouseLeave={() => setIsZooming(false)}

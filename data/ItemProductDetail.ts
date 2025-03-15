@@ -31,6 +31,10 @@ const productsDetails = [
     reviews: [
       { id: 1, name: "Sophia R.", rating: 5, comment: "Love this bag!" },
       { id: 2, name: "Emma L.", rating: 4, comment: "Stylish & spacious." },
+      { id: 3, name: "Jake P.", rating: 5, comment: "Great quality!" },
+      { id: 4, name: "Liam K.", rating: 4.5, comment: "Compact and sleek." },
+      { id: 5, name: "Jake P.", rating: 5, comment: "Great quality!" },
+      { id: 6, name: "Liam K.", rating: 4.5, comment: "Compact and sleek." },
     ],
   },
   {
@@ -67,6 +71,8 @@ const productsDetails = [
     reviews: [
       { id: 1, name: "Jake P.", rating: 5, comment: "Great quality!" },
       { id: 2, name: "Liam K.", rating: 4.5, comment: "Compact and sleek." },
+      { id: 3, name: "Jake P.", rating: 5, comment: "Great quality!" },
+      { id: 4, name: "Liam K.", rating: 4.5, comment: "Compact and sleek." },
     ],
   },
   {
@@ -1054,6 +1060,5 @@ const productsDetails = [
     ],
   },
 ];
-  
-  export default productsDetails;
-  
+
+export default productsDetails;
