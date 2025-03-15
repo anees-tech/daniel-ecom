@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import NavBar from "@/components/navbar";
-import Footer from "@/components/footer";
 import products from "@/data/ItemProductDetail";
 import ProductImages from "./product-images";
 import ProductInfo from "./product-info";
@@ -16,19 +15,18 @@ import RelativeItems from "../relativeComponent/relative-items";
 export default function ProductDetailPage({
   params,
 }: {
-  params: { productId: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { productId } = params;
-  console.log(productId); // Check if it's coming
-  const productIdNumber = Number.parseInt(productId);
-  const product = products.find((p) => p.id === productIdNumber) || products[0]; // Fallback to first product if not found
+  const { id } = use(params);
+  const productId = Number.parseInt(id);
+  const product = products.find((p) => p.id === productId) || products[0]; // Fallback to first product if not found
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(2); // Default to 2 as shown in the image
+  const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(
     product?.colors[0]?.name || ""
   );
-  const [selectedSize, setSelectedSize] = useState("XS"); // Default to XS as shown in the image
+  const [selectedSize, setSelectedSize] = useState("XS");
 
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity >= 1 && newQuantity <= product.stock) {
@@ -81,7 +79,6 @@ export default function ProductDetailPage({
           <RelativeItems category={product.category} />
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

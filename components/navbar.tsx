@@ -8,9 +8,11 @@ import ProfileIcon from "@/public/profile.svg";
 import SearchIcon from "@/public/search.svg";
 import DropDown from "@/public/dropdown.svg";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useCartStore } from "@/context/addToCartContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const cartCount = useCartStore((state) => state.getCartCount());
 
   return (
     <nav className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] opacity-90 rounded-b-[37px] px-6 py-4 shadow-lg fixed top-0 left-0 right-0 z-10">
@@ -70,7 +72,7 @@ export default function Navbar() {
             </li>
           ))}
 
-          {/* Search & Icons (Visible on Mobile) */}
+          {/* Mobile Search & Icons */}
           <div className="flex flex-col md:hidden space-y-4 mt-2">
             <div className="relative mx-auto w-[80%]">
               <input
@@ -86,15 +88,17 @@ export default function Navbar() {
               </div>
               <div className="relative bg-white p-3 rounded-full">
                 <CartIcon />
-                <span className="absolute -top-0 -right-0 bg-red-600 text-white text-sm px-2 rounded-full">
-                  3
-                </span>
+                {cartCount > 0 && (
+                  <span className="absolute -top-0 -right-0 bg-red-600 text-white text-sm px-2 rounded-full">
+                    {cartCount}
+                  </span>
+                )}
               </div>
             </div>
           </div>
         </ul>
 
-        {/* Search & Icons (Visible on Desktop) */}
+        {/* Desktop Search & Icons */}
         <div className="hidden md:flex items-center space-x-4">
           <div className="relative">
             <input
@@ -107,12 +111,16 @@ export default function Navbar() {
           <div className="bg-white p-3 rounded-full">
             <ProfileIcon />
           </div>
-          <div className="relative bg-white p-3 rounded-full">
-            <CartIcon />
-            <span className="absolute -top-0 -right-0 bg-red-600 text-white text-sm px-2 rounded-full">
-              3
-            </span>
-          </div>
+          <Link href="/cart">
+            <div className="relative bg-white p-3 rounded-full">
+              <CartIcon />
+              {cartCount > 0 && (
+                <span className="absolute -top-0 -right-0 bg-red-600 text-white text-sm px-2 rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </div>
+          </Link>
         </div>
       </div>
     </nav>

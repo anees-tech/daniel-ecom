@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { Filter } from "lucide-react";
 import SideBar from "./SideBar";
@@ -88,7 +87,6 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           className="absolute left-0 bottom-0 -z-50"
         />
       </div>
-      <Footer />
     </div>
   );
 }
