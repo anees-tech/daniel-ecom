@@ -45,21 +45,30 @@ export const useCartStore = create<CartState>()(
 
       clearCart: () => {
         set({ cart: [] });
-        sessionStorage.removeItem("cart_expiry");
+        if (typeof window !== "undefined") {
+          sessionStorage.removeItem("cart_expiry");
+        }
       },
     }),
     {
       name: "cart-storage",
-      storage: createJSONStorage(() => sessionStorage),
+      storage:
+        typeof window !== "undefined"
+          ? createJSONStorage(() => sessionStorage)
+          : undefined,
     }
   )
 );
 
 const checkCartExpiration = () => {
-  const expiry = sessionStorage.getItem("cart_expiry");
-  if (expiry && Date.now() > Number(expiry)) {
-    useCartStore.getState().clearCart();
+  if (typeof window !== "undefined") {
+    const expiry = sessionStorage.getItem("cart_expiry");
+    if (expiry && Date.now() > Number(expiry)) {
+      useCartStore.getState().clearCart();
+    }
   }
 };
 
-checkCartExpiration();
+if (typeof window !== "undefined") {
+  checkCartExpiration();
+}
