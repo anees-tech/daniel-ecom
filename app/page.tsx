@@ -1,6 +1,5 @@
 "use client";
 import FlashSaleItems from "@/components/flashSaleItems";
-import Footer from "@/components/footer";
 import CustomerReviews from "@/components/homeComponents/home-customer-review";
 import HomeServices from "@/components/homeComponents/home-services";
 import ShippingPartners from "@/components/homeComponents/home-shipping-partners";
@@ -20,9 +19,6 @@ export default function Home() {
       <HomeServices />
       <ShippingPartners images={shippingPartnersImages} />
       <CustomerReviews reviews={reviews} />
-
-      {/* Footer remains full-width */}
-      <Footer />
     </main>
   );
 }

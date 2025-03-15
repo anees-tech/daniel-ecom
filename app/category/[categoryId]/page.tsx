@@ -18,9 +18,6 @@ function Page() {
   return (
     <div>
       <CategoryPage params={{ slug }} />
-      <h1>
-
-      </h1>
     </div>
   );
 }

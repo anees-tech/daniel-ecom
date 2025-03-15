@@ -1,6 +1,7 @@
 "use client";
 
 import { Star, Plus, Minus } from "lucide-react";
+import { useCartStore } from "@/context/addToCartContext"; // Import Zustand store
 
 interface ProductInfoProps {
   product: any;
@@ -21,6 +22,8 @@ export default function ProductInfo({
   quantity,
   handleQuantityChange,
 }: ProductInfoProps) {
+  const addToCart = useCartStore((state) => state.addToCart); // Zustand function
+
   // Calculate full and partial stars
   const fullStars = Math.floor(product.rating);
   const hasHalfStar = product.rating % 1 >= 0.5;
@@ -166,11 +169,26 @@ export default function ProductInfo({
         <button
           className="flex-1 bg-[#ffa100] text-white py-2 rounded-full hover:bg-orange-400 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           disabled={product.stock === 0}
-          onClick={() =>
-            console.log(
-              `Adding to Cart - Product: ${product.id}, Color: ${selectedColor}, Size: ${selectedSize}, Quantity: ${quantity}`
-            )
-          }
+          onClick={() => {
+            console.log({
+              id: product.id,
+              name: product.name,
+              price: product.currentPrice,
+              image: product.images[0],
+              quantity: quantity,
+              color: selectedColor,
+              size: selectedSize,
+            });
+            addToCart({
+              id: product.id,
+              name: product.name,
+              price: product.currentPrice,
+              image: product.image,
+              quantity,
+              color: selectedColor,
+              size: selectedSize,
+            });
+          }}
         >
           Add to cart
         </button>
