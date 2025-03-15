@@ -1,6 +1,6 @@
 "use client";
 import CategoryPage from "@/components/categoryComponents/categoryMain";
-import React from "react";
+import React, { Suspense } from "react";
 import { useParams } from "next/navigation";
 
 function Page() {
@@ -17,7 +17,9 @@ function Page() {
 
   return (
     <div>
-      <CategoryPage params={{ slug }} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <CategoryPage params={{ slug }} />
+      </Suspense>
     </div>
   );
 }
