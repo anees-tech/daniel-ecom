@@ -3,7 +3,7 @@ const productsDetails = [
     id: 1,
     name: "Lady Bag",
     category: "women",
-    images: ["/pngegg.png", "/pngegg.png", "/pngegg.png", "/pngegg.png"],
+    images: ["/pngegg.png", "/pngegg.png", "/shirt.png", "/pngegg.png"],
     image: "/pngegg.png",
     currentPrice: 375,
     originalPrice: 400,

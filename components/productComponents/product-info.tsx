@@ -154,12 +154,23 @@ export default function ProductInfo({
         <button
           className="flex-1 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white py-2 rounded-full hover:bg-red-600 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           disabled={product.stock === 0}
+          onClick={() =>
+            console.log(
+              `Buying Product: ${product.id}, Color: ${selectedColor}, Size: ${selectedSize}, Quantity: ${quantity}`
+            )
+          }
         >
           Buy Now
         </button>
+
         <button
           className="flex-1 bg-[#ffa100] text-white py-2 rounded-full hover:bg-orange-400 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
           disabled={product.stock === 0}
+          onClick={() =>
+            console.log(
+              `Adding to Cart - Product: ${product.id}, Color: ${selectedColor}, Size: ${selectedSize}, Quantity: ${quantity}`
+            )
+          }
         >
           Add to cart
         </button>
