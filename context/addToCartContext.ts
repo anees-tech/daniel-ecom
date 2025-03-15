@@ -1,25 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { CartItem, CartState } from "@/interfaces/cartContextInterface";
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  quantity: number;
-  color?: string;
-  size?: string;
-}
-
-interface CartState {
-  cart: CartItem[];
-  addToCart: (item: CartItem) => void;
-  removeFromCart: (id: string) => void;
-  getCartCount: () => number;
-  clearCart: () => void;
-}
-
-const CART_EXPIRATION_TIME = 60 * 60 * 1000; // 1 Hour in milliseconds
+const CART_EXPIRATION_TIME = 60 * 60 * 1000;
 
 export const useCartStore = create<CartState>()(
   persist(
@@ -29,25 +12,25 @@ export const useCartStore = create<CartState>()(
       addToCart: (item) => {
         set((state) => {
           const existingItem = state.cart.find(
-            (cartItem) => cartItem.id === item.id
+            (cartItem) =>
+              cartItem.id === item.id &&
+              cartItem.color === item.color &&
+              cartItem.size === item.size
           );
+
           if (existingItem) {
             return {
               cart: state.cart.map((cartItem) =>
-                cartItem.id === item.id
-                  ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                cartItem.id === item.id &&
+                cartItem.color === item.color &&
+                cartItem.size === item.size
+                  ? { ...cartItem, quantity: cartItem.quantity + item.quantity }
                   : cartItem
               ),
             };
           }
-          return { cart: [...state.cart, { ...item, quantity: 1 }] };
+          return { cart: [...state.cart, { ...item }] };
         });
-
-        // Update cart expiration time
-        sessionStorage.setItem(
-          "cart_expiry",
-          (Date.now() + CART_EXPIRATION_TIME).toString()
-        );
       },
 
       removeFromCart: (id) => {
@@ -67,12 +50,11 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "cart-storage",
-      storage: createJSONStorage(() => sessionStorage), // Uses sessionStorage instead of localStorage
+      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );
 
-// Auto-clear cart if expired
 const checkCartExpiration = () => {
   const expiry = sessionStorage.getItem("cart_expiry");
   if (expiry && Date.now() > Number(expiry)) {
@@ -80,5 +62,4 @@ const checkCartExpiration = () => {
   }
 };
 
-// Run expiration check on app load
 checkCartExpiration();

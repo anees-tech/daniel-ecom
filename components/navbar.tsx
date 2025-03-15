@@ -111,16 +111,16 @@ export default function Navbar() {
           <div className="bg-white p-3 rounded-full">
             <ProfileIcon />
           </div>
-          <div className="relative bg-white p-3 rounded-full">
-            <Link href="/cart">
+          <Link href="/cart">
+            <div className="relative bg-white p-3 rounded-full">
               <CartIcon />
               {cartCount > 0 && (
                 <span className="absolute -top-0 -right-0 bg-red-600 text-white text-sm px-2 rounded-full">
                   {cartCount}
                 </span>
               )}
-            </Link>
-          </div>
+            </div>
+          </Link>
         </div>
       </div>
     </nav>

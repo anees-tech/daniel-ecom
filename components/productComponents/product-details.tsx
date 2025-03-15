@@ -19,7 +19,7 @@ export default function ProductDetailPage({
   const product = products.find((params) => params.id === id) || products[0];
 
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(2);
+  const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(
     product?.colors[0]?.name || ""
   );

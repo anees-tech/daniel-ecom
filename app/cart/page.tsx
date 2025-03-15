@@ -56,6 +56,10 @@ export default function CartPage() {
                     <p className="text-gray-700 font-medium">
                       ${(item.price * item.quantity).toFixed(2)}
                     </p>
+                    <p className="text-gray-500 text-sm">
+                      {item.price} x {item.quantity} = $
+                      {(item.price * item.quantity).toFixed(2)}
+                    </p>
                   </div>
                   <div className="flex flex-col items-end">
                     <p className="font-medium text-gray-900">
