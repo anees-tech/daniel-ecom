@@ -5,6 +5,7 @@ import SideBar from "./SideBar";
 import CategoryProducts from "./categoryProducts";
 import Image from "next/image";
 import categoryProducts from "@/data/categoriesData";
+import Link from "next/link";
 
 const allowedCategories = ["shoes", "leather", "workwear", "men", "women"];
 
@@ -24,8 +25,11 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
 
       {/* Page Layout with padding to avoid overlap */}
       <div className="flex-1 px-2 sm:px-4 md:px-8 lg:px-12 py-8 mt-15 lg:mt-20 relative">
-        <h1 className="text-xl font-small mb-4 capitalize text-gray-400">
-          Category/<span className="text-red-500">{params.slug}</span>
+        <h1 className="text-xl font-small mb-4 capitalize text-gray-400 flex gap-2">
+          Category /
+          <Link className="text-red-500" href={`/category/${params.slug}`}>
+            {params.slug}
+          </Link>
         </h1>
         <div className="flex flex-row justify-center items-center border-b border-gray-300">
           <h1 className="text-xl font-small px-3 py-1 mb-4 capitalize text-gray-400 rounded-full bg-red-500">

@@ -11,6 +11,7 @@ import ProductReviews from "../reviewsComponents/product-reviews";
 import TextBox from "../text-box";
 import Image from "next/image";
 import RelativeItems from "../relativeComponent/relative-items";
+import Link from "next/link";
 
 export default function ProductDetailPage({
   params,
@@ -38,7 +39,17 @@ export default function ProductDetailPage({
     <div className="w-full overflow-hidden">
       <NavBar />
       <div>
-        <div className="px-1 sm:px-2 md:px-4 lg:px-8 pt-50 pb-20">
+        <div className="px-1 sm:px-2 md:px-4 lg:px-8 pt-40 pb-20">
+          <h1 className="text-xl font-small mb-15 capitalize text-gray-400 flex gap-2">
+            Category /
+            <Link href={`/category/${product.category}`}>
+              {product.category}
+            </Link>
+            /
+            <Link href={`/product/${product.id}`} className="text-red-500">
+              {product.name}
+            </Link>
+          </h1>
           <div className="flex flex-col md:flex-row gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-xl justify-center">
             {/* Product Images */}
             <div className="w-full md:w-1/2">
