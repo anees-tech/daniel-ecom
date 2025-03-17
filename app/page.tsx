@@ -8,6 +8,7 @@ import Hero from "@/components/homeComponents/mainHero";
 import NavBar from "@/components/navbar";
 import { reviews } from "@/data/customerReviews";
 import { shippingPartnersImages } from "@/data/shippingPartnersImages";
+import ServicesComponent from "./services/page";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <FlashSaleItems />
       <ProductsPage />
       <HomeServices />
+      <ServicesComponent />
       <ShippingPartners images={shippingPartnersImages} />
       <CustomerReviews reviews={reviews} />
     </main>

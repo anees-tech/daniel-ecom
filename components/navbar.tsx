@@ -9,6 +9,14 @@ import SearchIcon from "@/public/search.svg";
 import DropDown from "@/public/dropdown.svg";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useCartStore } from "@/context/addToCartContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "./ui/button";
+import React from "react";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,6 +78,47 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <li className="py-3 md:py-0 transition-transform text-lg flex flex-row justify-center items-center gap-2 cursor-pointer">
+                Services
+                <DropDown />
+              </li>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-50 bg-white border-0">
+              <Link href={"/services/free-delivery"}>
+                <DropdownMenuLabel className="hover:bg-orange-500 hover:text-white rounded-md cursor-pointer">
+                  Free Delivery
+                </DropdownMenuLabel>
+              </Link>
+              <Link href={"/services/personal-pickup"}>
+                <DropdownMenuLabel className="hover:bg-orange-500 hover:text-white rounded-md cursor-pointer">
+                  Personal Pickup
+                </DropdownMenuLabel>
+              </Link>
+              <Link href={"/services/same-day-delivery"}>
+                <DropdownMenuLabel className="hover:bg-orange-500 hover:text-white rounded-md cursor-pointer">
+                  Same Day Delivery
+                </DropdownMenuLabel>
+              </Link>
+              <Link href={"/services/gift-wrapping"}>
+                <DropdownMenuLabel className="hover:bg-orange-500 hover:text-white rounded-md cursor-pointer">
+                  Gift Wrapping
+                </DropdownMenuLabel>
+              </Link>
+              <Link href={"/services/flexible-payment"}>
+                <DropdownMenuLabel className="hover:bg-orange-500 hover:text-white rounded-md cursor-pointer">
+                  Flexible Payments
+                </DropdownMenuLabel>
+              </Link>
+              <Link href={"/services/customer-support"}>
+                <DropdownMenuLabel className="hover:bg-orange-500 hover:text-white rounded-md cursor-pointer">
+                  24/7 Customer Support
+                </DropdownMenuLabel>
+              </Link>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           {/* Mobile Search & Icons */}
           <div className="flex flex-col md:hidden space-y-4 mt-2">
