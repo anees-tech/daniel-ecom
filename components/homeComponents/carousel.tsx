@@ -34,7 +34,7 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
               alt={item.title || "Carousel Image"}
               width={300} // Increased width for better image quality
               height={200} // Increased height
-              className="w-1/3 md:w-1/3 lg:w-1/2 h-auto object-contain m-auto"
+              className="w-50 md:w-60 lg:w-70 h-auto object-contain m-auto"
             />
           </div>
         ))}
@@ -42,14 +42,14 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
 
       {/* Custom Navigation Buttons */}
       <button
-        className="absolute left-20 md:left-10 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md hover:bg-opacity-100 transition"
+        className="absolute left-15 md:left-8 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md hover:bg-opacity-100 transition"
         onClick={() => sliderRef.current?.slickPrev()}
       >
         <FaChevronLeft size={20} />
       </button>
 
       <button
-        className="absolute right-20 md:right-10 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md hover:bg-opacity-100 transition"
+        className="absolute right-15 md:right-8 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md hover:bg-opacity-100 transition"
         onClick={() => sliderRef.current?.slickNext()}
       >
         <FaChevronRight size={20} />

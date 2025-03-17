@@ -13,7 +13,7 @@ const carouselData = [
 
 const Hero = () => {
   return (
-    <div className="hero-container w-full min-w-full flex justify-center items-center m-0 p-0 px-2 md:pt-30 mb-10 md:mb-20 max-w-screen">
+    <div className="hero-container w-full min-w-full flex justify-center items-center m-0 p-0 px-2 md:pt-40 mb-10 md:mb-20 max-w-screen">
       <div className="hero-content w-full flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between">
         {/* Left Side - Text Content */}
         <div className="w-full md:w-1/2 relative px-2 pt-40 md:pt-30 lg:pt-40 md:p-10 md:pr-20 flex flex-col justify-center items-center md:justify-start md:items-start">
@@ -72,7 +72,7 @@ const Hero = () => {
               width={420} // Increased for iPad
               height={420}
               alt={"rectangle"}
-              className="w-60 h-60 md:w-60 md:h-60 lg:w-80 lg:h-80 absolute -z-50"
+              className="w-70 h-70 md:w-80 md:h-80 lg:w-90 lg:h-90 absolute -z-50"
             />
             <div className="absolute">
               <Carousel data={carouselData} />
