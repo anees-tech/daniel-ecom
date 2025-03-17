@@ -15,7 +15,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
 import React from "react";
 
 export default function Navbar() {
@@ -24,7 +23,7 @@ export default function Navbar() {
 
   return (
     // make the log bigger... on every screen
-    <nav className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] opacity-90 rounded-b-[37px] px-6 py-6 shadow-lg fixed top-0 left-0 right-0 z-10">
+    <nav className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] opacity-90 rounded-b-[37px] px-6 py-8 shadow-lg fixed top-0 left-0 right-0 z-10">
       <div className="container mx-auto flex items-center justify-between max-w-screen-xl">
         {/* Logo */}
         <div className="flex items-center space-x-3">
@@ -47,7 +46,7 @@ export default function Navbar() {
         </button>
 
         <ul
-          className={`md:flex md:items-center md:space-x-8 text-white font-medium absolute md:static md:bg-transparent top-16 left-0 w-full md:w-auto transition-all duration-300 ease-in-out ${
+          className={`md:flex md:items-center md:space-x-8 text-white font-medium absolute md:static md:bg-transparent top-26 left-0 w-full md:w-auto transition-all duration-300 ease-in-out ${
             isMenuOpen
               ? "opacity-100 h-auto py-4 text-center bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]"
               : "hidden h-0 md:opacity-100 md:h-auto"
@@ -134,14 +133,16 @@ export default function Navbar() {
               <div className="bg-white p-3 rounded-full">
                 <ProfileIcon />
               </div>
-              <div className="relative bg-white p-3 rounded-full">
-                <CartIcon />
-                {cartCount > 0 && (
-                  <span className="absolute -top-0 -right-0 bg-red-600 text-white text-sm px-2 rounded-full">
-                    {cartCount}
-                  </span>
-                )}
-              </div>
+              <Link href="/cart">
+                <div className="relative bg-white p-3 rounded-full">
+                  <CartIcon />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-0 -right-0 bg-red-600 text-white text-sm px-2 rounded-full">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+              </Link>
             </div>
           </div>
         </ul>

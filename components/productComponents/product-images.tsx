@@ -153,7 +153,7 @@ export default function ProductImages({
 
         {/* Mobile Thumbnails (Horizontal) */}
         <div className="md:hidden relative mt-4">
-          {mobileStartIndex > 0 && (
+          {mobileStartIndex > -1 && (
             <button
               onClick={handleMobilePrev}
               className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full bg-gray-200 hover:bg-gray-300"
@@ -162,7 +162,7 @@ export default function ProductImages({
             </button>
           )}
 
-          <div className="overflow-hidden">
+          <div className="overflow-scroll scroll-y-hidden">
             <div
               className="flex gap-[2px]"
               style={{
@@ -193,7 +193,7 @@ export default function ProductImages({
             </div>
           </div>
 
-          {mobileStartIndex < maxStartIndex && (
+          {mobileStartIndex < maxStartIndex + 1 && (
             <button
               onClick={handleMobileNext}
               className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full bg-gray-200 hover:bg-gray-300"

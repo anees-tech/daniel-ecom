@@ -51,7 +51,7 @@ export default function CartClient() {
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col md:flex-row gap-6 items-end">
+            <div className="flex flex-col md:flex-row gap-6 justify-between w-full">
               <div className="flex-1">
                 {/* Desktop View Header - Hidden on Mobile */}
                 <div className="mb-4 hidden md:grid grid-cols-4 font-semibold text-xl">
@@ -166,7 +166,7 @@ export default function CartClient() {
                       </div>
 
                       {/* Mobile View - Vertical Layout */}
-                      <div className="md:hidden">
+                      <div className="md:hidden w-full">
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex items-start gap-3">
                             <div className="w-[50px] h-[50px] relative flex-shrink-0">
