@@ -15,8 +15,9 @@ export default function Navbar() {
   const cartCount = useCartStore((state) => state.getCartCount());
 
   return (
-    <nav className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] opacity-90 rounded-b-[37px] px-6 py-4 shadow-lg fixed top-0 left-0 right-0 z-10">
-      <div className="container mx-auto flex items-center justify-between">
+    // make the log bigger... on every screen
+    <nav className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] opacity-90 rounded-b-[37px] px-6 py-6 shadow-lg fixed top-0 left-0 right-0 z-10">
+      <div className="container mx-auto flex items-center justify-between max-w-screen-xl">
         {/* Logo */}
         <div className="flex items-center space-x-3">
           <Link href="/">
@@ -30,7 +31,6 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Mobile Menu Toggle */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden text-white text-3xl"
@@ -38,7 +38,6 @@ export default function Navbar() {
           {isMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
 
-        {/* Navigation Links */}
         <ul
           className={`md:flex md:items-center md:space-x-8 text-white font-medium absolute md:static md:bg-transparent top-16 left-0 w-full md:w-auto transition-all duration-300 ease-in-out ${
             isMenuOpen

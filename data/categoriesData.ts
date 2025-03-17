@@ -1,5 +1,3 @@
-
-
 const categoryProducts = [
     {
       id: 1,
