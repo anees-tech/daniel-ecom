@@ -1,96 +1,75 @@
-"use client";
-
-import { useState } from "react";
 import Link from "next/link";
-import { ChevronDown, ChevronRight, Package } from "lucide-react";
+import Image from "next/image";
+import { servicesData } from "@/data/service-data";
+import Button from "@/components/button";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { services } from "@/data/service-data";
-import { iconMap } from "@/components/icon-map";
-import TextBox from "@/components/text-box";
-
-export default function ServicesComponent() {
-  const [showAll, setShowAll] = useState(false);
-
-  const visibleServices = showAll ? services : services.slice(0, 4);
-
-  // Debug services data
-  console.log("Services data:", services);
-
+export default function ServicesPage() {
   return (
-    <div className="w-full">
-      <TextBox text={"Our Services"} />
-      <div className="px-2 sm:px-4 md:px-8 lg:px-12">
-        <div className="py-12">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Our Services
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We offer a range of services to make your shopping experience
-              seamless and enjoyable. Discover how we can serve you better.
-            </p>
+    <main className="pt-40 relative">
+      <Image
+        src="/design.svg"
+        alt="Design"
+        width={200}
+        height={200}
+        priority
+        className="absolute right-0 -z-50"
+      />
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-8 lg:px-12 py-8">
+        {/* Breadcrumb */}
+        <nav className="flex items-center mb-8 text-xl font-small capitalize">
+          <Link href="/" className="text-gray-500 hover:text-gray-700">
+            Home
+          </Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <span className="text-red-500">Services</span>
+        </nav>
+
+        {/* Services Header */}
+        <div className="flex justify-center mb-10 border-b border-gray-400 pb-4">
+          <div className="bg-red-500 text-white px-8 py-2 rounded-full">
+            <h1 className="text-xl font-medium">Services</h1>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {visibleServices.map((service) => {
-              // Use a default icon if the mapping fails
-              const IconComponent =
-                service.icon && iconMap[service.icon]
-                  ? iconMap[service.icon]
-                  : Package;
-              return (
-                <div key={service.id} className="transition-all duration-300">
-                  <Card className="h-full border border-gray-200 overflow-hidden group hover:shadow-xl transition-all duration-300 cursor-pointer hover:border-orange-300 hover:-translate-y-2">
-                    <CardContent className="p-0">
-                      <div className="relative overflow-hidden h-40 bg-red-500">
-                        <div className="absolute inset-0 flex items-center justify-center text-white">
-                          <IconComponent className="h-16 w-16 group-hover:scale-110 transition-transform duration-300" />
-                        </div>
-                        <div className="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-black/50 to-transparent"></div>
-                      </div>
-                      <div className="p-6">
-                        <h3 className="text-xl font-semibold mb-2 group-hover:text-orange-500 transition-colors">
-                          {service.title}
-                        </h3>
-                        <p className="text-gray-600 mb-4 line-clamp-2">
-                          {service.shortDescription}
-                        </p>
-                        <Link
-                          href={`/services/${service.slug}`}
-                          className="mt-auto block"
-                        >
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="w-full mt-2 border-orange-300 hover:bg-gradient-to-r hover:from-red-500 hover:to-orange-400 hover:text-white group rounded-full"
-                          >
-                            Learn More
-                            <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              );
-            })}
-          </div>
-          {!showAll && services.length > 4 && (
-            <div className="flex justify-center mt-10">
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setShowAll(true)}
-                className="group border-orange-300 hover:bg-gradient-to-r hover:from-red-500 hover:to-orange-400 hover:text-white rounded-full"
-              >
-                Show More Services
-                <ChevronDown className="ml-2 h-5 w-5 group-hover:translate-y-1 transition-transform text-orange-500 group-hover:text-white" />
-              </Button>
+        </div>
+
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {servicesData.map((service) => (
+            <div
+              key={service.id}
+              className="bg-white rounded-lg overflow-hidden shadow-lg"
+            >
+              <div className="h-48 relative">
+                <Image
+                  src={service.image || "/placeholder.svg"}
+                  alt={service.title}
+                  fill
+                  className="object-cover rounded-xl"
+                />
+              </div>
+              <div className="p-5">
+                <h2 className="text-lg font-bold mb-2">{service.title}</h2>
+                <p className="text-gray-700 text-sm mb-4">
+                  {service.shortDescription}
+                </p>
+                <Link
+                  href={`/services/${service.id}`}
+                  className="flex justify-center"
+                >
+                  <Button text={"Read More"} />
+                </Link>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       </div>
-    </div>
+      <Image
+        src="/design2.svg"
+        alt="Design"
+        width={200}
+        height={200}
+        priority
+        className="absolute left-0 bottom-0 -z-50"
+      />
+    </main>
   );
 }

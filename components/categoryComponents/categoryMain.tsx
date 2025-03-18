@@ -19,18 +19,26 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pt-5">
+    <div className="min-h-screen flex flex-col pt-10">
       {/* Fixed Navbar at the top */}
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/* Page Layout with padding to avoid overlap */}
       <div className="flex-1 px-2 sm:px-4 md:px-8 lg:px-12 py-8 mt-15 lg:mt-20 relative">
-        <h1 className="text-xl font-small mb-4 capitalize text-gray-400 flex gap-2">
-          Category /
-          <Link className="text-red-500" href={`/category/${params.slug}`}>
-            {params.slug}
+        <div className="flex flex-row gap-2 text-xl font-small mb-4 capitalize">
+          <Link href="/" className="text-gray-500 hover:text-gray-700">
+            Home
           </Link>
-        </h1>
+          <span className="text-gray-400">/</span>
+          <h1 className="text-xl font-small mb-4 capitalize text-gray-400 flex gap-2">
+            Category
+          </h1>
+          <span className="text-gray-400">/</span>
+          <span className="text-red-500 hover:text-red-700">
+            {" "}
+            {params.slug}
+          </span>
+        </div>
         <div className="flex flex-row justify-center items-center border-b border-gray-300">
           <h1 className="text-xl font-small px-3 py-1 mb-4 capitalize text-gray-400 rounded-full bg-red-500">
             <span className="text-white">{params.slug}</span>

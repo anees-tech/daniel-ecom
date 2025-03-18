@@ -8,17 +8,14 @@ import Hero from "@/components/homeComponents/mainHero";
 import NavBar from "@/components/navbar";
 import { reviews } from "@/data/customerReviews";
 import { shippingPartnersImages } from "@/data/shippingPartnersImages";
-import ServicesComponent from "./services/page";
 
 export default function Home() {
   return (
     <main className="width-full overflow-hidden">
-      <NavBar />
       <Hero />
       <FlashSaleItems />
       <ProductsPage />
       <HomeServices />
-      <ServicesComponent />
       <ShippingPartners images={shippingPartnersImages} />
       <CustomerReviews reviews={reviews} />
     </main>

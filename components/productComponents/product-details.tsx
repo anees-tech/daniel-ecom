@@ -37,19 +37,27 @@ export default function ProductDetailPage({
 
   return (
     <div className="w-full overflow-hidden">
-      <NavBar />
-      <div>
-        <div className="px-1 sm:px-2 md:px-4 lg:px-8 pt-40 pb-20">
-          <h1 className="text-xl font-small mb-15 capitalize text-gray-400 flex gap-2">
-            Category /
-            <Link href={`/category/${product.category}`}>
-              {product.category}
-            </Link>
-            /
-            <Link href={`/product/${product.id}`} className="text-red-500">
-              {product.name}
-            </Link>
-          </h1>
+      <div className="px-1 sm:px-2 md:px-4 lg:px-8 pt-40 pb-20">
+        <div className="text-xl font-small mb-10 capitalize flex gap-2">
+          <Link href="/" className="text-gray-500 hover:text-gray-700">
+            Home
+          </Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <Link
+            href={`/category/${product.category}`}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            {product.category}
+          </Link>
+          <span className="mx-2 text-gray-400">/</span>
+          <span className="text-red-500">{product.name}</span>
+        </div>
+        <div className="flex justify-center mb-10 border-b border-gray-400 pb-4">
+          <div className="bg-red-500 text-white px-8 py-2 rounded-full">
+            <h1 className="text-xl font-medium">{product.name}</h1>
+          </div>
+        </div>
+        <div>
           <div className="flex flex-col md:flex-row gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-xl justify-center">
             {/* Product Images */}
             <div className="w-full md:w-1/2">

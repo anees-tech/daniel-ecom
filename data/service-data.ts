@@ -1,134 +1,98 @@
-import { Service } from "@/interfaces/service";
-
-export const services: Service[] = [
+export const servicesData = [
   {
-    id: "1",
-    title: "Free Delivery",
-    slug: "free-delivery",
-    shortDescription: "Get your items delivered to your doorstep for free",
-    description:
-      "Enjoy our complimentary delivery service on all orders above $50. Our dedicated delivery team ensures your packages arrive safely and on time. We deliver to all major cities within 2-3 business days and to remote areas within 4-5 business days.",
-    icon: "truck",
-    images: [
-      "/free.jpg?height=600&width=800",
-      "/free2.jpg?height=500&width=700",
-      "/free3.jpg?height=400&width=600",
+    id: "textile-representative",
+    title: "Textile Representative",
+    image: "/t1.png?height=300&width=500",
+    shortDescription:
+      "A textile representative is a professional who acts as a liaison between textile manufacturers and buyers, such as fashion brands, retailers, and wholesalers. Their role involves sourcing materials, negotiating prices, and ensuring customer satisfaction.",
+    fullDescription: [
+      "A textile representative is a professional who acts as a liaison between textile manufacturers and buyers, such as fashion brands, retailers, and wholesalers. Their role involves sourcing materials, negotiating prices, and ensuring customer satisfaction.",
+      "Textile representatives have deep knowledge of fabric types, production processes, and market trends. They work closely with manufacturers to understand their capabilities and with buyers to meet their specific needs.",
+      "They often travel to manufacturing facilities, trade shows, and client locations to facilitate business relationships and ensure quality control. Their expertise helps clients find the right materials for their products while managing costs and timelines effectively.",
     ],
-    features: [
-      "Free delivery on orders above $50",
-      "Express delivery options available",
-      "Real-time tracking system",
-      "Secure handling of packages",
-      "Weekend delivery available",
+    additionalImages: [
+      "/free.jpg?height=400&width=600",
+      "/free3.jpg?height=400&width=600",
     ],
   },
   {
-    id: "2",
-    title: "Personal Pickup",
-    slug: "personal-pickup",
-    shortDescription: "Collect your order from our nearest store",
-    description:
-      "Skip the wait and pick up your order at your convenience from our nearest store. Once your order is ready, you'll receive a notification. Simply show your order confirmation and ID to collect your items. Our stores are open 7 days a week for your convenience.",
-    icon: "map-pin",
-    images: [
-      "/free.jpg?height=600&width=800",
-      "/free2.jpg?height=500&width=700",
-      "/free3.jpg?height=400&width=600",
+    id: "texconnect-solutions",
+    title: "TexConnect Solutions",
+    image: "/t2.png?height=300&width=500",
+    shortDescription:
+      "Helping you connect to 'best-in-class' apartments and Alterszentren. likely means setting up a mobile or on-site store that provides goods and services to residents in these locations, or arranging to supply supplies directly to apartments and senior centers.",
+    fullDescription: [
+      "TexConnect Solutions specializes in bridging the gap between textile suppliers and residential communities. We create convenient access to high-quality textile products for residents of premium apartments and senior living facilities.",
+      "Our mobile and on-site stores bring carefully curated selections of home textiles, clothing, and specialty fabrics directly to where people live. This eliminates the need for residents to travel for their textile needs.",
+      "We also offer customized supply programs for property managers who want to provide textile amenities to their residents. From luxury bedding packages to seasonal decorative textiles, our service enhances the living experience in residential communities.",
     ],
-    features: [
-      "No additional fees",
-      "Skip shipping wait times",
-      "Verify products before taking them home",
-      "Extended pickup hours",
-      "Curbside pickup option available",
+    additionalImages: [
+      "/free.jpg?height=400&width=600",
+      "/free3.jpg?height=400&width=600",
     ],
   },
   {
-    id: "3",
-    title: "Same Day Delivery",
-    slug: "same-day-delivery",
-    shortDescription: "Get your order delivered on the same day",
-    description:
-      "Need your items urgently? Our same-day delivery service has you covered. Place your order before 12 PM, and we'll deliver it to you by the end of the day. This service is available in select cities and for eligible products.",
-    icon: "clock",
-    images: [
-      "/free.jpg?height=600&width=800",
-      "/free2.jpg?height=500&width=700",
-      "/free3.jpg?height=400&width=600",
+    id: "textile-trade-hub",
+    title: "Textile Trade Hub",
+    image: "/t3.jpg?height=300&width=500",
+    shortDescription:
+      "Helping you connect to 'best-in-class' apartments and Alterszentren. likely means setting up a mobile or on-site store that provides goods and services to residents in these locations, or arranging to supply supplies directly to apartments and senior centers.",
+    fullDescription: [
+      "Textile Trade Hub serves as a centralized marketplace where manufacturers, wholesalers, retailers, and designers can connect and conduct business efficiently.",
+      "Our hub provides physical and digital spaces for showcasing products, negotiating deals, and establishing industry relationships. We facilitate both local and international textile trade through our extensive network.",
+      "Members of our hub gain access to market intelligence, trend forecasting, and business development resources that help them stay competitive in the rapidly evolving textile industry.",
     ],
-    features: [
-      "Order by 12 PM for same-day delivery",
-      "Available in select cities",
-      "SMS notifications on delivery status",
-      "Signature on delivery",
-      "Special handling for fragile items",
+    additionalImages: [
+      "/free.jpg?height=400&width=600",
+      "/free3.jpg?height=400&width=600",
     ],
   },
   {
-    id: "4",
-    title: "Gift Wrapping",
-    slug: "gift-wrapping",
-    shortDescription: "Make your gifts special with our wrapping service",
-    description:
-      "Make your gifts extra special with our premium gift wrapping service. Choose from a variety of wrapping papers, ribbons, and gift cards. Our expert gift wrappers ensure your presents look perfect for any occasion.",
-    icon: "package",
-    images: [
-      "/free.jpg?height=600&width=800",
-      "/free2.jpg?height=500&width=700",
-      "/free3.jpg?height=400&width=600",
+    id: "elite-fabric-brokers",
+    title: "Elite Fabric Brokers",
+    image: "/t4.jpeg?height=300&width=500",
+    shortDescription:
+      "A textile representative is a professional who acts as a liaison between textile manufacturers and buyers, such as fashion brands, retailers, and wholesalers. Their role involves sourcing materials, negotiating prices, and ensuring customer satisfaction.",
+    fullDescription: [
+      "Elite Fabric Brokers specializes in connecting luxury textile manufacturers with high-end fashion brands and interior designers seeking premium materials.",
+      "Our brokers have extensive knowledge of exclusive fabrics, including rare natural fibers, innovative technical textiles, and sustainably produced materials that meet the highest quality standards.",
+      "We provide personalized sourcing services, helping clients find exactly the right materials for their unique projects while navigating complex supply chains and negotiating favorable terms.",
     ],
-    features: [
-      "Multiple wrapping paper options",
-      "Personalized gift messages",
-      "Eco-friendly wrapping available",
-      "Special occasion themes",
-      "Corporate gifting solutions",
+    additionalImages: [
+      "/free.jpg?height=400&width=600",
+      "/free3.jpg?height=400&width=600",
     ],
   },
   {
-    id: "5",
-    title: "Flexible Payment",
-    slug: "flexible-payment",
-    shortDescription: "Multiple payment options for your convenience",
-    description:
-      "We offer a variety of payment methods to make your shopping experience as convenient as possible. Choose from credit/debit cards, digital wallets, buy-now-pay-later options, and more. All transactions are secure and protected.",
-    icon: "credit-card",
-    images: [
-      "/free.jpg?height=600&width=800",
-      "/free2.jpg?height=500&width=700",
-      "/free3.jpg?height=400&width=600",
+    id: "alterszentren",
+    title: "Alterszentren",
+    image: "/t5.jpeg?height=300&width=500",
+    shortDescription:
+      "Helping you connect to 'best-in-class' apartments and Alterszentren. likely means setting up a mobile or on-site store that provides goods and services to residents in these locations, or arranging to supply supplies directly to apartments and senior centers.",
+    fullDescription: [
+      "Our Alterszentren (Senior Centers) service specializes in providing textile solutions specifically designed for the needs and preferences of older adults and care facilities.",
+      "We offer specialized textiles that combine comfort, durability, and ease of care, including adaptive clothing, pressure-relieving bedding, and antimicrobial fabrics that enhance quality of life for seniors.",
+      "Our service includes regular delivery schedules, inventory management assistance for care facilities, and personalized shopping experiences for individual residents, ensuring that textile needs are met with dignity and attention to detail.",
     ],
-    features: [
-      "Credit/debit card payments",
-      "Digital wallet support",
-      "Buy now, pay later options",
-      "Secure payment gateway",
-      "Installment plans available",
+    additionalImages: [
+      "/free.jpg?height=400&width=600",
+      "/free3.jpg?height=400&width=600",
     ],
   },
   {
-    id: "6",
-    title: "24/7 Customer Support",
-    slug: "customer-support",
-    shortDescription: "We're always here to help you",
-    description:
-      "Our dedicated customer support team is available 24/7 to assist you with any queries or concerns. Reach us via phone, email, or live chat. We're committed to providing you with the best shopping experience and resolving any issues promptly.",
-    icon: "life-buoy",
-    images: [
-      "/free.jpg?height=600&width=800",
-      "/free2.jpg?height=500&width=700",
-      "/free3.jpg?height=400&width=600",
+    id: "fiberlink-services",
+    title: "FiberLink Services",
+    image: "/t6.jpg?height=300&width=500",
+    shortDescription:
+      "Helping you connect to 'best-in-class' apartments and Alterszentren. likely means setting up a mobile or on-site store that provides goods and services to residents in these locations, or arranging to supply supplies directly to apartments and senior centers.",
+    fullDescription: [
+      "FiberLink Services specializes in connecting textile manufacturers with innovative fiber producers, helping companies access the latest advancements in fiber technology.",
+      "We facilitate partnerships between traditional textile companies and developers of cutting-edge fibers, including smart textiles, sustainable alternatives, and performance-enhancing materials.",
+      "Our technical consultants help clients integrate new fiber technologies into their existing production processes, ensuring smooth transitions and optimal results when adopting innovative materials.",
     ],
-    features: [
-      "24/7 availability",
-      "Multiple contact channels",
-      "Quick response time",
-      "Dedicated account managers",
-      "Comprehensive FAQ section",
+    additionalImages: [
+      "/free.jpg?height=400&width=600",
+      "/free3.jpg?height=400&width=600",
     ],
   },
 ];
-
-export const getServiceBySlug = (slug: string): Service | undefined => {
-  return services.find((service) => service.slug === slug);
-};
