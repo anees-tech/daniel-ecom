@@ -9,35 +9,7 @@ const CART_EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
-      cart: [
-        {
-          id: "1",
-          name: "Lady bag",
-          price: 375,
-          quantity: 1,
-          image: "/placeholder.svg?height=60&width=60",
-          color: "Brown",
-          size: "XS",
-        },
-        {
-          id: "2",
-          name: "Lady bag",
-          price: 375,
-          quantity: 3,
-          image: "/placeholder.svg?height=60&width=60",
-          color: "Brown",
-          size: "S",
-        },
-        {
-          id: "3",
-          name: "Lady bag",
-          price: 375,
-          quantity: 3,
-          image: "/placeholder.svg?height=60&width=60",
-          color: "Brown",
-          size: "XS",
-        },
-      ],
+      cart: [],
 
       addToCart: (item) => {
         set((state) => {

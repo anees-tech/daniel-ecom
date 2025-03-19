@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import NavBar from "@/components/navbar";
 import products from "@/data/ItemProductDetail";
 import ProductImages from "./product-images";
 import ProductInfo from "./product-info";
@@ -12,6 +11,8 @@ import TextBox from "../text-box";
 import Image from "next/image";
 import RelativeItems from "../relativeComponent/relative-items";
 import Link from "next/link";
+import TextField from "../text-field";
+import HomeLink from "../home-link";
 
 export default function ProductDetailPage({
   params,
@@ -37,11 +38,9 @@ export default function ProductDetailPage({
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="px-1 sm:px-2 md:px-4 lg:px-8 pt-40 pb-20">
-        <div className="text-xl font-small mb-10 capitalize flex gap-2">
-          <Link href="/" className="text-gray-500 hover:text-gray-700">
-            Home
-          </Link>
+      <div className="px-2 sm:px-4 md:px-8 lg:px-12 pt-40 pb-20">
+        <div className="text-sm md:text-xl font-small mb-10 capitalize flex gap-1 md:gap-2">
+          <HomeLink />
           <span className="mx-2 text-gray-400">/</span>
           <Link
             href={`/category/${product.category}`}
@@ -52,11 +51,7 @@ export default function ProductDetailPage({
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-red-500">{product.name}</span>
         </div>
-        <div className="flex justify-center mb-10 border-b border-gray-400 pb-4">
-          <div className="bg-red-500 text-white px-8 py-2 rounded-full">
-            <h1 className="text-xl font-medium">{product.name}</h1>
-          </div>
-        </div>
+        <TextField text={product.name} />
         <div>
           <div className="flex flex-col md:flex-row gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-xl justify-center">
             {/* Product Images */}

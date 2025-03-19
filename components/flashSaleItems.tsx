@@ -142,7 +142,7 @@ const FlashSaleCarousel = () => {
 
       {/* Slider */}
       <Slider
-        className="px-2 sm:px-4 lg:px-8 xl:px-12"
+        className="px-2 sm:px-4 lg:px-8 xl:px-12 overflow-scroll overflow-y-hidden"
         ref={sliderRef}
         {...settings}
         key={isMobile ? "mobile" : "desktop"}

@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
-import Navbar from "@/components/navbar";
 import { Filter } from "lucide-react";
 import SideBar from "./SideBar";
 import CategoryProducts from "./categoryProducts";
 import Image from "next/image";
 import categoryProducts from "@/data/categoriesData";
-import Link from "next/link";
+import HomeLink from "../home-link";
+import TextField from "../text-field";
 
 const allowedCategories = ["shoes", "leather", "workwear", "men", "women"];
 
@@ -19,31 +19,21 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pt-10">
-      {/* Fixed Navbar at the top */}
-      {/* <Navbar /> */}
+    <div className="min-h-screen flex flex-col pt-15 pb-20">
 
       {/* Page Layout with padding to avoid overlap */}
       <div className="flex-1 px-2 sm:px-4 md:px-8 lg:px-12 py-8 mt-15 lg:mt-20 relative">
-        <div className="flex flex-row gap-2 text-xl font-small mb-4 capitalize">
-          <Link href="/" className="text-gray-500 hover:text-gray-700">
-            Home
-          </Link>
+        <div className="flex flex-row gap-2 text-sm md:text-xl font-small mb-4 capitalize">
+          <HomeLink />
           <span className="text-gray-400">/</span>
-          <h1 className="text-xl font-small mb-4 capitalize text-gray-400 flex gap-2">
-            Category
-          </h1>
+          <span className="text-gray-400">Category</span>
           <span className="text-gray-400">/</span>
           <span className="text-red-500 hover:text-red-700">
             {" "}
             {params.slug}
           </span>
         </div>
-        <div className="flex flex-row justify-center items-center border-b border-gray-300">
-          <h1 className="text-xl font-small px-3 py-1 mb-4 capitalize text-gray-400 rounded-full bg-red-500">
-            <span className="text-white">{params.slug}</span>
-          </h1>
-        </div>
+        <TextField text={params.slug} />
         <Image
           src="/design.svg"
           alt="Design"
@@ -102,13 +92,3 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
     </div>
   );
 }
-
-// import React from 'react'
-
-// function categoryMain() {
-//   return (
-//     <div>categoryMain</div>
-//   )
-// }
-
-// export default categoryMain

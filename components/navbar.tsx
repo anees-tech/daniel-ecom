@@ -6,14 +6,9 @@ import Link from "next/link";
 import CartIcon from "@/public/cart-icon.svg";
 import ProfileIcon from "@/public/profile.svg";
 import SearchIcon from "@/public/search.svg";
-import DropDown from "@/public/dropdown.svg";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useCartStore } from "@/context/addToCartContext";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import React from "react";
 
@@ -52,34 +47,31 @@ export default function Navbar() {
               : "hidden h-0 md:opacity-100 md:h-auto"
           }`}
         >
-          {[
-            "Men",
-            "Women",
-            "Shoes",
-            "Leather",
-            "Workwear",
-            "About",
-            "Contact",
-          ].map((item, index) => (
-            <li key={index} className="py-3 md:py-0 transition-transform">
-              <Link
-                href={
-                  item === "Men" || item === "Women"
-                    ? "#"
-                    : `/category/${item.toLowerCase()}`
-                }
-                className="text-lg flex flex-row justify-center items-center gap-2"
-              >
-                {item}
-                {["Men", "Women"].includes(item) && (
-                  <DropDown className="hidden md:block" />
-                )}
-              </Link>
-            </li>
-          ))}
+          {["Men", "Women", "Shoes", "Leather", "Workwear"].map(
+            (item, index) => (
+              <li key={index} className="py-3 md:py-0 transition-transform">
+                <Link
+                  href={`/category/${item.toLowerCase()}`}
+                  className="text-lg flex flex-row justify-center items-center gap-2"
+                >
+                  {item}
+                </Link>
+              </li>
+            )
+          )}
           <Link href={"/services"}>
             <li className="py-3 md:py-0 transition-transform text-lg flex flex-row justify-center items-center">
               Services
+            </li>
+          </Link>
+          <Link href={"/about"}>
+            <li className="py-3 md:py-0 transition-transform text-lg flex flex-row justify-center items-center">
+              About
+            </li>
+          </Link>
+          <Link href={"/contact"}>
+            <li className="py-3 md:py-0 transition-transform text-lg flex flex-row justify-center items-center">
+              Contact
             </li>
           </Link>
 

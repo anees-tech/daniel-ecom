@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCartStore } from "@/context/addToCartContext";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import Image from "next/image";
+import HomeLink from "@/components/home-link";
+import TextField from "@/components/text-field";
 
 export default function CartClient() {
   const { cart, removeFromCart, updateQuantity } = useCartStore();
@@ -28,19 +28,13 @@ export default function CartClient() {
   return (
     <>
       <div className="w-full pt-35 pb-20">
-        <h1 className="mx-3 sm:mx-5 md:mx-9 lg:mx-13 py-5 flex gap-2 text-xl font-small mb-4 capitalize">
-          <Link href="/" className="text-gray-500 hover:text-gray-700">
-            Home
-          </Link>
+        <h1 className="mx-3 sm:mx-5 md:mx-9 lg:mx-13 py-5 flex gap-1 md:gap-2 text-sm md:text-xl font-small mb-4 capitalize">
+          <HomeLink />
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-red-500">Cart</span>
         </h1>
 
-        <div className="flex justify-center mb-10 border-b border-gray-400 pb-4 mx-2 sm:mx-4 md:mx-8 lg:mx-12">
-          <div className="bg-red-500 text-white px-8 py-2 rounded-full">
-            <h1 className="text-xl font-medium">Cart</h1>
-          </div>
-        </div>
+        <TextField text={"Cart"} />
         <div className="mx-2 sm:mx-4 md:mx-8 lg:mx-12 py-12 px-2 sm:px-4 md:px-8 lg:px-12 rounded-xl bg-white">
           <h1 className="text-xl font-semibold mb-1">Shopping cart</h1>
           <p className="text-gray-600 text-md mb-6">

@@ -3,6 +3,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { servicesData } from "@/data/service-data";
 import { use } from "react";
+import HomeLink from "@/components/home-link";
+import TextField from "@/components/text-field";
 
 export default function ServiceDetail({
   params,
@@ -46,9 +48,7 @@ export default function ServiceDetail({
         </div>
         {/* Breadcrumb */}
         <nav className="flex items-center mb-8 text-xl font-small capitalize">
-          <Link href="/" className="text-gray-500 hover:text-gray-700">
-            Home
-          </Link>
+          <HomeLink/>
           <span className="mx-2 text-gray-400">/</span>
           <Link href="/services" className="text-gray-500 hover:text-gray-700">
             Services
@@ -57,11 +57,7 @@ export default function ServiceDetail({
           <span className="text-red-500">{service.title}</span>
         </nav>
 
-        <div className="flex justify-center mb-10 border-b border-gray-400 pb-4">
-          <div className="bg-red-500 text-white px-8 py-2 rounded-full">
-            <h1 className="text-xl font-medium">{service.title}</h1>
-          </div>
-        </div>
+        <TextField text={service.title}/>
 
         {/* Service Header */}
         <div className="mb-8">

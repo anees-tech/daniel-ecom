@@ -1,3 +1,4 @@
+"use client";
 import { MapPin, Truck, RotateCcw } from "lucide-react";
 
 export default function DeliveryOptions() {
@@ -36,7 +37,7 @@ export default function DeliveryOptions() {
               <span className="font-medium">Free Delivery</span>
             </div>
             <p className="text-sm text-gray-500 ml-7">
-              You're Order Place Above 200$
+              You&apos;re Order Place Above 200$
             </p>
           </div>
 

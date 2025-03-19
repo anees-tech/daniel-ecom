@@ -148,13 +148,3 @@ function CategoryProducts({ productsArray }: ProductListProps) {
 }
 
 export default CategoryProducts;
-
-// import React from 'react'
-
-// function categoryProducts() {
-//   return (
-//     <div>categoryProducts</div>
-//   )
-// }
-
-// export default categoryProducts

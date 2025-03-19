@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { servicesData } from "@/data/service-data";
 import Button from "@/components/button";
+import HomeLink from "@/components/home-link";
+import TextField from "@/components/text-field";
 
 export default function ServicesPage() {
   return (
@@ -16,20 +18,14 @@ export default function ServicesPage() {
       />
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-8 lg:px-12 py-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center mb-8 text-xl font-small capitalize">
-          <Link href="/" className="text-gray-500 hover:text-gray-700">
-            Home
-          </Link>
+        <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize">
+          <HomeLink />
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-red-500">Services</span>
         </nav>
 
         {/* Services Header */}
-        <div className="flex justify-center mb-10 border-b border-gray-400 pb-4">
-          <div className="bg-red-500 text-white px-8 py-2 rounded-full">
-            <h1 className="text-xl font-medium">Services</h1>
-          </div>
-        </div>
+        <TextField text={"Services"} />
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

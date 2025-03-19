@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef } from "react";
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
