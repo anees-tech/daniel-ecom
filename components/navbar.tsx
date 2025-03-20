@@ -10,7 +10,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { useCartStore } from "@/context/addToCartContext";
 import {} from "@/components/ui/dropdown-menu";
 import React from "react";
-import { AuthModal } from "@/app/authentication/page";
+import { AuthModal } from "./auth-modal";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
