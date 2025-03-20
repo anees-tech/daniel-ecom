@@ -302,7 +302,7 @@ export default function CartClient() {
                       </div>
                     </div>
 
-                    <Link href="/checkout" className="flex justify-center">
+                    <Link href="/payments" className="flex justify-center">
                       <button className="w-auto px-2 py-1 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white rounded-full font-medium text-sm hover:bg-[#EB1E24] transition-all">
                         Proceed to checkout
                       </button>

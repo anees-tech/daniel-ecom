@@ -47,7 +47,7 @@ export default function ServiceDetail({
           </Link>
         </div>
         {/* Breadcrumb */}
-        <nav className="flex items-center mb-8 text-xl font-small capitalize">
+        <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize">
           <HomeLink/>
           <span className="mx-2 text-gray-400">/</span>
           <Link href="/services" className="text-gray-500 hover:text-gray-700">
