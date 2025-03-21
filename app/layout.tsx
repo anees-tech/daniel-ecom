@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-import FullScreenLoader from "@/components/Fullscreenloader";
-import { LoadingProvider } from "@/components/topLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,16 +29,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
-        <LoadingProvider>
-          <Navbar />
+            <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
-          <FullScreenLoader />
-        </LoadingProvider>
       </body>
     </html>
   );
 }
 
-
-// firebase te produucts, user, services, 
+// firebase te produucts, user, services,

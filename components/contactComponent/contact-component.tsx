@@ -34,7 +34,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="w-full rounded-xl bg-white p-6 shadow-sm">
+    <div className="w-full rounded-xl bg-white p-6 shadow-lg">
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row md:gap-6">
           {/* Left column - Input fields */}

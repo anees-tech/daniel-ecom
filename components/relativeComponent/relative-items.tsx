@@ -7,6 +7,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ItemCard from "@/components/item-card";
+import ItemCardSkeleton from "@/components/item-card-skeleton"; // Importing your existing skeleton
 import TextBox from "@/components/text-box";
 import Image from "next/image";
 import productsDetails from "@/data/ItemProductDetail";
@@ -18,6 +19,7 @@ interface RelativeItemsProps {
 const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
   const sliderRef = useRef<Slider | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,6 +32,11 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    // Simulating data fetch delay
+    setTimeout(() => setLoading(false), 1500);
+  }, []);
+
   const handlePrev = () => {
     if (sliderRef.current) sliderRef.current.slickPrev();
   };
@@ -38,12 +45,10 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
     if (sliderRef.current) sliderRef.current.slickNext();
   };
 
-  // Filter products by category if provided
   const filteredProducts = category
     ? productsDetails.filter((product) => product.category === category)
     : productsDetails;
 
-  // Limit to 8 products for better performance
   const displayProducts = filteredProducts.slice(0, 8);
 
   const settings = {
@@ -98,12 +103,19 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
         {...settings}
         key={isMobile ? "mobile" : "desktop"}
       >
-        {displayProducts.length > 0 ? (
+        {loading ? (
+          Array(4)
+            .fill(null)
+            .map((_, index) => (
+              <div key={index} className="px-2">
+                <ItemCardSkeleton /> {/* Using existing skeleton */}
+              </div>
+            ))
+        ) : displayProducts.length > 0 ? (
           displayProducts.map((product) => (
             <div key={product.id} className="px-2">
               <ItemCard
                 {...product}
-                onBuyNow={() => console.log(`Added ${product.name} to cart`)}
               />
             </div>
           ))

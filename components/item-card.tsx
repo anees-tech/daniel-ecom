@@ -1,104 +1,132 @@
 "use client";
+
+import type React from "react";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { ShoppingBag, Star } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
-import { Star } from "lucide-react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import ItemCardInterface from "@/interfaces/itemCardInterface";
+interface ProductCardEnhancedProps {
+  id: number;
+  name: string;
+  image: string;
+  category: string;
+  currentPrice: number;
+  originalPrice: number;
+  discount: number;
+  stock: number;
+  rating: number;
+  reviewsCount: number;
+  brand: string;
+  material: string;
+}
+
 export default function ItemCard({
   id,
   name,
-  image,
   currentPrice,
   originalPrice,
-  discount,
-  stock,
-  rating,
-  reviewsCount,
-  onBuyNow,
-}: ItemCardInterface) {
-  // console.log({
-  //   id,
-  //   name,
-  //   image,
-  //   currentPrice,
-  //   originalPrice,
-  //   discount,
-  //   stock,
-  //   rating,
-  //   reviewsCount,
-  // });
+  image,
+  category = "Fashion",
+  discount = 0,
+  stock = 10,
+  rating = 4.5,
+  reviewsCount = 24,
+}: ProductCardEnhancedProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden max-w-sm w-full">
-      {/* Image */}
-      <div className="p-4 flex justify-center bg-gray-100 rounded-lg">
+    <div
+      className="group relative bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-[0.25px] border-gray-500"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative aspect-square overflow-hidden bg-gray-100 p-4">
         <Link href={`/product/${id}`}>
           <Image
             src={image || "/placeholder.svg"}
             alt={name}
-            width={250}
-            height={250}
-            className="object-contain"
+            fill
+            className={cn(
+              "object-contain transition-transform duration-500 p-4 shadow-sm",
+              isHovered ? "scale-110" : "scale-100"
+            )}
           />
         </Link>
-      </div>
-      {/* Content */}
-      <div className="px-2 py-1 md:p-5 md:py-1">
-        {/* Name + Discount */}
-        <div className="flex justify-between items-center mb-1 md:mb-2 gap-1">
-          <h3
-            className="text-lg font-stretch-extra-condensed md:font-semibold text-gray-800 overflow-hidden whitespace-nowrap text-ellipsis"
-            title={name}
-          >
-            {name}
-          </h3>
+        {discount > 0 && (
+          <Badge className="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-full text-sm">
+            {discount}% OFF
+          </Badge>
+        )}
 
-          {discount > 0 && (
-            <span className="bg-black text-white px-1 md:px-2 py-1 rounded-full text-xs font-medium">
-              -{discount}%
-            </span>
+        {/* Stock indicator */}
+        {stock <= 5 && stock > 0 && (
+          <div className="absolute bottom-2 left-2 bg-amber-100 text-amber-900 text-sm px-2 py-1 rounded-full">
+            Only {stock} left
+          </div>
+        )}
+        {stock === 0 && (
+          <div className="absolute bottom-2 left-2 bg-red-100 text-red-900 text-sm px-2 py-1 rounded-full">
+            Out of Stock
+          </div>
+        )}
+      </div>
+
+      <div className="p-4">
+        <div className="text-sm text-muted-foreground mb-1">{category}</div>
+        <h3 className="font-medium text-lg mb-1 line-clamp-1 group-hover:text-red-500 transition-colors">
+          {name}
+        </h3>
+        <div className="flex items-center gap-1 mb-2">
+          <div className="flex">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`h-4 w-4 ${
+                  i < Math.floor(rating)
+                    ? "fill-amber-400 text-amber-400"
+                    : "fill-gray-200 text-gray-200"
+                }`}
+              />
+            ))}
+          </div>
+          <span className="text-xs text-muted-foreground">
+            ({reviewsCount})
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          {originalPrice && originalPrice > currentPrice ? (
+            <>
+              <span className="font-semibold text-red-500">
+                ${currentPrice.toFixed(2)}
+              </span>
+              <span className="text-muted-foreground text-sm line-through">
+                ${originalPrice.toFixed(2)}
+              </span>
+            </>
+          ) : (
+            <span className="font-semibold">${currentPrice.toFixed(2)}</span>
           )}
         </div>
+      </div>
 
-        {/* Price + Add to Cart */}
-        <div className="flex flex-col md:flex-row justify-start md:justify-between items-start md:items-center mb-2 md:mb-3 gap-1 md:gap-0">
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-bold text-green-600">
-              ${currentPrice}
-            </span>
-            {originalPrice > currentPrice && (
-              <span className="text-sm text-red-400 line-through">
-                ${originalPrice}
-              </span>
-            )}
-          </div>
-          <div className="md:hidden flex flex-col justify-between items-start text-sm text-gray-600 gap-1 mt-0">
-            <p>{stock > 0 ? `Stock: ${stock}` : "Out of Stock"}</p>
-            <div className="flex items-center justify-between gap-1">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span className="overflow-hidden whitespace-nowrap text-ellipsis">
-                {rating} ({reviewsCount} reviews)
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={onBuyNow}
-            className="py-1 px-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-full text-sm transition w-full md:w-auto"
+      <div
+        className={cn(
+          "absolute bottom-0 left-0 right-0 bg-white p-3 transition-transform duration-300 border-none shadow-xl",
+          isHovered ? "translate-y-0" : "translate-y-full"
+        )}
+      >
+        <div className="w-full flex justify-center">
+          <Link
+            className="w-full gap-2 flex flex-row justify-center items-center py-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white transform transition-transform active:scale-95 rounded-full"
+            href={`/product/${id}`}
           >
-            Buy Now
-          </button>
-        </div>
-
-        {/* Stock + Rating */}
-        <div className="hidden md:flex justify-between items-center text-sm text-gray-600">
-          <p>{stock > 0 ? `Stock: ${stock}` : "Out of Stock"}</p>
-          <div className="flex items-center gap-1">
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-            <span>
-              {rating} ({reviewsCount} reviews)
-            </span>
-          </div>
+            <ShoppingBag className="h-4 w-4" />
+            Add to Cart
+          </Link>
         </div>
       </div>
     </div>

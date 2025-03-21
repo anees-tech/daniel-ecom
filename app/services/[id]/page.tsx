@@ -48,7 +48,7 @@ export default function ServiceDetail({
         </div>
         {/* Breadcrumb */}
         <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize">
-          <HomeLink/>
+          <HomeLink />
           <span className="mx-2 text-gray-400">/</span>
           <Link href="/services" className="text-gray-500 hover:text-gray-700">
             Services
@@ -57,7 +57,7 @@ export default function ServiceDetail({
           <span className="text-red-500">{service.title}</span>
         </nav>
 
-        <TextField text={service.title}/>
+        <TextField text={service.title} />
 
         {/* Service Header */}
         <div className="mb-8">
@@ -72,7 +72,7 @@ export default function ServiceDetail({
         </div>
 
         {/* Service Content */}
-        <div className="prose max-w-none">
+        <div className="prose max-w-none bg-white p-8 rounded-md">
           <p className="text-lg mb-6">{service.shortDescription}</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">

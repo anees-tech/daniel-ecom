@@ -71,23 +71,23 @@ export default function ProductImages({
   }
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
+    <div className="flex flex-col md:flex-row gap-6">
       {/* Desktop Thumbnails (Vertical) */}
-      <div className="hidden md:flex flex-col w-[100px] relative order-2 md:order-1">
+      <div className="hidden md:flex flex-col w-[110px] relative order-2 md:order-1">
         {desktopStartIndex > 0 && (
           <button
             onClick={handleDesktopPrev}
-            className="mx-auto mb-1 p-1 rounded-full bg-gray-200 hover:bg-gray-300"
+            className="mx-auto mb-2 p-2 rounded-full bg-gray-100 hover:bg-gray-300 transition"
           >
-            <ChevronUp className="w-4 h-4" />
+            <ChevronUp className="w-5 h-5" />
           </button>
         )}
 
-        <div className="h-[412px] overflow-hidden">
+        <div className="h-[440px] overflow-hidden">
           <div
-            className="flex flex-col gap-[2px]"
+            className="flex flex-col gap-3"
             style={{
-              transform: `translateY(-${desktopStartIndex * 102}px)`,
+              transform: `translateY(-${desktopStartIndex * 110}px)`,
               transition: "transform 0.3s ease-in-out",
             }}
           >
@@ -95,8 +95,8 @@ export default function ProductImages({
               <div
                 key={index}
                 className={cn(
-                  "border rounded-md overflow-hidden cursor-pointer h-[100px] w-[100px]",
-                  selectedImage === index ? "border-red-500" : "border-gray-200"
+                  "border rounded-lg overflow-hidden cursor-pointer h-[100px] w-[100px] transition transform hover:scale-105",
+                  selectedImage === index ? "border-red-500" : "border-gray-300"
                 )}
                 onClick={() => setSelectedImage(index)}
               >
@@ -115,9 +115,9 @@ export default function ProductImages({
         {desktopStartIndex < maxStartIndex && (
           <button
             onClick={handleDesktopNext}
-            className="mx-auto mt-1 p-1 rounded-full bg-gray-200 hover:bg-gray-300"
+            className="mx-auto mt-2 p-2 rounded-full bg-gray-100 hover:bg-gray-300 transition"
           >
-            <ChevronDown className="w-4 h-4" />
+            <ChevronDown className="w-5 h-5" />
           </button>
         )}
       </div>
@@ -141,7 +141,7 @@ export default function ProductImages({
           {/* Zoom Lens */}
           {isZooming && (
             <div
-              className="absolute top-0 left-0 w-full h-full bg-white bg-opacity-0 pointer-events-none"
+              className="absolute top-0 left-0 w-full h-full bg-white bg-opacity-0 pointer-events-none transition"
               style={{
                 backgroundImage: `url(${images[selectedImage]})`,
                 backgroundSize: "200%",
@@ -153,20 +153,20 @@ export default function ProductImages({
 
         {/* Mobile Thumbnails (Horizontal) */}
         <div className="md:hidden relative mt-4">
-          {mobileStartIndex > -1 && (
+          {mobileStartIndex > 0 && (
             <button
               onClick={handleMobilePrev}
-              className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full bg-gray-200 hover:bg-gray-300"
+              className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-300 transition"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-5 h-5" />
             </button>
           )}
 
-          <div className="overflow-scroll scroll-y-hidden">
+          <div className="overflow-x-auto scroll-y-hidden scrollbar-hide">
             <div
-              className="flex gap-[2px]"
+              className="flex gap-3"
               style={{
-                transform: `translateX(-${mobileStartIndex * 102}px)`,
+                transform: `translateX(-${mobileStartIndex * 110}px)`,
                 transition: "transform 0.3s ease-in-out",
               }}
             >
@@ -174,10 +174,10 @@ export default function ProductImages({
                 <div
                   key={index}
                   className={cn(
-                    "border rounded-md overflow-hidden cursor-pointer w-[100px] h-[100px] flex-shrink-0",
+                    "border rounded-lg overflow-hidden cursor-pointer w-[100px] h-[100px] flex-shrink-0 transition transform hover:scale-105",
                     selectedImage === index
                       ? "border-red-500"
-                      : "border-gray-200"
+                      : "border-gray-300"
                   )}
                   onClick={() => setSelectedImage(index)}
                 >
@@ -193,12 +193,12 @@ export default function ProductImages({
             </div>
           </div>
 
-          {mobileStartIndex < maxStartIndex + 1 && (
+          {mobileStartIndex < maxStartIndex && (
             <button
               onClick={handleMobileNext}
-              className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full bg-gray-200 hover:bg-gray-300"
+              className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-300 transition"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-5 h-5" />
             </button>
           )}
         </div>

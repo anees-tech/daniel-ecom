@@ -1,29 +1,63 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductList from "./home-product-list";
 import FilterProducts from "./home-product-filter";
 import products from "@/data/products";
-import Loader from "../loader";
+import DropDownFilter from "../drop-down-filter";
 
 export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState(products);
   const [isLoading, setIsLoading] = useState(false);
+  const [sortFilter, setSortFilter] = useState("");
+  const [category, setCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleFilterChange = (category: string) => {
-    console.log(category);
+  const handleFilterChange = ({
+    category,
+    searchTerm,
+  }: {
+    category: string;
+    searchTerm: string;
+  }) => {
+    setCategory(category);
+    setSearchTerm(searchTerm);
+  };
+
+  useEffect(() => {
     setIsLoading(true);
     setTimeout(() => {
-      // abhi yaha hum backend se data fetch nahi kar rahe hai, isliye hum setTimeout ka use kar rahe hai filhal
-      if (category === "all items") {
-        setFilteredProducts(products);
-      } else {
-        setFilteredProducts(
-          products.filter((product) => product.category === category)
+      let updatedProducts = products;
+
+      // Apply category filter
+      if (category !== "all") {
+        updatedProducts = updatedProducts.filter(
+          (product) => product.category.toLowerCase() === category.toLowerCase()
         );
       }
+
+      // Apply search filter (match only names starting with the search term)
+      if (searchTerm) {
+        updatedProducts = updatedProducts.filter((product) =>
+          product.name.toLowerCase().startsWith(searchTerm.toLowerCase())
+        );
+      }
+
+      // Apply sorting
+      if (sortFilter) {
+        updatedProducts = [...updatedProducts].sort((a, b) => {
+          if (sortFilter === "Price: Low to High")
+            return a.currentPrice - b.currentPrice;
+          if (sortFilter === "Price: High to Low")
+            return b.currentPrice - a.currentPrice;
+          if (sortFilter === "Best Rating") return b.rating - a.rating;
+          return 0;
+        });
+      }
+
+      setFilteredProducts(updatedProducts);
       setIsLoading(false);
     }, 500);
-  };
+  }, [category, searchTerm, sortFilter]);
 
   return (
     <div className="p-6 px-4 lg:px-8 xl:px-12">
@@ -32,19 +66,16 @@ export default function ProductsPage() {
         Discover the most trending products in our store.
       </p>
 
-      <FilterProducts
-        onFilterChange={handleFilterChange}
-        isLoading={isLoading}
-      />
+      <div className="flex flex-wrap gap-4 justify-center border-b border-gray-400">
+        <FilterProducts
+          onFilterChange={handleFilterChange}
+          isLoading={isLoading}
+        />
+        <DropDownFilter onSortChange={setSortFilter} />
+      </div>
 
       <div className="mt-6">
-        {isLoading ? (
-          <div className="flex justify-center items-center py-12">
-            <Loader />
-          </div>
-        ) : (
           <ProductList products={filteredProducts} />
-        )}
       </div>
     </div>
   );

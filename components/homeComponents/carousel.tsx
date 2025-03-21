@@ -35,7 +35,7 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
               alt={item.title || "Carousel Image"}
               width={300} // Increased width for better image quality
               height={200} // Increased height
-              className="w-50 md:w-60 lg:w-70 h-auto object-contain m-auto"
+              className="w-50 md:w-70 lg:w-80 h-auto object-contain m-auto"
             />
           </div>
         ))}
@@ -43,17 +43,27 @@ const Carousel: React.FC<CarouselProps> = ({ data }) => {
 
       {/* Custom Navigation Buttons */}
       <button
-        className="absolute left-15 md:left-8 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md hover:bg-opacity-100 transition"
+        className="absolute left-15 md:left-5 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 
+  hover:bg-gray-300 hover:bg-opacity-90 hover:shadow-lg 
+  active:bg-gray-700 active:shadow-md cursor-pointer"
         onClick={() => sliderRef.current?.slickPrev()}
       >
-        <FaChevronLeft size={20} />
+        <FaChevronLeft
+          size={20}
+          className="text-gray-900 transition-colors duration-300 hover:text-white"
+        />
       </button>
 
       <button
-        className="absolute right-15 md:right-8 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md hover:bg-opacity-100 transition"
+        className="absolute right-15 md:right-5 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 
+  hover:bg-gray-300 hover:bg-opacity-90 hover:shadow-lg 
+  active:bg-gray-400 active:shadow-md cursor-pointer"
         onClick={() => sliderRef.current?.slickNext()}
       >
-        <FaChevronRight size={20} />
+        <FaChevronRight
+          size={20}
+          className="text-gray-700 transition-colors duration-300 hover:text-white"
+        />
       </button>
     </div>
   );

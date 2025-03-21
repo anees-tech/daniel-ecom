@@ -1,7 +1,50 @@
 "use client";
 
 import { useCategoryFilter } from "@/context/useCategoryFilter";
-import { useState } from "react";
+import { useMemo } from "react";
+import { usePathname } from "next/navigation";
+
+const categoryMap = {
+  "/category/men": [
+    "T-Shirts & Polos",
+    "Hoodies & Sweaters",
+    "Jackets & Coats",
+    "Shorts",
+    "Shirts (Casual & Formal)",
+    "Shoes & Accessories",
+  ],
+  "/category/women": [
+    "Dresses",
+    "Skirts",
+    "Blouses & Tops",
+    "Jeans",
+    "Activewear",
+    "Swimwear",
+  ],
+  "/category/footwear": [
+    "Sneakers",
+    "Formal Shoes",
+    "Boots",
+    "Sandals & Flip-Flops",
+    "Slippers",
+  ],
+  "/category/leather": [
+    "Leather Jackets",
+    "Leather Bags",
+    "Leather Shoes",
+    "Leather Accessories",
+  ],
+  "/category/workwear": [
+    "Safety Boots",
+    "Industrial Wear",
+    "Office Formal Wear",
+    "Durable Jackets",
+  ],
+};
+
+const sizes = ["XS", "S", "M", "L", "XL"];
+const brands = ["Louis Vuitton", "Hermès", "Gucci", "Chanel", "Loewe"];
+const materials = ["Linen", "Silk", "Wool", "Satin", "Cotton", "Leather"];
 
 const SideBar = () => {
   const {
@@ -13,130 +56,74 @@ const SideBar = () => {
     clearFilters,
   } = useCategoryFilter();
 
-  const [showAllCategories, setShowAllCategories] = useState(false);
-  const [showAllBrands, setShowAllBrands] = useState(false);
-  const [showAllMaterials, setShowAllMaterials] = useState(false);
-
-  const categories = [
-    "T-Shirts & Polos",
-    "Hoodies & Sweaters",
-    "Jackets & Coats",
-    "Shorts",
-    "Shirts (Casual & Formal)",
-    "Shoes & Accessories",
-  ];
-
-  const hiddenCategories = [
-    "Dresses",
-    "Skirts",
-    "Jeans",
-    "Activewear",
-    "Swimwear",
-    "Underwear",
-    "Sleepwear",
-  ];
-
-  const sizes = ["XS", "S", "M", "L", "XL"];
-
-  const visibleBrands = ["Louis Vuitton", "Hermès", "Gucci", "Chanel", "Loewe"];
-  const hiddenBrands = [
-    "LittleSteps",
-    "ChicBags",
-    "Elite Leather",
-    "SunnyFashion",
-    "CozyKids",
-  ];
-
-  const visibleMaterials = ["Linen", "Hermès", "Silk", "Wool", "Satin"];
-  const hiddenMaterials = ["Cotton", "Polyester", "Leather", "Denim", "Nylon"];
+  const pathname = usePathname();
+  const categories = useMemo(
+    () => categoryMap[pathname as keyof typeof categoryMap] || [],
+    [pathname]
+  );
 
   return (
-    <div className="w-full font-sans">
+    <div className="w-full font-sans p-4">
       {/* Clear Filters */}
       <button
         onClick={clearFilters}
-        className="text-sm text-white bg-red-500 px-4 py-1 rounded-full"
+        className="w-full text-sm text-white bg-red-500 px-4 py-2 rounded-lg mb-4"
       >
         Clear Filters
       </button>
 
       {/* Category Section */}
-      <div className="mb-8">
-        <h2 className="text-base font-medium text-gray-900 mb-3">Category</h2>
+      <div className="mb-6">
+        <h2 className="text-lg font-medium text-gray-900 mb-3">Category</h2>
         <ul className="space-y-2">
-          {categories.map((category) => (
-            <li
-              key={category}
-              className="text-sm text-gray-600 hover:text-red-500 cursor-pointer"
-            >
-              {category}
-            </li>
-          ))}
-          {showAllCategories &&
-            hiddenCategories.map((category) => (
+          {categories.length > 0 ? (
+            categories.map((category) => (
               <li
                 key={category}
                 className="text-sm text-gray-600 hover:text-red-500 cursor-pointer"
               >
                 {category}
               </li>
-            ))}
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">No categories available</p>
+          )}
         </ul>
-        <button
-          onClick={() => setShowAllCategories(!showAllCategories)}
-          className="mt-2 text-xs text-white bg-red-500 px-4 py-1 rounded-full"
-        >
-          View More
-        </button>
       </div>
 
       {/* Filters Section */}
-      <div className="mb-8">
-        <h2 className="text-base font-medium text-gray-900 mb-3">Filters</h2>
+      <div className="mb-6">
+        <h2 className="text-lg font-medium text-gray-900 mb-3">Filters</h2>
 
         {/* Price Filter */}
         <div className="mb-4 space-y-2">
-          <div
-            onClick={() => setPriceFilter("High To Low Price")}
-            className={`text-sm cursor-pointer ${
-              selectedFilters.price === "High To Low Price"
-                ? "text-red-500"
-                : "text-gray-600 hover:text-red-500"
-            }`}
-          >
-            High To Low Price
-          </div>
-          <div
-            onClick={() => setPriceFilter("Low To High Price")}
-            className={`text-sm cursor-pointer ${
-              selectedFilters.price === "Low To High Price"
-                ? "text-red-500"
-                : "text-gray-600 hover:text-red-500"
-            }`}
-          >
-            Low To High Price
-          </div>
-          <div
-            onClick={() => setPriceFilter("On Sale")}
-            className={`text-sm cursor-pointer ${
-              selectedFilters.price === "On Sale"
-                ? "text-red-500"
-                : "text-gray-600 hover:text-red-500"
-            }`}
-          >
-            On Sale
-          </div>
+          <h3 className="text-sm font-semibold text-gray-900">Price</h3>
+          {["High To Low Price", "Low To High Price", "On Sale"].map(
+            (price) => (
+              <button
+                key={price}
+                onClick={() => setPriceFilter(price)}
+                className={`text-sm w-full text-left py-1 px-2 rounded-md transition-all duration-200 cursor-pointer ${
+                  selectedFilters.price === price
+                    ? "bg-red-500 text-white"
+                    : "text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                {price}
+              </button>
+            )
+          )}
         </div>
 
         {/* Size Filter */}
         <div className="mb-6">
-          <h2 className="text-base font-medium text-gray-900 mb-3">Size</h2>
+          <h3 className="text-sm font-semibold text-gray-900 mb-2">Size</h3>
           <div className="flex flex-wrap gap-2">
             {sizes.map((size) => (
               <button
                 key={size}
                 onClick={() => toggleSizeFilter(size)}
-                className={`min-w-[2.5rem] text-sm px-5 py-1 border rounded-full ${
+                className={`text-sm px-4 py-1 border rounded-full transition-all duration-200 cursor-pointer ${
                   selectedFilters.sizes.includes(size)
                     ? "bg-red-500 text-white border-red-500"
                     : "text-gray-600 border-gray-300 hover:border-red-500"
@@ -148,84 +135,44 @@ const SideBar = () => {
           </div>
         </div>
 
-        {/* Brand Filter - Fixed */}
+        {/* Brand Filter */}
         <div className="mb-6">
-          <h3 className="text-base font-medium text-gray-900 mb-3">Brands</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-2">Brands</h3>
           <ul className="space-y-2">
-            {visibleBrands.map((brand) => (
-              <li
+            {brands.map((brand) => (
+              <button
                 key={brand}
                 onClick={() => setBrandFilter(brand)}
-                className={`text-sm cursor-pointer ${
+                className={`text-sm w-full text-left py-1 px-2 rounded-md transition-all duration-200 cursor-pointer ${
                   selectedFilters.brand === brand
-                    ? "text-red-500"
-                    : "text-gray-600 hover:text-red-500"
+                    ? "bg-red-500 text-white"
+                    : "text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 {brand}
-              </li>
+              </button>
             ))}
-            {showAllBrands &&
-              hiddenBrands.map((brand) => (
-                <li
-                  key={brand}
-                  onClick={() => setBrandFilter(brand)}
-                  className={`text-sm cursor-pointer ${
-                    selectedFilters.brand === brand
-                      ? "text-red-500"
-                      : "text-gray-600 hover:text-red-500"
-                  }`}
-                >
-                  {brand}
-                </li>
-              ))}
           </ul>
-          <button
-            onClick={() => setShowAllBrands(!showAllBrands)}
-            className="mt-2 text-xs text-white bg-red-500 px-4 py-1 rounded-full"
-          >
-            View More
-          </button>
         </div>
 
-        {/* Material Filter - Fixed */}
+        {/* Material Filter */}
         <div className="mb-6">
-          <h3 className="text-base font-medium text-gray-900 mb-3">Material</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-2">Material</h3>
           <ul className="space-y-2">
-            {visibleMaterials.map((material) => (
-              <li
+            {materials.map((material) => (
+              <button
                 key={material}
                 onClick={() => setMaterialFilter(material)}
-                className={`text-sm cursor-pointer ${
+                className={`text-sm w-full text-left py-1 px-2 rounded-md transition-all duration-200 cursor-pointer ${
                   selectedFilters.material === material
-                    ? "text-red-500"
-                    : "text-gray-600 hover:text-red-500"
+                    ? "bg-red-500 text-white"
+                    : "text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 {material}
-              </li>
+              </button>
             ))}
-            {showAllMaterials &&
-              hiddenMaterials.map((material) => (
-                <li
-                  key={material}
-                  onClick={() => setMaterialFilter(material)}
-                  className={`text-sm cursor-pointer ${
-                    selectedFilters.material === material
-                      ? "text-red-500"
-                      : "text-gray-600 hover:text-red-500"
-                  }`}
-                >
-                  {material}
-                </li>
-              ))}
           </ul>
-          <button
-            onClick={() => setShowAllMaterials(!showAllMaterials)}
-            className="mt-2 text-xs text-white bg-red-500 px-4 py-1 rounded-full"
-          >
-            View More
-          </button>
         </div>
       </div>
     </div>

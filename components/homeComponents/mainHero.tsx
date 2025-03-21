@@ -14,20 +14,27 @@ const carouselData = [
 
 const Hero = () => {
   return (
-    <div className="hero-container w-full min-w-full flex justify-center items-center m-0 p-0 px-2 pt-10 md:pt-40 mb-10 md:mb-20 max-w-screen">
+    <div className="hero-container w-full min-w-full flex justify-center items-center m-0 p-0 px-2 pt-10 md:pt-55 mb-10 md:mb-20 max-w-screen">
       <div className="hero-content w-full flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between">
         {/* Left Side - Text Content */}
         <div className="w-full md:w-1/2 relative px-2 pt-40 md:pt-30 lg:pt-40 md:p-10 md:pr-20 flex flex-col justify-center items-center md:justify-start md:items-start">
-          <h1 className="text-xl text-center md:text-left md:text-4xl font-semibold bg-clip-text leading-tight bg-gradient-to-r text-transparent inline-block from-[#EB1E24] via-[#F05021] to-[#F8A51B]">
+          {/* Heading with Hover Effect */}
+          <h1 className="text-xl text-center md:text-left md:text-4xl font-semibold bg-clip-text leading-tight bg-gradient-to-r text-transparent inline-block from-[#EB1E24] via-[#F05021] to-[#F8A51B] transition-all duration-300 hover:text-opacity-80">
             Providing a high-quality textile range for your senior centers
             according to your wishes.
           </h1>
-          <p className="mt-3 text-md text-gray-700">
+
+          {/* Subtext with Hover Effect */}
+          <p className="mt-3 text-md text-gray-700 transition-all duration-300 hover:text-gray-900">
             Find the best this season 🔥
           </p>
+
+          {/* Button with Hover, Active & Shadow Effects */}
           <Link href="/shop" className="mt-4 md:mt-8 inline-block">
             <Button text="Shop Now" />
           </Link>
+
+          {/* Floating Image with Animation */}
           <Image
             src={"/compass.svg"}
             width={100} // Increased for iPad
@@ -73,7 +80,7 @@ const Hero = () => {
               width={420} // Increased for iPad
               height={420}
               alt={"rectangle"}
-              className="w-70 h-70 md:w-80 md:h-80 lg:w-90 lg:h-90 absolute -z-50"
+              className="w-70 h-70 md:w-90 md:h-90 lg:w-100 lg:h-100 absolute -z-50"
             />
             <div className="absolute">
               <Carousel data={carouselData} />

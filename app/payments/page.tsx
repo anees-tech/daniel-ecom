@@ -59,7 +59,7 @@ export default function Payments() {
         <TextField text={"Payment"} />
         <div className="grid md:grid-cols-5 gap-8">
           {/* Customer Information Form - 3/5 width */}
-          <div className="md:col-span-3 bg-white p-6 rounded-lg border border-gray-200">
+          <div className="md:col-span-3 bg-white p-6 rounded-lg border border-gray-200 shadow-md">
             <h2 className="text-xl font-semibold mb-6">Customer Information</h2>
             <div className="grid gap-6">
               <div className="flex flex-col md:grid grid-cols-2 gap-4">
@@ -123,7 +123,7 @@ export default function Payments() {
             </div>
           </div>
           {/* Order Summary - 2/5 width */}
-          <div className="md:col-span-2 p-6 rounded-lg border border-gray-200 bg-[#f9f9f9]">
+          <div className="md:col-span-2 p-6 rounded-lg border border-gray-200 bg-[#f9f9f9] shadow-md">
             <h2 className="text-xl font-semibold mb-4">Cart Total</h2>
             <div className="space-y-4 w-full">
               {/* Cart Items */}

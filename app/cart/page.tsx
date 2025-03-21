@@ -6,6 +6,7 @@ import { useCartStore } from "@/context/addToCartContext";
 import Image from "next/image";
 import HomeLink from "@/components/home-link";
 import TextField from "@/components/text-field";
+import Button from "@/components/button";
 
 export default function CartClient() {
   const { cart, removeFromCart, updateQuantity } = useCartStore();
@@ -35,7 +36,7 @@ export default function CartClient() {
         </h1>
 
         <TextField text={"Cart"} />
-        <div className="mx-2 sm:mx-4 md:mx-8 lg:mx-12 py-12 px-2 sm:px-4 md:px-8 lg:px-12 rounded-xl bg-white">
+        <div className="mx-2 sm:mx-4 md:mx-8 lg:mx-12 py-12 px-2 sm:px-4 md:px-8 lg:px-12 rounded-xl bg-white shadow-lg">
           <h1 className="text-xl font-semibold mb-1">Shopping cart</h1>
           <p className="text-gray-600 text-md mb-6">
             You have {cart.length} items in your cart
@@ -115,6 +116,7 @@ export default function CartClient() {
                                   width="16"
                                   height="16"
                                   fill="gray"
+                                  className="hover:text-gray-700"
                                   viewBox="0 0 16 16"
                                 >
                                   <path
@@ -303,7 +305,7 @@ export default function CartClient() {
                     </div>
 
                     <Link href="/payments" className="flex justify-center">
-                      <button className="w-auto px-2 py-1 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white rounded-full font-medium text-sm hover:bg-[#EB1E24] transition-all">
+                      <button className="w-auto px-4 py-2 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white rounded-full font-medium text-sm hover:bg-[#EB1E24] transition-all cursor-pointer">
                         Proceed to checkout
                       </button>
                     </Link>

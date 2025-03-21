@@ -1,94 +1,42 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
-// Define the props interface
-interface FilterDropdownProps {
-  filters: string[];
-  selectedFilter: string;
-  onSelect: (filter: string) => void;
-}
+export default function DropDownFilter({
+  onSortChange,
+}: {
+  onSortChange: (filter: string) => void;
+}) {
+  const [selectedFilter, setSelectedFilter] = useState("");
 
-const FilterDropdown: React.FC<FilterDropdownProps> = ({
-  filters,
-  selectedFilter,
-  onSelect,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Close dropdown if clicked outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const filters = ["Price: Low to High", "Price: High to Low", "Best Rating"];
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
-      {/* Dropdown Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex justify-between items-center min-w-[180px] px-4 py-2 text-sm font-medium bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] focus:outline-none rounded-full text-white"
-      >
-        <span className="truncate">{selectedFilter || "Filters"}</span>
-        <div className="flex items-center gap-2">
-          <Image src="/filter.svg" alt="Filter" width={20} height={20} />
-          <Image src="/dropdown.svg" alt="Dropdown" width={15} height={15} />
-        </div>
-      </button>
-
-      {/* Dropdown Menu */}
-      {isOpen && (
-        <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
-          <ul className="py-1">
-            {filters.map((filter) => (
-              <li key={filter}>
-                <button
-                  onClick={() => {
-                    onSelect(filter);
-                    setIsOpen(false);
-                  }}
-                  className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-200"
-                >
-                  {filter}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// Example Usage
-export default function DropDownFilter() {
-  const [selectedFilter, setSelectedFilter] = useState<string>("");
-
-  const filters: string[] = [
-    "Price: Low to High",
-    "Price: High to Low",
-    "Best Rating",
-    "Newest",
-  ];
-
-  return (
-    <div className="flex justify-center">
-      <FilterDropdown
-        filters={filters}
-        selectedFilter={selectedFilter}
-        onSelect={(filter) => setSelectedFilter(filter)}
-      />
+    <div className="flex justify-center m-0">
+      <div className="h-1/2 flex justify-between items-center px-5 text-left bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white rounded-full py-4">
+        <select
+          className="pr-5 text-sm appearance-none bg-transparent focus:outline-none"
+          value={selectedFilter}
+          onChange={(e) => {
+            setSelectedFilter(e.target.value);
+            onSortChange(e.target.value);
+          }}
+        >
+          <option value="" className="text-black px-5 mx-5">
+            Sort By
+          </option>
+          {filters.map((filter) => (
+            <option
+              key={filter}
+              value={filter}
+              className="text-black px-5 mx-5"
+            >
+              {filter}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="h-4 w-4 transition-transform" />
+      </div>
     </div>
   );
 }
