@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import HomeLink from "@/components/home-link";
 import Link from "next/link";
 import Image from "next/image";
 import TextField from "@/components/text-field";
+import Button from "@/components/button";
 
 export default function Payments() {
   const { cart } = useCartStore();
@@ -42,12 +42,12 @@ export default function Payments() {
 
   // Custom input style class
   const inputStyle =
-    "rounded-full border-gray-300 border-[1px] focus:border-[1px] focus:border-red-500 focus:ring-0 focus:ring-offset-0 focus:outline-none outline-none offset-none";
+    "search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-full border border-gray-400";
 
   return (
     <div className="relative pb-20 h-full">
-      <div className="max-w-full mx-auto p-4 md:p-6 mt-40">
-        <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize gap-1 md:gap-1">
+      <div className="mt-40">
+        <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize gap-1 md:gap-1 px-2 sm:px-4 md:px-8 lg:px-12">
           <HomeLink />
           <span className="mx-2 text-gray-400">/</span>
           <Link href={"/cart"} className="text-gray-400 hover:text-gray-700">
@@ -57,7 +57,7 @@ export default function Payments() {
           <span className="text-red-500">Payment</span>
         </nav>
         <TextField text={"Payment"} />
-        <div className="grid md:grid-cols-5 gap-8">
+        <div className="grid md:grid-cols-5 gap-8 px-2 sm:px-4 md:px-8 lg:px-12">
           {/* Customer Information Form - 3/5 width */}
           <div className="md:col-span-3 bg-white p-6 rounded-lg border border-gray-200 shadow-md">
             <h2 className="text-xl font-semibold mb-6">Customer Information</h2>
@@ -123,7 +123,7 @@ export default function Payments() {
             </div>
           </div>
           {/* Order Summary - 2/5 width */}
-          <div className="md:col-span-2 p-6 rounded-lg border border-gray-200 bg-[#f9f9f9] shadow-md">
+          <div className="md:col-span-2 p-6 rounded-lg border border-gray-200 bg-gray-50 shadow-md">
             <h2 className="text-xl font-semibold mb-4">Cart Total</h2>
             <div className="space-y-4 w-full">
               {/* Cart Items */}
@@ -232,8 +232,8 @@ export default function Payments() {
                 </span>
               </div>
               {/* Submit Button */}
-              <div className="w-auto px-2 py-1 flex flex-row justify-center items-center rounded-full bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:bg-red-600 text-white">
-                <Button>Checkout</Button>
+              <div className="flex flex-row justify-center">
+                <Button text="Checkout" />
               </div>
             </div>
           </div>
@@ -321,8 +321,11 @@ export default function Payments() {
                 </div>
               </div>
               {/* Save button */}
-              <div className="w-auto px-2 py-1 flex flex-row justify-center items-center rounded-full bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:bg-red-600 text-white">
-                <Button onClick={() => setShowPaymentModal(false)}>Save</Button>
+              <div className="flex flex-row justify-center">
+                <Button
+                  text="Save"
+                  onClick={() => setShowPaymentModal(false)}
+                />
               </div>
             </div>
           </div>

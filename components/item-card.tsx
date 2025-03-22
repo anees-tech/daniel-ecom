@@ -40,7 +40,7 @@ export default function ItemCard({
 
   return (
     <div
-      className="group relative bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-[0.25px] border-gray-500"
+      className="group relative bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-[0.25px] border-gray-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -125,7 +125,7 @@ export default function ItemCard({
             href={`/product/${id}`}
           >
             <ShoppingBag className="h-4 w-4" />
-            Add to Cart
+            Buy Now
           </Link>
         </div>
       </div>

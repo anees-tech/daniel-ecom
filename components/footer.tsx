@@ -10,6 +10,7 @@ import {
   Linkedin,
   Twitter,
 } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -40,29 +41,29 @@ export default function Footer() {
               <h3 className="font-bold text-lg mb-3">Quick Links</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="/" className="hover:underline">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="/category/men" className="hover:underline">
                     Men
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="/category/women" className="hover:underline">
                     Women
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="/contact" className="hover:underline">
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <Link href="/about" className="hover:underline">
                     About Us
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

@@ -2,7 +2,7 @@
 @tailwind utilities;
 
 body{
-  background-color: rgb(249, 249, 249);
+  background-color: white;
 }
 
 @theme {
@@ -116,4 +116,8 @@ body{
   .hero-container {
     height: 25vh;
   }
+}
+
+.search {
+  width:100%;
 }

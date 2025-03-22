@@ -77,8 +77,8 @@ export default function ProductDetailPage({
         <TextField text={!isLoading ? product.name : "Loading..."} />
 
         {/* Product Content */}
-        <div className="px-2 sm:px-4 md:px-8 lg:px-12">
-          <div className="flex flex-col md:flex-row gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-xl justify-center shadow-xl">
+        <div className="px-0 sm:px-2 md:px-4 lg:px-8">
+          <div className="flex flex-col md:flex-row gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-xl justify-center shadow-sm md:shadow-md">
             {/* Product Images */}
             <div className="w-full md:w-1/2">
               {isLoading ? (

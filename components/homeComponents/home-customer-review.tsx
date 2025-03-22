@@ -1,67 +1,67 @@
-"use client"
-import { useState, useEffect, useRef } from "react"
-import Slider from "react-slick"
-import Image from "next/image"
-import { ArrowLeft, ArrowRight, Quote } from "lucide-react"
-import TextBox from "../text-box"
-import { cn } from "@/lib/utils"
+"use client";
+import { useState, useEffect, useRef } from "react";
+import Slider from "react-slick";
+import Image from "next/image";
+import { ArrowLeft, ArrowRight, Quote } from "lucide-react";
+import TextBox from "../text-box";
+import { cn } from "@/lib/utils";
 
 interface Review {
-  id: number
-  name: string
-  text: string
-  image?: string
+  id: number;
+  name: string;
+  text: string;
+  image?: string;
 }
 
 interface ReviewsProps {
-  reviews: Review[]
+  reviews: Review[];
 }
 
 export default function CustomerReviews({ reviews }: ReviewsProps) {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isAnimating, setIsAnimating] = useState(false)
-  const sliderRef = useRef<Slider | null>(null)
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const sliderRef = useRef<Slider | null>(null);
 
   // Function to go to next slide
   const nextSlide = () => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    const nextIndex = (activeIndex + 1) % reviews.length
-    setActiveIndex(nextIndex)
-    sliderRef.current?.slickGoTo(nextIndex)
-    setTimeout(() => setIsAnimating(false), 500)
-  }
+    if (isAnimating) return;
+    setIsAnimating(true);
+    const nextIndex = (activeIndex + 1) % reviews.length;
+    setActiveIndex(nextIndex);
+    sliderRef.current?.slickGoTo(nextIndex);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
 
   // Function to go to previous slide
   const prevSlide = () => {
-    if (isAnimating) return
-    setIsAnimating(true)
-    const prevIndex = (activeIndex - 1 + reviews.length) % reviews.length
-    setActiveIndex(prevIndex)
-    sliderRef.current?.slickGoTo(prevIndex)
-    setTimeout(() => setIsAnimating(false), 500)
-  }
+    if (isAnimating) return;
+    setIsAnimating(true);
+    const prevIndex = (activeIndex - 1 + reviews.length) % reviews.length;
+    setActiveIndex(prevIndex);
+    sliderRef.current?.slickGoTo(prevIndex);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
 
   // Auto-rotate every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       if (sliderRef.current) {
-        sliderRef.current.slickNext() // Move to the next slide directly
+        sliderRef.current.slickNext(); // Move to the next slide directly
       }
-    }, 3000) // Update every 3 second
-  
-    return () => clearInterval(interval) // Cleanup on unmount
-  }, [])
+    }, 3000); // Update every 3 second
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   // Sync slider with wheel
   const handleBeforeChange = (oldIndex: number, newIndex: number) => {
-    setActiveIndex(newIndex)
-  }
+    setActiveIndex(newIndex);
+  };
 
   // Calculate positions for the wheel
   const getPositionStyle = (index: number) => {
-    const totalItems = reviews.length - 1 // Excluding the center item
-    const angleStep = (2 * Math.PI) / totalItems
+    const totalItems = reviews.length - 1; // Excluding the center item
+    const angleStep = (2 * Math.PI) / totalItems;
 
     // If this is the active item, it should be in the center
     if (index === activeIndex) {
@@ -69,26 +69,26 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
         transform: `translate(-50%, -50%)`,
         zIndex: 10,
         opacity: 1,
-      }
+      };
     }
 
     // For other items, calculate position around the circle
     // Adjust the index to skip the active index
-    let adjustedIndex = index
-    if (index > activeIndex) adjustedIndex -= 1
+    let adjustedIndex = index;
+    if (index > activeIndex) adjustedIndex -= 1;
 
     // Calculate position based on angle
-    const radius = 180 // Radius of the wheel
-    const angle = adjustedIndex * angleStep
-    const x = Math.sin(angle) * radius
-    const y = -Math.cos(angle) * radius
+    const radius = 180; // Radius of the wheel
+    const angle = adjustedIndex * angleStep;
+    const x = Math.sin(angle) * radius;
+    const y = -Math.cos(angle) * radius;
 
     return {
       transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(0.6)`,
       zIndex: 1,
       opacity: 0.8,
-    }
-  }
+    };
+  };
 
   const settings = {
     dots: false,
@@ -98,7 +98,7 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
     slidesToScroll: 1,
     arrows: false,
     beforeChange: handleBeforeChange,
-  }
+  };
 
   return (
     <div className="relative py-16 pt-0">
@@ -125,13 +125,13 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
                 "absolute left-1/2 top-1/2 rounded-full overflow-hidden transition-all duration-500 ease-in-out",
                 index === activeIndex
                   ? "border-4 border-red-500 w-32 h-32"
-                  : "border-2 border-gray-200 w-24 h-24 cursor-pointer",
+                  : "border-2 border-gray-200 w-24 h-24 cursor-pointer"
               )}
               style={getPositionStyle(index)}
               onClick={() => {
                 if (index !== activeIndex) {
-                  setActiveIndex(index)
-                  sliderRef.current?.slickGoTo(index)
+                  setActiveIndex(index);
+                  sliderRef.current?.slickGoTo(index);
                 }
               }}
             >
@@ -154,7 +154,9 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
               <div key={review.id} className="flex flex-col items-start">
                 <Quote className="text-red-500 w-30 h-30 mb-2" />
                 <p className="text-xl">{review.text}</p>
-                <h3 className="mt-3 font-bold text-red-500 text-3xl">{review.name}</h3>
+                <h3 className="mt-3 font-bold text-red-500 text-3xl">
+                  {review.name}
+                </h3>
               </div>
             ))}
           </Slider>
@@ -171,6 +173,5 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

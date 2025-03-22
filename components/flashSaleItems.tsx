@@ -98,7 +98,7 @@ const FlashSaleCarousel = () => {
 
   const settings = {
     mobileFirst: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: isMobile ? 2 : 4,
     slidesToScroll: 1,
@@ -176,3 +176,4 @@ const FlashSaleCarousel = () => {
 };
 
 export default FlashSaleCarousel;
+

@@ -91,7 +91,7 @@ export default function ProductReviewModal({
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6 py-4">
           <div className="flex items-center gap-4">
-            <div className="h-16 w-16 overflow-hidden rounded-md border">
+            <div className="h-16 w-16 overflow-hidden rounded-md border border-gray-400">
               <Image
                 src={product.image || "/placeholder.svg?height=64&width=64"}
                 alt={product.name}
@@ -160,7 +160,7 @@ export default function ProductReviewModal({
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className={errors.name ? "border-red-500" : ""}
+              className="search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-sm border border-gray-400"
             />
             {errors.name && (
               <p className="text-sm text-red-500">{errors.name}</p>
@@ -176,14 +176,14 @@ export default function ProductReviewModal({
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               rows={4}
-              className={errors.comment ? "border-red-500" : ""}
+              className="search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-sm border border-gray-400"
             />
             {errors.comment && (
               <p className="text-sm text-red-500">{errors.comment}</p>
             )}
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="flex flex-row justify-end items-center">
             <Button text={"Cancel"} />
             <Button text={"Submit Reviews"} />
           </DialogFooter>

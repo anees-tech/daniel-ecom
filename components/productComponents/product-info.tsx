@@ -4,6 +4,7 @@ import { Star, Plus, Minus } from "lucide-react";
 import { useCartStore } from "@/context/addToCartContext";
 import ProductReviewModal from "./product-reiw-modal";
 import Button from "../button";
+import { toast } from "sonner";
 
 interface ProductInfoProps {
   product: any;
@@ -43,7 +44,7 @@ export default function ProductInfo({
   };
 
   return (
-    <div className="md:w-[300px] lg:w-auto space-y-6 p-5 rounded-lg bg-white">
+    <div className="w-full md:w-[300px] lg:w-auto space-y-6 p-5 rounded-lg bg-white">
       {/* Title and Rating */}
       <div>
         <h1 className="text-3xl font-semibold mb-2 text-gray-900">
@@ -174,7 +175,7 @@ export default function ProductInfo({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col md:flex-row gap-3 pt-4">
+      <div className="flex flex-row gap-3 pt-4 justify-start items-center">
         <div className="w-auto">
           <ProductReviewModal product={product} onAddReview={handleAddReview} />
         </div>
@@ -190,6 +191,7 @@ export default function ProductInfo({
               color: selectedColor,
               size: selectedSize,
             });
+            toast("Item has been added to cart");
           }}
         />
       </div>

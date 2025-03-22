@@ -21,8 +21,8 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   return (
     <div className="min-h-screen flex flex-col pt-15 pb-20">
       {/* Page Layout with padding to avoid overlap */}
-      <div className="flex-1 px-0 sm:px-2 md:px-4 lg:px-8 py-8 mt-15 lg:mt-20 relative">
-        <div className="flex flex-row gap-2 text-sm md:text-xl font-small mb-4 capitalize">
+      <div className="flex-1 py-8 mt-15 lg:mt-20 relative">
+        <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-4 capitalize">
           <HomeLink />
           <span className="text-gray-400">/</span>
           <span className="text-gray-400">Category</span>
@@ -42,7 +42,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           className="absolute right-0 -z-50"
         />
         {/* Mobile Filter Toggle - Only visible on small screens */}
-        <div className="md:hidden mb-4 bg-white shadow-xl rounded-xl">
+        <div className="md:hidden mb-4 bg-white shadow-sm md:shadow-lg rounded-xl px-2 sm:px-4 md:px-8 lg:px-12">
           <details className="rounded-lg shadow-sm">
             <summary className="list-none flex items-center justify-between p-4 cursor-pointer">
               <div className="flex items-center">
@@ -64,7 +64,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           </details>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 bg-white shadow-xl rounded-xl">
+        <div className="flex flex-col md:flex-row gap-8 bg-white shadow-sm md:shadow-md rounded-xl">
           {/* Sidebar on the left - Hidden on mobile */}
           <aside className="hidden md:block md:w-1/4">
             <div className="p-4 rounded-lg sticky top-24">

@@ -8,13 +8,13 @@ import Image from "next/image";
 
 const carouselData = [
   { id: 1, image: "/bag.png" },
-  { id: 2, image: "/shirt.png" },
+  { id: 2, image: "/bag2.png" },
   { id: 3, image: "/pngegg.png" },
 ];
 
 const Hero = () => {
   return (
-    <div className="hero-container w-full min-w-full flex justify-center items-center m-0 p-0 px-2 pt-10 md:pt-55 mb-10 md:mb-20 max-w-screen">
+    <div className="hero-container w-full min-w-full flex justify-center items-center m-0 p-0 px-2 pt-10 md:pt-60 mb-10 md:mb-20 max-w-screen">
       <div className="hero-content w-full flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between">
         {/* Left Side - Text Content */}
         <div className="w-full md:w-1/2 relative px-2 pt-40 md:pt-30 lg:pt-40 md:p-10 md:pr-20 flex flex-col justify-center items-center md:justify-start md:items-start">
