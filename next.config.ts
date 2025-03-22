@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true, // ✅ Disables ESLint in Next.js builds
   },
   images: {
-    domains: ["v0.blob.com"],
+    domains: ["v0.blob.com", "picsum.photos"],
     remotePatterns: [
       {
         protocol: "https",

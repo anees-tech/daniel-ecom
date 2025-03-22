@@ -1,9 +1,13 @@
+import { LoaderCircle } from "lucide-react";
 export default function ItemCardSkeleton() {
   return (
     <div className="group relative bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300 border-[0.25px] border-gray-300 animate-pulse">
       {/* Image Skeleton */}
-      <div className="relative aspect-square overflow-hidden bg-gray-100 p-4">
-        <div className="w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse rounded-lg"></div>
+      <div className="relative aspect-square overflow-hidden bg-gray-100 p-4 flex items-center justify-center">
+        {/* <div className="w-full h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse rounded-lg"></div> */}
+        <div className="animate-spin">
+          <LoaderCircle className="h-12 w-12 text-orange-600" />
+        </div>
       </div>
 
       {/* Content Skeleton */}
