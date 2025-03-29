@@ -289,7 +289,7 @@ export default function CartClient() {
                     <div className="flex justify-between text-sm">
                       <span>Tax Percentage</span>
                       <span className="font-medium">
-                        {(taxRate)}%
+                        {(taxRate*100)}%
                       </span>
                     </div>
 

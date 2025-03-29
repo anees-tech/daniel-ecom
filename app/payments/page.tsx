@@ -164,12 +164,12 @@ export default function Payments() {
               </div>
               <div className="flex justify-between items-center border-t pt-2">
                 <span className="font-medium">Tax Percentage</span>
-                <span className="font-medium">{taxRate}%</span>
+                <span className="font-medium">{taxRate * 100}%</span>
               </div>
               <div className="flex justify-between items-center border-t pt-2">
                 <span className="font-medium">Tax</span>
                 <span className="font-medium">
-                  ${(taxRate * 100).toFixed(2)}
+                  ${(taxRate * subtotal).toFixed(2)}
                 </span>
               </div>
               {/* Delivery Options */}
