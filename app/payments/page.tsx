@@ -167,7 +167,7 @@ export default function Payments() {
                 <span className="font-medium">{taxRate * 100}%</span>
               </div>
               <div className="flex justify-between items-center border-t pt-2">
-                <span className="font-medium">Tax</span>
+                <span className="font-medium">Incl.Tax</span>
                 <span className="font-medium">
                   ${(taxRate * subtotal).toFixed(2)}
                 </span>
