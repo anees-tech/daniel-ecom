@@ -7,10 +7,12 @@ import Image from "next/image";
 import HomeLink from "@/components/home-link";
 import TextField from "@/components/text-field";
 import Button from "@/components/button";
+import { useTaxStore } from "@/context/taxContext";
 
 export default function CartClient() {
   const { cart, removeFromCart, updateQuantity } = useCartStore();
   const [mounted, setMounted] = useState(false);
+  const { taxRate, setTaxRate } = useTaxStore();
 
   // Handle hydration mismatch
   useEffect(() => {
@@ -278,6 +280,18 @@ export default function CartClient() {
                         ${totalPrice.toFixed(2)}
                       </span>
                     </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Tax</span>
+                      <span className="font-medium">
+                        ${(taxRate * totalPrice).toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Tax Percentage</span>
+                      <span className="font-medium">
+                        {(taxRate)}%
+                      </span>
+                    </div>
 
                     <div className="space-y-2 text-sm border-b">
                       <label className="flex items-center">
@@ -288,7 +302,7 @@ export default function CartClient() {
                           defaultChecked
                         />
                         <span>Standard Delivery</span>
-                        <span className="ml-auto text-green-600">$0.00</span>
+                        <span className="ml-auto text-green-600">$100.00</span>
                       </label>
                       <label className="flex items-center mb-3">
                         <input type="radio" name="delivery" className="mr-2" />
@@ -300,7 +314,7 @@ export default function CartClient() {
                     <div className="pt-2">
                       <div className="flex justify-between font-medium">
                         <span>Total</span>
-                        <span>${totalPrice.toFixed(2)}</span>
+                        <span>${(totalPrice*taxRate + totalPrice).toFixed(2)}</span>
                       </div>
                     </div>
 

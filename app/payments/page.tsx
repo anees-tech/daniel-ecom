@@ -10,6 +10,7 @@ import Link from "next/link";
 import Image from "next/image";
 import TextField from "@/components/text-field";
 import Button from "@/components/button";
+import { useTaxStore } from "@/context/taxContext";
 
 export default function Payments() {
   const { cart } = useCartStore();
@@ -18,6 +19,7 @@ export default function Payments() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState("mastercard");
+  const { taxRate, setTaxRate } = useTaxStore();
 
   // Handle hydration mismatch
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function Payments() {
   );
 
   const deliveryFee = deliveryMethod === "standard" ? 100 : 0;
-  const totalPrice = subtotal + deliveryFee;
+  const totalPrice = subtotal * taxRate + subtotal + deliveryFee;
 
   const handleBankClick = () => {
     setShowPaymentModal(true);
@@ -134,7 +136,9 @@ export default function Payments() {
                 >
                   <span>{item.name}</span>
                   <span className="text-emerald-500">
-                    ${item.price * item.quantity}
+                    $
+                    {item.price * item.quantity * taxRate +
+                      item.price * item.quantity}
                   </span>
                 </div>
               ))}
@@ -155,7 +159,17 @@ export default function Payments() {
               <div className="flex justify-between items-center border-t pt-2">
                 <span className="font-medium">Subtotal</span>
                 <span className="font-medium">
-                  ${cart.length > 0 ? subtotal : 1750}
+                  ${cart.length > 0 ? subtotal * taxRate + subtotal : 1750}
+                </span>
+              </div>
+              <div className="flex justify-between items-center border-t pt-2">
+                <span className="font-medium">Tax Percentage</span>
+                <span className="font-medium">{taxRate}%</span>
+              </div>
+              <div className="flex justify-between items-center border-t pt-2">
+                <span className="font-medium">Tax</span>
+                <span className="font-medium">
+                  ${(taxRate * 100).toFixed(2)}
                 </span>
               </div>
               {/* Delivery Options */}
