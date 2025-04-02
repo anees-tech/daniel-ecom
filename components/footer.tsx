@@ -87,11 +87,39 @@ export default function Footer() {
             </div>
           </div>
           {/* Right Section - Shipping & Social Media */}
-          <div className="">
-            <h3 className="font-bold text-lg mb-3">SHIPPING METHODS</h3>
-            <div className="flex flex-col-reverse justify-center md:justify-start gap-4">
-              <Image src="/DHL-photo.png" alt="DPD" width={100} height={50} />
-              <Image src="/DPD-Photo.png" alt="DHL" width={80} height={30} />
+          <div className="Shipping_Methods flex flex-col items-center md:items-start gap-10">
+            <div className="flex flex-col items-center md:items-start gap-4">
+              <h3 className="font-bold text-lg mb-3">SHIPPING METHODS</h3>
+              <div className="flex flex-col-reverse justify-center md:justify-start gap-4">
+                <Image src="/DHL-photo.png" alt="DPD" width={100} height={50} />
+                <Image src="/DPD-Photo.png" alt="DHL" width={80} height={30} />
+              </div>
+            </div>
+            <div className="flex flex-col items-center md:items-start gap-4">
+              <h3 className="font-bold text-lg mb-3">PAYMENT METHODS</h3>
+              <div className="flex flex-col-reverse justify-center md:justify-start gap-4">
+                <Link
+                  href={"/payment-methods-details/invoice"}
+                  className="hover:underline"
+                >
+                  invoice
+                </Link>
+                <Link
+                  href="/payment-methods-details/paypal"
+                  className="hover:underline"
+                >
+                  {" "}
+                  Paypal
+                </Link>
+
+                <Link
+                  href="/payment-methods-details/via-bank"
+                  className="hover:underline"
+                >
+                  {" "}
+                  Credit Card / Debit Card
+                </Link>
+              </div>
             </div>
           </div>
           <div className="hidden md:block">
@@ -113,6 +141,7 @@ export default function Footer() {
             />
           </div>
         </div>
+
         <div className="mt-6 flex justify-center md:justify-end gap-4 pr-0 md:pr-10">
           <a href="#" className="p-2 border rounded-full  bg-white">
             <Facebook className="w-6 h-6 p-1 md:w-8 md:h-8 bg-red-500 rounded-full" />

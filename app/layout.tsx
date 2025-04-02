@@ -4,6 +4,9 @@ import "./globals.css";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner";
+import TopBar from "@/components/TopBar";
+import { Suspense } from "react";
+import Loading from "./loading"; // Import global loading UI
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,21 +25,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
+        <TopBar />
         <Navbar />
-        <main className="flex-1">{children}</main>
+
+        <Suspense fallback={<Loading />}>
+          <main className="flex-1">{children}</main>
+        </Suspense>
+
         <Toaster />
         <Footer />
       </body>
     </html>
   );
 }
-
-// firebase te produucts, user, services,
