@@ -27,7 +27,7 @@ const paymentMethods: Record<
       "Confirm the payment details.",
       "Click 'Pay Now' to complete the transaction.",
     ],
-    img: "/plain-card.jpg",
+    img: "/Plain-card.jpg",
     icon: <ShieldCheck className="text-blue-500 w-8 h-8" />,
   },
   "via-bank": {
