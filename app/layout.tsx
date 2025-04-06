@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import TopBar from "@/components/TopBar";
 import { Suspense } from "react";
 import Loading from "./loading"; // Import global loading UI
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,7 @@ export default function RootLayout({
         <Navbar />
 
         <Suspense fallback={<Loading />}>
-          <main className="flex-1">{children}</main>
+          <AuthProvider>{children}</AuthProvider>
         </Suspense>
 
         <Toaster />
