@@ -94,6 +94,11 @@ export default function Navbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -112,7 +117,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  
   return (
     <div
       className={cn(
@@ -305,13 +309,13 @@ export default function Navbar() {
       </Button>
 
       <div className="flex items-center gap-2">
-        <Link className="bg-white p-2 md:p-3 rounded-full" href={""}>
+        <Link className="bg-white p-1.5 md:p-3 rounded-full" href={""}>
           <ProfileIcon />
         </Link>
         <Link href="/cart">
-          <div className="relative bg-white p-2 md:p-3 rounded-full">
+          <div className="relative bg-white p-1.5 md:p-3 rounded-full">
             <CartIcon />
-            {cartCount > 0 && (
+            {isClient && cartCount > 0 && (
               <span className="absolute -top-0 -right-0 bg-red-600 text-white text-xs px-2 rounded-full">
                 {cartCount}
               </span>

@@ -21,7 +21,7 @@ const services = [
 
 const TopBar: React.FC = () => {
   return (
-    <div className="bg-gray-100 py-3 px-6 flex justify-between items-center border-b">
+    <div className="py-3 px-6 flex flex-col md:flex-row justify-between items-center shadow-xl">
       {services.map((service) => (
         <div key={service.id} className="flex items-center space-x-4">
           {/* ✅ Service Image */}
@@ -30,7 +30,7 @@ const TopBar: React.FC = () => {
             alt={service.title}
             width={50}
             height={50}
-            className="rounded-md"
+            className="rounded-md cover"
           />
           <div>
             <h4 className="font-semibold text-gray-800">{service.title}</h4>

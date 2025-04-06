@@ -19,7 +19,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pt-15 pb-20">
+    <div className="min-h-screen flex flex-col pt-0 pb-20">
       {/* Page Layout with padding to avoid overlap */}
       <div className="flex-1 py-8 mt-15 lg:mt-20 relative">
         <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-4 capitalize">

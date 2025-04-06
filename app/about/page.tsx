@@ -9,34 +9,21 @@ import {
   Truck,
   Users,
 } from "lucide-react";
+import HomeLink from "@/components/home-link";
+import TextField from "@/components/text-field";
 
 export default function About() {
   console.log("About Us page is rendering");
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative h-[400px] md:h-[500px] overflow-hidden">
-        <div className="absolute inset-0 bg-gray-900/60 z-10"></div>
-        <Image
-          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=500&q=80"
-          alt="About Us Hero"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-            About Our Story
-          </h1>
-          <p className="text-lg md:text-xl text-white max-w-2xl">
-            Discover the journey behind Daniel's E-commerce and our commitment
-            to excellence
-          </p>
-        </div>
-      </section>
-
+    <div className="bg-white mt-10">
+      <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-2 capitalize">
+        <HomeLink />
+        <span className="text-gray-400">/</span>
+        <span className="text-red-500">About</span>
+      </div>
+      <TextField text={"About"} />
       {/* Our Story Section */}
-      <section className="py-16 md:py-24 container mx-auto px-4">
+      <section className="py-16 md:py-24 container mx-auto px-0">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">

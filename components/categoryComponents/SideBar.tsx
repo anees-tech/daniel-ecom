@@ -67,13 +67,13 @@ const SideBar = () => {
       {/* Clear Filters */}
       <button
         onClick={clearFilters}
-        className="w-full text-sm text-white bg-red-500 px-4 py-2 rounded-lg mb-4"
+        className="w-full text-sm text-white bg-red-500 px-4 py-2 rounded-full mb-4"
       >
         Clear Filters
       </button>
 
       {/* Category Section */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <h2 className="text-lg font-medium text-gray-900 mb-3">Category</h2>
         <ul className="space-y-2">
           {categories.length > 0 ? (
@@ -89,7 +89,7 @@ const SideBar = () => {
             <p className="text-sm text-gray-500">No categories available</p>
           )}
         </ul>
-      </div>
+      </div> */}
 
       {/* Filters Section */}
       <div className="mb-6">

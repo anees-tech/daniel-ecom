@@ -7,7 +7,7 @@ import TextField from "@/components/text-field";
 
 export default function ServicesPage() {
   return (
-    <main className="pt-40 relative">
+    <main className="pt-10 relative pb-10">
       <Image
         src="/design.svg"
         alt="Design"

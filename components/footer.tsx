@@ -95,15 +95,9 @@ export default function Footer() {
                 <Image src="/DPD-Photo.png" alt="DHL" width={80} height={30} />
               </div>
             </div>
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <h3 className="font-bold text-lg mb-3">PAYMENT METHODS</h3>
-              <div className="flex flex-col-reverse justify-center md:justify-start gap-4">
-                <Link
-                  href={"/payment-methods-details/invoice"}
-                  className="hover:underline"
-                >
-                  invoice
-                </Link>
+            <div className="flex flex-col items-center md:items-start gap-2">
+              <h3 className="font-bold text-lg mb-2">PAYMENT METHODS</h3>
+              <div className="flex flex-col-reverse justify-center md:justify-start gap-2">
                 <Link
                   href="/payment-methods-details/paypal"
                   className="hover:underline"
@@ -118,6 +112,14 @@ export default function Footer() {
                 >
                   {" "}
                   Credit Card / Debit Card
+                </Link>
+              </div>
+            </div>
+            <div className="flex flex-col items-center md:items-start">
+              <h3 className="font-bold text-lg mb-2">INVOICE METHODS</h3>
+              <div className="flex flex-col-reverse justify-center md:justify-start gap-4">
+                <Link href={"/invoice"} className="hover:underline">
+                  Invoices
                 </Link>
               </div>
             </div>

@@ -114,7 +114,7 @@ export default function CustomerReviews({ reviews }: ReviewsProps) {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-evenly gap-10 px-6 pt-10">
+      <div className="flex flex-col md:flex-row items-center justify-evenly gap-10 px-6 pt-10 mx-8">
         {/* Left Side: Profile Image Wheel */}
         <div className="relative w-full md:w-1/3 h-[400px] md:h-[500px] flex justify-center items-center">
           {/* Profile images wheel */}

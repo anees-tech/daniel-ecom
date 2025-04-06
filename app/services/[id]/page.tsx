@@ -19,7 +19,7 @@ export default function ServiceDetail({
   }
 
   return (
-    <main className="pt-40 relative">
+    <main className="pt-10 relative">
       <Image
         src="/design.svg"
         alt="Design"
