@@ -90,7 +90,7 @@ export default function Footer() {
           <div className="Shipping_Methods flex flex-col items-center md:items-start gap-10">
             <div className="flex flex-col items-center md:items-start gap-4">
               <h3 className="font-bold text-lg mb-3">SHIPPING METHODS</h3>
-              <div className="flex flex-col-reverse justify-center md:justify-start gap-4">
+              <div className="flex flex-col-reverse justify-start gap-4">
                 <Image src="/DHL-photo.png" alt="DPD" width={100} height={50} />
                 <Image src="/DPD-Photo.png" alt="DHL" width={80} height={30} />
               </div>
@@ -117,7 +117,7 @@ export default function Footer() {
             </div>
             <div className="flex flex-col items-center md:items-start">
               <h3 className="font-bold text-lg mb-2">INVOICE METHODS</h3>
-              <div className="flex flex-col-reverse justify-center md:justify-start gap-4">
+              <div className="flex flex-col-reverse justify-start gap-4">
                 <Link href={"/invoice"} className="hover:underline">
                   Invoices
                 </Link>
