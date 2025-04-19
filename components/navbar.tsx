@@ -9,6 +9,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Menu, X, ChevronDown } from "lucide-react";
 import { useCartStore } from "@/context/addToCartContext";
+import { useUser } from "@/context/userContext";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebaseConfig";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import CartIcon from "@/public/cart-icon.svg";
 import ProfileIcon from "@/public/profile.svg";
 import {
@@ -95,6 +107,7 @@ export default function Navbar() {
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const { user, loading } = useUser();
 
   useEffect(() => {
     setIsClient(true);
@@ -116,6 +129,24 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
+
+  const getUserInitials = () => {
+    if (!user?.displayName) return "U";
+    return user.displayName
+      .split(" ")
+      .map((name) => name[0])
+      .join("")
+      .toUpperCase()
+      .substring(0, 2);
+  };
 
   return (
     <div
@@ -269,11 +300,21 @@ export default function Navbar() {
             )}
           </NavigationMenuList>
         </NavigationMenu>
-        <button onClick={() => setIsModalOpen(true)}>
-          <div className="text-sm font-medium leading-none text-white hover:bg-white/20 hover:text-white transition-colors duration-300 block select-none space-y-1 rounded-md p-3 no-underline outline-none hover:bg-gradient-to-r hover:from-red-500/10 hover:to-orange-500/10 focus:bg-accent focus:text-accent-foreground">
-            Login
-          </div>
-        </button>
+
+        {!loading &&
+          (!user ? (
+            <button onClick={() => setIsModalOpen(true)}>
+              <div className="text-sm font-medium leading-none text-white hover:bg-white/20 hover:text-white transition-colors duration-300 block select-none space-y-1 rounded-md p-3 no-underline outline-none hover:bg-gradient-to-r hover:from-red-500/10 hover:to-orange-500/10 focus:bg-accent focus:text-accent-foreground">
+                Login
+              </div>
+            </button>
+          ) : (
+            <div className="flex items-center">
+              <div className="text-sm font-medium text-white mr-2 hidden md:block">
+                {user.displayName || user.email?.split("@")[0]}
+              </div>
+            </div>
+          ))}
       </div>
 
       <div
@@ -309,9 +350,54 @@ export default function Navbar() {
       </Button>
 
       <div className="flex items-center gap-2">
-        <Link className="bg-white p-1.5 md:p-3 rounded-full" href={""}>
-          <ProfileIcon />
-        </Link>
+        {!loading &&
+          (user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="bg-white p-1.5 md:p-1.5 rounded-full cursor-pointer">
+                  <Avatar className="h-6 w-6 md:h-8 md:w-8">
+                    {user.photoURL ? (
+                      <AvatarImage
+                        src={user.photoURL}
+                        alt={user.displayName || "User"}
+                      />
+                    ) : null}
+                    <AvatarFallback className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white text-xs">
+                      {getUserInitials()}
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/orders">Orders</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/wishlist">Wishlist</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleSignOut}
+                  className="text-red-600 cursor-pointer"
+                >
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-white p-1.5 md:p-3 rounded-full"
+            >
+              <ProfileIcon />
+            </button>
+          ))}
+
         <Link href="/cart">
           <div className="relative bg-white p-1.5 md:p-3 rounded-full">
             <CartIcon />

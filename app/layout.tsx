@@ -8,6 +8,7 @@ import TopBar from "@/components/TopBar";
 import { Suspense } from "react";
 import Loading from "./loading"; // Import global loading UI
 import { AuthProvider } from "@/context/AuthContext";
+import { UserProvider } from "@/context/userContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,15 +33,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
-        <TopBar />
-        <Navbar />
-
-        <Suspense fallback={<Loading />}>
-          <AuthProvider>{children}</AuthProvider>
-        </Suspense>
-
-        <Toaster />
-        <Footer />
+        <UserProvider>
+          <TopBar />
+          <Navbar />
+          <Suspense fallback={<Loading />}>
+            {children}
+          </Suspense>
+          <Footer />
+          <Toaster />
+        </UserProvider>
       </body>
     </html>
   );
