@@ -9,12 +9,12 @@ interface TaxState {
   clearTax: () => void;
 }
 
-const TAX_EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour
+const TAX_EXPIRATION_TIME = 60 * 60 * 1000;
 
 export const useTaxStore = create<TaxState>()(
   persist(
     (set) => ({
-      taxRate: 0.1, // Default tax rate is 10%
+      taxRate: 0.1,
 
       setTaxRate: (rate) => {
         set({ taxRate: rate });

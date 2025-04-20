@@ -1,16 +1,41 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import ProductList from "./home-product-list";
 import FilterProducts from "./home-product-filter";
-import products from "@/data/products";
 import DropDownFilter from "../drop-down-filter";
+import { getProducts, Product } from "@/lib/products";
+import ItemCardInterface from "@/interfaces/itemCardInterface";
 
 export default function ProductsPage() {
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [products, setProducts] = useState<ItemCardInterface[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ItemCardInterface[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sortFilter, setSortFilter] = useState("");
   const [category, setCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
+
+  // Fetch products from Firestore
+  useEffect(() => {
+    async function fetchProducts() {
+      setIsLoading(true);
+      const items = await getProducts();
+
+      // Map Firestore products to match ItemCardInterface
+      const mappedProducts: ItemCardInterface[] = items.map((product) => ({
+        ...product,
+        id: product.id, // Keep id as a string
+        brand: product.brand || "Unknown Brand",
+        material: product.material || "Unknown Material",
+      }));
+
+      setProducts(mappedProducts);
+      setFilteredProducts(mappedProducts); // Initialize filtered products
+      setIsLoading(false);
+    }
+
+    fetchProducts();
+  }, []);
 
   const handleFilterChange = ({
     category,
@@ -26,12 +51,13 @@ export default function ProductsPage() {
   useEffect(() => {
     setIsLoading(true);
     setTimeout(() => {
-      let updatedProducts = products;
+      let updatedProducts = [...products];
 
       // Apply category filter
       if (category !== "all") {
         updatedProducts = updatedProducts.filter(
-          (product) => product.category.toLowerCase() === category.toLowerCase()
+          (product) =>
+            product.category.toLowerCase() === category.toLowerCase()
         );
       }
 
@@ -57,7 +83,7 @@ export default function ProductsPage() {
       setFilteredProducts(updatedProducts);
       setIsLoading(false);
     }, 500);
-  }, [category, searchTerm, sortFilter]);
+  }, [category, searchTerm, sortFilter, products]);
 
   return (
     <div className="p-6 px-4 lg:px-8 xl:px-12">
@@ -75,7 +101,7 @@ export default function ProductsPage() {
       </div>
 
       <div className="mt-6">
-          <ProductList products={filteredProducts} />
+        <ProductList products={filteredProducts} />
       </div>
     </div>
   );

@@ -12,7 +12,12 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true, // ✅ Disables ESLint in Next.js builds
   },
   images: {
-    domains: ["v0.blob.com", "picsum.photos", "images.unsplash.com"],
+    domains: [
+      "v0.blob.com",
+      "picsum.photos",
+      "images.unsplash.com",
+      "firebasestorage.googleapis.com", // ✅ Added for Firebase images
+    ],
     remotePatterns: [
       {
         protocol: "https",
