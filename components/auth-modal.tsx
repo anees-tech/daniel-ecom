@@ -54,13 +54,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         );
         const user = userCredential.user;
 
-        // Create a UUID
-        const uuid = uuidv4();
-
-        // Store user info in Firestore under 'users' collection
-        await setDoc(doc(firestore, "users", uuid), {
-          uuid,
-          authUid: user.uid,
+        // Store user info in Firestore under 'users' collection with uid as document ID
+        await setDoc(doc(firestore, "users", user.uid), {
+          uid: user.uid,
           email: user.email,
           createdAt: new Date().toISOString(),
         });
@@ -77,16 +73,15 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       const userCredential = await signInWithPopup(auth, googleProvider);
       const user = userCredential.user;
 
-      const uuid = uuidv4();
-
-      await setDoc(doc(firestore, "users", uuid), {
-        uuid,
-        authUid: user.uid,
+      // Store user info in Firestore with uid as document ID
+      await setDoc(doc(firestore, "users", user.uid), {
+        uid: user.uid,
         email: user.email,
         name: user.displayName || null,
         photoURL: user.photoURL || null,
         createdAt: new Date().toISOString(),
       });
+
       onClose();
     } catch (err: any) {
       setError(err.message);
