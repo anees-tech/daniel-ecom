@@ -7,8 +7,11 @@ import ProductsPage from "@/components/homeComponents/homePage-products";
 import Hero from "@/components/homeComponents/mainHero";
 import { reviews } from "@/data/customerReviews";
 import { shippingPartnersImages } from "@/data/shippingPartnersImages";
+import { useUser } from "@/context/userContext";
 
 export default function Home() {
+  console.log(useUser().user);
+  
   return (
     <main className="width-full overflow-hidden">
       <Hero />

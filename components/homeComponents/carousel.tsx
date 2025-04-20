@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
 import { getCarouselImages } from "@/lib/carouselImg"; // Adjust path as needed
+import Loading from "@/app/loading";
 
 interface CarouselImage {
   id: string;
@@ -21,7 +22,11 @@ const Carousel: React.FC = () => {
     const fetchImages = async () => {
       try {
         const data = await getCarouselImages();
-        setImages(data);
+        const formattedData = data.map((item: { id: string; url?: string }) => ({
+          id: item.id,
+          url: item.url || "", // Provide a default value if url is missing
+        }));
+        setImages(formattedData);
       } catch (error) {
         console.error("Error fetching carousel images:", error);
       } finally {
@@ -43,7 +48,7 @@ const Carousel: React.FC = () => {
     dotsClass: "slick-dots flex justify-center gap-2 absolute bottom-4 w-full",
   };
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
+  if (loading) return <div className="text-center py-10"><Loading/></div>;
   if (!images || images.length === 0)
     return <div className="text-center py-10">No carousel images found.</div>;
 

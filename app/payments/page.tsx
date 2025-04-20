@@ -7,14 +7,20 @@ import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import HomeLink from "@/components/home-link";
 import Link from "next/link";
+import { useUser } from "@/context/userContext";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import Image from "next/image";
 import TextField from "@/components/text-field";
 import Button from "@/components/button";
 import { useTaxStore } from "@/context/taxContext";
 import InvoiceModal from "./invoice-modal";
-
+import { addOrderToUserProfile, Order } from "@/lib/orders";
+// import { set } from "nprogress";
 export default function Payments() {
-  const { cart } = useCartStore();
+  const { cart, clearCart } = useCartStore();
+  const { user } = useUser();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -31,6 +37,38 @@ export default function Payments() {
     email: "",
   });
 
+
+
+  interface InvoiceModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    orderData: {
+      items: any[];
+      customerInfo: {
+        name: string;
+        email: string;
+        address: string;
+        city: string;
+        phone: string;
+      };
+      subtotal: number;
+      tax: number;
+      shipping: number;
+      total: number;
+      paymentMethod: string;
+      paymentDetails?: {
+        cardType?: string;
+        lastFour?: string;
+        transactionId: string;
+        date: string;
+        time?: string;
+        status: string;
+        expectedDelivery?: string;
+      };
+    };
+  }
+  
+  const [invoiceData, setInvoiceData] = useState<InvoiceModalProps | undefined>();
   // Handle hydration mismatch
   useEffect(() => {
     setMounted(true);
@@ -61,62 +99,108 @@ export default function Payments() {
     }));
   };
 
-  const handleCheckout = () => {
+  const closeInvoiceModal = () => {
+    setShowInvoiceModal(false);
+  };
+  const handleCheckout = async () => {
+    // Check if user is logged in
+    if (!user) {
+      toast.error("You must be logged in to place an order");
+      router.push("/?toast=not-logged-in");
+      return;
+    }
+
     // Close payment modal if open
     if (showPaymentModal) {
       setShowPaymentModal(false);
     }
 
-    // Show invoice modal
-    setShowInvoiceModal(true);
-  };
-
-  const closeInvoiceModal = () => {
-    setShowInvoiceModal(false);
-  };
-
-  // Order data for invoice
-  const orderData = {
-    items:
-      cart.length > 0
-        ? cart
-        : [
-            { id: 1, name: "Lady Bag", price: 300, quantity: 1 },
-            { id: 2, name: "Lady Shoes", price: 100, quantity: 1 },
-          ],
-    customerInfo: {
-      name: customerInfo.firstName || "Guest Customer",
-      email: customerInfo.email || "guest@example.com",
-      address: customerInfo.address || "Address not provided",
-      city: customerInfo.town || "City not provided",
-      phone: customerInfo.phone || "Phone not provided",
-    },
-    subtotal: subtotal || 400,
-    tax: tax || 32,
-    shipping: deliveryFee,
-    total: totalPrice || 532,
-    paymentMethod:
-      paymentMethod === "bank"
-        ? `Credit Card (${selectedCard})`
-        : "Cash on Delivery",
-    paymentDetails:
-      paymentMethod === "bank"
-        ? {
-            cardType: selectedCard,
-            lastFour: "4242", // In a real app, this would come from the payment processor
-            transactionId: "TXN" + Math.floor(Math.random() * 1000000),
-            date: new Date().toLocaleDateString(),
-            time: new Date().toLocaleTimeString(),
-            status: "Completed",
-          }
-        : {
-            transactionId: "COD" + Math.floor(Math.random() * 1000000),
-            status: "Pending",
-            date: new Date().toLocaleDateString(),
-            expectedDelivery: new Date(
-              Date.now() + 5 * 24 * 60 * 60 * 1000
-            ).toLocaleDateString(), // 5 days from now
+    try {
+      // Create order object for Firestore
+      const order: Order = {
+        items: cart.map((item) => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          image: item.image || "",
+        })),
+        total: totalPrice,
+        subtotal: subtotal,
+        tax: tax,
+        deliveryFee: deliveryFee,
+        customerInfo: {
+          name: customerInfo.firstName || "Guest Customer",
+          email: customerInfo.email || user.email || "guest@example.com",
+          address: customerInfo.address || "Address not provided",
+          city: customerInfo.town || "City not provided",
+          phone: customerInfo.phone || "Phone not provided",
+          apartment: customerInfo.apartment || "",
+        },
+        paymentMethod:
+          paymentMethod === "bank"
+            ? `Credit Card (${selectedCard})`
+            : "Cash on Delivery",
+        paymentDetails:
+          paymentMethod === "bank"
+            ? {
+                cardType: selectedCard,
+                lastFour: "4242",
+                transactionId: "TXN" + Math.floor(Math.random() * 1000000),
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString(),
+                status: "Completed",
+              }
+            : {
+                transactionId: "COD" + Math.floor(Math.random() * 1000000),
+                status: "Pending",
+                date: new Date().toLocaleDateString(),
+                expectedDelivery: new Date(
+                  Date.now() + 5 * 24 * 60 * 60 * 1000
+                ).toLocaleDateString(),
+              },
+        invoice: {
+          invoiceId: `INV-${Date.now()}`,
+          date: new Date().toISOString(),
+          details: `Invoice for order placed on ${new Date().toLocaleDateString()}`,
+        },
+        createdAt: new Date().toISOString(),
+        status: "Pending",
+      };
+      setInvoiceData({
+        isOpen: true,
+        onClose: closeInvoiceModal,
+        orderData: {
+          items: order.items,
+          customerInfo: {
+            name: order.customerInfo.name,
+            email: order.customerInfo.email,
+            address: order.customerInfo.address,
+            city: order.customerInfo.city,
+            phone: order.customerInfo.phone,
           },
+          subtotal: order.subtotal,
+          tax: order.tax,
+          shipping: order.deliveryFee,
+          total: order.total,
+          paymentMethod: order.paymentMethod,
+          paymentDetails: order.paymentDetails,
+        },
+      });
+      // Save order to user's profile in Firestore
+      await addOrderToUserProfile(user.uid, order);
+
+      // Show invoice modal
+      setShowInvoiceModal(true);
+
+      // Clear cart after successful order
+      clearCart();
+
+      toast.success("Order placed successfully!");
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error("Failed to place order. Please try again.");
+    }
   };
 
   // Custom input style class
@@ -436,11 +520,13 @@ export default function Payments() {
         )}
 
         {/* Invoice Modal */}
-        <InvoiceModal
-          isOpen={showInvoiceModal}
-          onClose={closeInvoiceModal}
-          orderData={orderData}
-        />
+        {invoiceData && (
+          <InvoiceModal
+            isOpen={showInvoiceModal}
+            onClose={closeInvoiceModal}
+            orderData={invoiceData?.orderData}
+          />
+        )}
       </div>
       <Image
         src="/BG-Customer-reviews.png"

@@ -41,65 +41,15 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { AuthModal } from "./auth-modal";
-
-const mainNavItems = [
-  {
-    title: "Home",
-    href: "/",
-    description: "Explore our latest collections and offers.",
-  },
-  {
-    title: "Shop",
-    href: "/products",
-    children: [
-      {
-        title: "Men",
-        href: "/category/men",
-        description:
-          "Discover stylish clothing for men, from casual to formal wear.",
-      },
-      {
-        title: "Women",
-        href: "/category/women",
-        description: "Trendy and comfortable clothing designed for women.",
-      },
-      {
-        title: "Footwear",
-        href: "/category/footwear",
-        description:
-          "Find the perfect pair of shoes, sneakers, boots, and sandals.",
-      },
-      {
-        title: "Leather",
-        href: "/category/leather",
-        description:
-          "Premium leather goods including watches, bags, and accessories.",
-      },
-      {
-        title: "Workwear",
-        href: "/category/workwear",
-        description: "Durable and stylish workwear for any job or occasion.",
-      },
-    ],
-  },
-  {
-    title: "Service",
-    href: "/services",
-    description: "Learn about our customer support and repair services.",
-  },
-  {
-    title: "About",
-    href: "/about",
-    description: "Get to know our story, mission, and values.",
-  },
-  {
-    title: "Contact",
-    href: "/contact",
-    description: "Reach out to us for inquiries, support, or feedback.",
-  },
-];
+import { fetchCategories, Category } from "@/lib/categories";
 
 export default function Navbar() {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    fetchCategories().then(setCategories);
+  }, []);
+  console.log(categories);
   const pathname = usePathname();
   const cartCount = useCartStore((state) => state.getCartCount());
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -112,7 +62,33 @@ export default function Navbar() {
   useEffect(() => {
     setIsClient(true);
   }, []);
-
+  const mainNavItems = [
+    {
+      title: "Home",
+      href: "/",
+      description: "Explore our latest collections and offers.",
+    },
+    {
+      title: "Shop",
+      href: "/products",
+      children: categories
+    },
+    {
+      title: "Service",
+      href: "/services",
+      description: "Learn about our customer support and repair services.",
+    },
+    {
+      title: "About",
+      href: "/about",
+      description: "Get to know our story, mission, and values.",
+    },
+    {
+      title: "Contact",
+      href: "/contact",
+      description: "Reach out to us for inquiries, support, or feedback.",
+    },
+  ];
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -372,13 +348,19 @@ export default function Navbar() {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/profile" className="cursor-pointer">Profile</Link>
+                  <Link href="/profile" className="cursor-pointer">
+                    Profile
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/orders" className="cursor-pointer">Orders</Link>
+                  <Link href="/orders" className="cursor-pointer">
+                    Orders
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/wishlist" className="cursor-pointer">Wishlist</Link>
+                  <Link href="/wishlist" className="cursor-pointer">
+                    Wishlist
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem

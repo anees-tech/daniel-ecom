@@ -4,14 +4,9 @@ import type React from "react";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {  onAuthStateChanged } from "firebase/auth";
-import {
-  doc,
-  getDoc,
-  updateDoc,
-  setDoc,
-} from "firebase/firestore";
-import {ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { Loader2, Camera, User } from "lucide-react";
 import firebaseConfig, { auth, firestore, storage } from "@/lib/firebaseConfig";
+import { updateProfile, updateEmail } from "firebase/auth";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -152,21 +148,34 @@ export default function ProfilePage() {
 
   // Update the handleSubmit function to handle the case where the user document doesn't exist yet
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
     if (!user) return;
 
     setUpdating(true);
     try {
       let imageUrl = profileData.profileImage;
-
+    
       // Upload new image if selected
       if (imageFile) {
         const storageRef = ref(storage, `profile-images/${user.uid}`);
         await uploadBytes(storageRef, imageFile);
         imageUrl = await getDownloadURL(storageRef);
       }
-
-      // Prepare user data
+    
+      // 🔁 Sync with Firebase Auth
+      if (auth.currentUser) {
+        if (profileData.name !== auth.currentUser.displayName) {
+          await updateProfile(auth.currentUser, {
+            displayName: profileData.name,
+          });
+        }
+    
+        if (profileData.email !== auth.currentUser.email) {
+          await updateEmail(auth.currentUser, profileData.email);
+          alert("Email updated successfully. Please verify your new email address.");
+        }
+      }
+    
+      // 🔁 Save to Firestore
       const userData = {
         name: profileData.name,
         email: profileData.email,
@@ -179,27 +188,24 @@ export default function ProfilePage() {
         profileImage: imageUrl,
         updatedAt: new Date(),
       };
-
-      // Check if document exists first
+    
       const userDocRef = doc(firestore, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
-
+    
       if (userDoc.exists()) {
-        // Update existing document
         await updateDoc(userDocRef, userData);
       } else {
-        // Create new document with all fields
         await setDoc(userDocRef, {
           ...userData,
           createdAt: new Date(),
         });
       }
-
+    
       setProfileData((prev) => ({
         ...prev,
         profileImage: imageUrl,
       }));
-
+    
       alert("Profile updated successfully!");
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -207,6 +213,7 @@ export default function ProfilePage() {
     } finally {
       setUpdating(false);
     }
+    
   };
 
   if (loading) {

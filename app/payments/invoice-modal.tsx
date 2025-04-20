@@ -31,6 +31,7 @@ interface InvoiceModalProps {
       status: string;
       expectedDelivery?: string;
     };
+    status?: string; // <-- Add this line
   };
 }
 
@@ -315,6 +316,21 @@ export default function InvoiceModal({
         </button>
 
         <div className="flex flex-col items-center justify-center py-6">
+          {/* Show order status */}
+          <div className="mb-2 text-sm">
+            <span className="font-semibold">Order Status: </span>
+            <span
+              className={
+                orderData.status === "Completed"
+                  ? "text-green-600"
+                  : orderData.status === "Pending"
+                  ? "text-yellow-600"
+                  : "text-gray-600"
+              }
+            >
+              {orderData.status}
+            </span>
+          </div>
           {invoiceGenerated ? (
             <>
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
@@ -322,7 +338,7 @@ export default function InvoiceModal({
               </div>
               <h2 className="text-2xl font-bold mb-2">Order Confirmed!</h2>
               <p className="text-gray-600 text-center mb-6">
-                Your order has been successfully placed and your invoice has
+                Your order has been placed and your invoice has
                 been downloaded.
               </p>
               <button
@@ -339,7 +355,7 @@ export default function InvoiceModal({
               </div>
               <h2 className="text-2xl font-bold mb-2">Order Confirmed!</h2>
               <p className="text-gray-600 text-center mb-6">
-                Your order has been successfully placed. Thank you for shopping
+                Your order has been placed. Thank you for shopping
                 with us!
               </p>
               <button
