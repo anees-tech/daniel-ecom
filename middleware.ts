@@ -1,20 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { useUser } from "@/context/userContext";
 
 export function middleware(request: NextRequest) {
-  const isLoggedIn = request.cookies.get("token")?.value;
+  const isLoggedIn = request.cookies.get("user")?.value; // Check for auth token
 
-  const protectedPaths = [
-    // "/cart",
-    // "/payments",
-  ];
-
-  const isProtected = protectedPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path)
-  );
-
-  if (isProtected && !isLoggedIn) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", request.nextUrl.pathname);
+  if (request.nextUrl.pathname === "/payments" && !isLoggedIn) {
+    const loginUrl = new URL(request.url);
+    loginUrl.pathname = "/"; // Redirect to the home page
+    loginUrl.searchParams.set("toast", "not-logged-in"); // Add a query param for the toast message
     return NextResponse.redirect(loginUrl);
   }
 
@@ -22,10 +15,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/cart/:path*",
-    "/payments/:path*",
-    "/invoice/:path*",
-    "/payment-methods-details/:path*",
-  ],
+  matcher: ["/payments/:path*"], // Apply middleware to the `/payments` route
 };

@@ -98,11 +98,18 @@ const FlashSaleCarousel = () => {
                 </div>
               ))
           : // Show Real Products When Data is Loaded
-            products?.map((product) => (
-              <div key={product.id} className="px-2">
-                <ItemCard brand={""} material={""} {...product} id={product.id} />
-              </div>
-            ))}
+            products?.map((product) => {
+              if (!product.id) {
+                console.warn("Product is missing an ID:", product);
+                return null; // Skip rendering this product
+              }
+
+              return (
+                <div key={product.id} className="px-2">
+                  <ItemCard brand={""} material={""} {...product} id={product.id} />
+                </div>
+              );
+            })}
       </Slider>
 
       {/* Background Design */}

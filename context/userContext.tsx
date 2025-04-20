@@ -9,6 +9,7 @@ import {
 } from "react";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/lib/firebaseConfig";
+import Cookies from "js-cookie"; // Import js-cookie
 
 interface UserContextType {
   user: User | null;
@@ -22,9 +23,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Load user from localStorage on mount
+  // Load user from cookies on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = Cookies.get("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -32,10 +33,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         setUser(firebaseUser);
-        localStorage.setItem("user", JSON.stringify(firebaseUser));
+        Cookies.set("user", JSON.stringify(firebaseUser), { expires: 7 }); // Store user in cookies for 7 days
       } else {
         setUser(null);
-        localStorage.removeItem("user");
+        Cookies.remove("user"); // Remove user from cookies if logged out
       }
       setLoading(false);
     });
