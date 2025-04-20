@@ -89,7 +89,7 @@ const FlashSaleCarousel = () => {
         key={isMobile ? "mobile" : "desktop"}
       >
         {loading
-          ? // Show Skeletons While Loading
+          ?
             Array(4)
               .fill(null)
               .map((_, index) => (
@@ -100,7 +100,7 @@ const FlashSaleCarousel = () => {
           : // Show Real Products When Data is Loaded
             products?.map((product) => (
               <div key={product.id} className="px-2">
-                <ItemCard brand={""} material={""} {...product} id={Number(product.id)} />
+                <ItemCard brand={""} material={""} {...product} id={product.id} />
               </div>
             ))}
       </Slider>

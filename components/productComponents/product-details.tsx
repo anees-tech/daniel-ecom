@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import products from "@/data/ItemProductDetail";
+import { getProductById } from "@/lib/products"; // Import Firestore fetching logic
 import ProductImages from "./product-images";
 import ProductInfo from "./product-info";
 import DeliveryOptions from "./delivery-options";
@@ -32,13 +33,25 @@ export default function ProductDetailPage({
   useEffect(() => {
     async function fetchProduct() {
       const { productId } = await params;
-      const oProductId = Number.parseInt(productId);
-      const foundProduct =
-        products.find((p) => p.id === oProductId) || products[0];
 
-      setProduct(foundProduct);
-      setSelectedColor(foundProduct?.colors[0]?.name || "");
-      setIsLoading(false);
+      // Firestore fetching logic
+      try {
+        const firestoreProduct = await getProductById(productId);
+        setProduct(firestoreProduct);
+        setSelectedColor(firestoreProduct?.colors?.[0]?.name || "");
+      } catch (error) {
+        console.error("Error fetching product from Firestore:", error);
+
+        // Fallback to existing logic
+        const oProductId = Number.parseInt(productId);
+        const foundProduct =
+          products.find((p) => p.id === oProductId) || products[0];
+
+        setProduct(foundProduct);
+        setSelectedColor(foundProduct?.colors?.[0]?.name || "");
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     fetchProduct();

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 interface ProductCardEnhancedProps {
-  id: number;
+  id: string; // Ensure id is a string
   name: string;
   image: string;
   category: string;
@@ -37,7 +37,19 @@ export default function ItemCard({
   reviewsCount = 24,
 }: ProductCardEnhancedProps) {
   const [isHovered, setIsHovered] = useState(false);
-
+  // console.log(
+  //   "ItemCard Props:",
+  //   id,
+  //   name,
+  //   currentPrice,
+  //   originalPrice,
+  //   image,
+  //   category,
+  //   discount,
+  //   stock,
+  //   rating,
+  //   reviewsCount
+  // )
   return (
     <div
       className="group relative bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-[0.25px] border-gray-500"

@@ -4,7 +4,7 @@ export function middleware(request: NextRequest) {
   const isLoggedIn = request.cookies.get("token")?.value;
 
   const protectedPaths = [
-    "/cart",
+    // "/cart",
     // "/payments",
   ];
 

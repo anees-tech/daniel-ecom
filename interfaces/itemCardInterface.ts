@@ -1,5 +1,5 @@
 interface ItemCardInterface {
-  id: number;
+  id: string; // Change id type to string
   name: string;
   image: string;
   category: string;
