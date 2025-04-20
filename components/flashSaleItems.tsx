@@ -9,11 +9,12 @@ import ItemCard from "@/components/item-card";
 import TextBox from "@/components/text-box";
 import Image from "next/image";
 import ItemCardSkeleton from "./item-card-skeleton";
+import { getFlashSaleItems, FlashSaleItem } from "@/lib/flashSaleItems";
 
 const FlashSaleCarousel = () => {
   const sliderRef = useRef<Slider | null>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [products, setProducts] = useState<null | any[]>(null);
+  const [products, setProducts] = useState<FlashSaleItem[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,73 +28,16 @@ const FlashSaleCarousel = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Simulate async data fetching
+  // Fetch flash sale items from Firestore
   useEffect(() => {
-    setTimeout(() => {
-      setProducts([
-        {
-          id: 1,
-          name: "Lady Bag",
-          category: "women",
-          image: "/pngegg.png",
-          currentPrice: 375,
-          originalPrice: 400,
-          discount: 25,
-          stock: 10,
-          rating: 4.3,
-          reviewsCount: 98,
-        },
-        {
-          id: 2,
-          name: "Men's Jacket",
-          category: "men",
-          image: "/pngegg.png",
-          currentPrice: 120,
-          originalPrice: 150,
-          discount: 20,
-          stock: 15,
-          rating: 4.6,
-          reviewsCount: 120,
-        },
-        {
-          id: 3,
-          name: "Kids Sneakers",
-          category: "kids",
-          image: "/pngegg.png",
-          currentPrice: 55,
-          originalPrice: 70,
-          discount: 10,
-          stock: 25,
-          rating: 4.5,
-          reviewsCount: 75,
-        },
-        {
-          id: 4,
-          name: "Women’s Handbag",
-          category: "women",
-          image: "/pngegg.png",
-          currentPrice: 280,
-          originalPrice: 350,
-          discount: 15,
-          stock: 5,
-          rating: 4.7,
-          reviewsCount: 130,
-        },
-        {
-          id: 5,
-          name: "Smart Watch",
-          category: "electronics",
-          image: "/pngegg.png",
-          currentPrice: 199,
-          originalPrice: 250,
-          discount: 20,
-          stock: 8,
-          rating: 4.8,
-          reviewsCount: 200,
-        },
-      ]);
-      setLoading(false); // Stop loading when data is ready
-    }, 2000); // Simulate a 2-second fetch
+    async function fetchFlashSaleItems() {
+      setLoading(true);
+      const items = await getFlashSaleItems();
+      setProducts(items);
+      setLoading(false);
+    }
+
+    fetchFlashSaleItems();
   }, []);
 
   const settings = {
@@ -156,7 +100,7 @@ const FlashSaleCarousel = () => {
           : // Show Real Products When Data is Loaded
             products?.map((product) => (
               <div key={product.id} className="px-2">
-                <ItemCard {...product} />
+                <ItemCard brand={""} material={""} {...product} id={Number(product.id)} />
               </div>
             ))}
       </Slider>
