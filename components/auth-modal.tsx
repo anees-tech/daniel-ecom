@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { auth, googleProvider } from "@/lib/firebaseConfig";
+import { auth, googleProvider, firestore } from "@/lib/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -33,14 +35,36 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
     try {
       if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userData = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         onClose();
       } else {
         if (password !== confirmPassword) {
           setError("Passwords do not match.");
           return;
         }
-        await createUserWithEmailAndPassword(auth, email, password);
+
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+
+        // Create a UUID
+        const uuid = uuidv4();
+
+        // Store user info in Firestore under 'users' collection
+        await setDoc(doc(firestore, "users", uuid), {
+          uuid,
+          authUid: user.uid,
+          email: user.email,
+          createdAt: new Date().toISOString(),
+        });
+
         onClose();
       }
     } catch (err: any) {
@@ -50,7 +74,19 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const user = userCredential.user;
+
+      const uuid = uuidv4();
+
+      await setDoc(doc(firestore, "users", uuid), {
+        uuid,
+        authUid: user.uid,
+        email: user.email,
+        name: user.displayName || null,
+        photoURL: user.photoURL || null,
+        createdAt: new Date().toISOString(),
+      });
       onClose();
     } catch (err: any) {
       setError(err.message);
@@ -160,7 +196,9 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
             <div className="w-full border-t border-gray-200"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">Or continue with</span>
+            <span className="px-2 bg-white text-gray-500">
+              Or continue with
+            </span>
           </div>
         </div>
 
