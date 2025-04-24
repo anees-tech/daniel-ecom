@@ -303,65 +303,58 @@ export default function Payments() {
           <div className="md:col-span-2 p-6 rounded-lg border border-gray-200 bg-gray-50 shadow-md">
             <h2 className="text-xl font-semibold mb-4">Cart Total</h2>
             <div className="space-y-4 w-full">
-              {/* Cart Items */}
+              {/* Cart Items - Each product with quantity and price */}
               {cart.map((item) => (
-                <>
-                  <div
-                    key={item.id}
-                    className="flex justify-between items-center"
-                  >
-                    <span>{item.name}</span>
-                    <div>
-                      <span className="text-emerald-500">${item.price}</span> x{" "}
-                      <span className="text-emerald-500">{item.quantity}</span>
-                    </div>
+                <div
+                  key={item.id}
+                  className="flex justify-between items-center"
+                >
+                  <span>{item.name}</span>
+                  <div>
+                    <span className="text-emerald-500">${item.price}</span> x{" "}
+                    <span className="text-emerald-500">{item.quantity}</span>
                   </div>
-                  <div className="flex justify-between items-center border-t pt-2">
-                    <span className="font-medium">Subtotal</span>
-                    <span className="font-medium">
-                      {item.price * item.quantity}
-                    </span>
-                  </div>
-                  {/* Subtotal */}
-                  <div className="flex justify-between items-center border-t pt-2">
-                    <span className="font-medium">Tax Percentage</span>
-                    <span className="font-medium">{taxRate}%</span>
-                  </div>
-                  <div className="flex justify-between items-center border-t pt-2">
-                    <span className="font-medium">Incl.Tax</span>
-                    <span className="font-medium">
-                      $
-                      {(item.price * item.quantity * taxRate) / 100 +
-                        item.price * item.quantity}
-                    </span>
-                  </div>
-                  {/* Delivery Options */}
-                  <div className="space-y-2">
-                    <RadioGroup
-                      value={deliveryMethod}
-                      onValueChange={setDeliveryMethod}
-                      className="space-y-2"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="standard" id="standard" />
-                          <Label htmlFor="standard">Standard Delivery</Label>
-                        </div>
-                        <span className="text-emerald-500">$100</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="pickup" id="pickup" />
-                          <Label htmlFor="pickup">Personal Pickup</Label>
-                        </div>
-                        <span className="text-emerald-500">Free</span>
-                      </div>
-                    </RadioGroup>
-                  </div>
-                </>
+                </div>
               ))}
-              {/* Payment Methods */}
 
+              {/* Subtotal - Sum of all products */}
+              <div className="flex justify-between items-center border-t pt-2">
+                <span className="font-medium">Subtotal</span>
+                <span className="font-medium">${subtotal.toFixed(2)}</span>
+              </div>
+
+              {/* Tax */}
+              <div className="flex justify-between items-center">
+                <span className="font-medium">Tax ({taxRate}%)</span>
+                <span className="font-medium">${tax.toFixed(2)}</span>
+              </div>
+
+              {/* Delivery Options */}
+              <div className="space-y-2 border-t pt-2">
+                <span className="font-medium block mb-2">Delivery Options</span>
+                <RadioGroup
+                  value={deliveryMethod}
+                  onValueChange={setDeliveryMethod}
+                  className="space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="standard" id="standard" />
+                      <Label htmlFor="standard">Standard Delivery</Label>
+                    </div>
+                    <span className="text-emerald-500">$100</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="pickup" id="pickup" />
+                      <Label htmlFor="pickup">Personal Pickup</Label>
+                    </div>
+                    <span className="text-emerald-500">Free</span>
+                  </div>
+                </RadioGroup>
+              </div>
+
+              {/* Payment Methods */}
               <span className="font-medium">Payment Methods</span>
               <div className="space-y-2">
                 <RadioGroup
@@ -405,13 +398,15 @@ export default function Payments() {
                   </div>
                 </RadioGroup>
               </div>
+
               {/* Total */}
               <div className="flex justify-between items-center border-t pt-2">
                 <span className="font-bold">Total</span>
                 <span className="font-bold">
-                  ${cart.length > 0 && totalPrice}
+                  ${cart.length > 0 && totalPrice.toFixed(2)}
                 </span>
               </div>
+
               {/* Submit Button */}
               <div className="flex flex-row justify-center">
                 <Button text="Checkout" onClick={handleCheckout} />
