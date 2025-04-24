@@ -283,38 +283,23 @@ export default function CartClient() {
                     <div className="flex justify-between text-sm">
                       <span>Tax</span>
                       <span className="font-medium">
-                        ${(taxRate * totalPrice).toFixed(2)}
+                        ${(totalPrice * (taxRate / 100)).toFixed(2)}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Tax Percentage</span>
-                      <span className="font-medium">
-                        {(taxRate*100)}%
-                      </span>
-                    </div>
-
-                    <div className="space-y-2 text-sm border-b">
-                      <label className="flex items-center">
-                        <input
-                          type="radio"
-                          name="delivery"
-                          className="mr-2"
-                          defaultChecked
-                        />
-                        <span>Standard Delivery</span>
-                        <span className="ml-auto text-green-600">$100.00</span>
-                      </label>
-                      <label className="flex items-center mb-3">
-                        <input type="radio" name="delivery" className="mr-2" />
-                        <span>Personal Pickup</span>
-                        <span className="ml-auto text-green-600">Free</span>
-                      </label>
+                      <span className="font-medium">{taxRate}%</span>
                     </div>
 
                     <div className="pt-2">
                       <div className="flex justify-between font-medium">
                         <span>Total</span>
-                        <span>${(totalPrice*taxRate + totalPrice).toFixed(2)}</span>
+                        <span>
+                          $
+                          {(totalPrice + totalPrice * (taxRate / 100)).toFixed(
+                            2
+                          )}
+                        </span>
                       </div>
                     </div>
 

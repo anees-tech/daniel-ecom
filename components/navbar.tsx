@@ -49,7 +49,6 @@ export default function Navbar() {
   useEffect(() => {
     fetchCategories().then(setCategories);
   }, []);
-  console.log(categories);
   const pathname = usePathname();
   const cartCount = useCartStore((state) => state.getCartCount());
   const [isSearchOpen, setIsSearchOpen] = useState(false);

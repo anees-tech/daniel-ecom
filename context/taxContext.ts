@@ -2,13 +2,15 @@
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { fetchGlobalTax } from "@/lib/globalTax";
 
 interface TaxState {
   taxRate: number;
   setTaxRate: (rate: number) => void;
   clearTax: () => void;
 }
-
+const globalTax = await fetchGlobalTax();
+console.log("Global tax fetcasghed:", globalTax);
 const TAX_EXPIRATION_TIME = 60 * 60 * 1000;
 
 export const useTaxStore = create<TaxState>()(
@@ -56,7 +58,11 @@ const setTaxExpiry = () => {
   }
 };
 
-// Check expiration on load
+// Fetch and set global tax on load
 if (typeof window !== "undefined") {
-  checkTaxExpiration();
+  (async () => {
+    const globalTax = await fetchGlobalTax();
+    useTaxStore.getState().setTaxRate(globalTax);
+    checkTaxExpiration();
+  })();
 }

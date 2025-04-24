@@ -16,7 +16,7 @@ import Button from "@/components/button";
 import { useTaxStore } from "@/context/taxContext";
 import InvoiceModal from "./invoice-modal";
 import { addOrderToUserProfile, Order } from "@/lib/orders";
-// import { set } from "nprogress";
+
 export default function Payments() {
   const { cart, clearCart } = useCartStore();
   const { user } = useUser();
@@ -37,8 +37,6 @@ export default function Payments() {
     email: "",
   });
 
-
-
   interface InvoiceModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -50,6 +48,7 @@ export default function Payments() {
         address: string;
         city: string;
         phone: string;
+        apartment: string;
       };
       subtotal: number;
       tax: number;
@@ -67,8 +66,10 @@ export default function Payments() {
       };
     };
   }
-  
-  const [invoiceData, setInvoiceData] = useState<InvoiceModalProps | undefined>();
+
+  const [invoiceData, setInvoiceData] = useState<
+    InvoiceModalProps | undefined
+  >();
   // Handle hydration mismatch
   useEffect(() => {
     setMounted(true);
@@ -84,7 +85,7 @@ export default function Payments() {
   );
 
   const deliveryFee = deliveryMethod === "standard" ? 100 : 0;
-  const tax = subtotal * taxRate;
+  const tax = subtotal * (taxRate / 100);
   const totalPrice = subtotal + tax + deliveryFee;
 
   const handleBankClick = () => {
@@ -178,6 +179,7 @@ export default function Payments() {
             address: order.customerInfo.address,
             city: order.customerInfo.city,
             phone: order.customerInfo.phone,
+            apartment: order.customerInfo.apartment,
           },
           subtotal: order.subtotal,
           tax: order.tax,
@@ -303,72 +305,64 @@ export default function Payments() {
             <div className="space-y-4 w-full">
               {/* Cart Items */}
               {cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between items-center"
-                >
-                  <span>{item.name}</span>
-                  <span className="text-emerald-500">
-                    $
-                    {item.price * item.quantity * taxRate +
-                      item.price * item.quantity}
-                  </span>
-                </div>
-              ))}
-              {/* If cart is empty, show placeholder items like in the image */}
-              {cart.length === 0 && (
                 <>
-                  <div className="flex justify-between items-center">
-                    <span>Lady Bag</span>
-                    <span className="text-emerald-500">$300</span>
+                  <div
+                    key={item.id}
+                    className="flex justify-between items-center"
+                  >
+                    <span>{item.name}</span>
+                    <div>
+                      <span className="text-emerald-500">${item.price}</span> x{" "}
+                      <span className="text-emerald-500">{item.quantity}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span>Lady Shoes</span>
-                    <span className="text-emerald-500">$100</span>
+                  <div className="flex justify-between items-center border-t pt-2">
+                    <span className="font-medium">Subtotal</span>
+                    <span className="font-medium">
+                      {item.price * item.quantity}
+                    </span>
+                  </div>
+                  {/* Subtotal */}
+                  <div className="flex justify-between items-center border-t pt-2">
+                    <span className="font-medium">Tax Percentage</span>
+                    <span className="font-medium">{taxRate}%</span>
+                  </div>
+                  <div className="flex justify-between items-center border-t pt-2">
+                    <span className="font-medium">Incl.Tax</span>
+                    <span className="font-medium">
+                      $
+                      {(item.price * item.quantity * taxRate) / 100 +
+                        item.price * item.quantity}
+                    </span>
+                  </div>
+                  {/* Delivery Options */}
+                  <div className="space-y-2">
+                    <RadioGroup
+                      value={deliveryMethod}
+                      onValueChange={setDeliveryMethod}
+                      className="space-y-2"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="standard" id="standard" />
+                          <Label htmlFor="standard">Standard Delivery</Label>
+                        </div>
+                        <span className="text-emerald-500">$100</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="pickup" id="pickup" />
+                          <Label htmlFor="pickup">Personal Pickup</Label>
+                        </div>
+                        <span className="text-emerald-500">Free</span>
+                      </div>
+                    </RadioGroup>
                   </div>
                 </>
-              )}
-              {/* Subtotal */}
-              <div className="flex justify-between items-center border-t pt-2">
-                <span className="font-medium">Subtotal</span>
-                <span className="font-medium">
-                  ${cart.length > 0 ? subtotal * taxRate + subtotal : 1750}
-                </span>
-              </div>
-              <div className="flex justify-between items-center border-t pt-2">
-                <span className="font-medium">Tax Percentage</span>
-                <span className="font-medium">{taxRate * 100}%</span>
-              </div>
-              <div className="flex justify-between items-center border-t pt-2">
-                <span className="font-medium">Incl.Tax</span>
-                <span className="font-medium">
-                  ${(taxRate * subtotal).toFixed(2)}
-                </span>
-              </div>
-              {/* Delivery Options */}
-              <div className="space-y-2">
-                <RadioGroup
-                  value={deliveryMethod}
-                  onValueChange={setDeliveryMethod}
-                  className="space-y-2"
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="standard" id="standard" />
-                      <Label htmlFor="standard">Standard Delivery</Label>
-                    </div>
-                    <span className="text-emerald-500">$100</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="pickup" id="pickup" />
-                      <Label htmlFor="pickup">Personal Pickup</Label>
-                    </div>
-                    <span className="text-emerald-500">Free</span>
-                  </div>
-                </RadioGroup>
-              </div>
+              ))}
               {/* Payment Methods */}
+
+              <span className="font-medium">Payment Methods</span>
               <div className="space-y-2">
                 <RadioGroup
                   value={paymentMethod}
@@ -415,7 +409,7 @@ export default function Payments() {
               <div className="flex justify-between items-center border-t pt-2">
                 <span className="font-bold">Total</span>
                 <span className="font-bold">
-                  ${cart.length > 0 ? totalPrice : 1750}
+                  ${cart.length > 0 && totalPrice}
                 </span>
               </div>
               {/* Submit Button */}

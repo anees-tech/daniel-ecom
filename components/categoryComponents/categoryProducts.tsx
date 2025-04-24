@@ -122,7 +122,7 @@ function CategoryProducts({ productsArray, setIsLoading }: ProductListProps) {
                 key={product.id}
                 className="transition-all duration-300 hover:scale-105"
               >
-                <ItemCard {...product} />
+                <ItemCard {...product} id={product.id.toString()} />
               </div>
             ))}
           </div>
