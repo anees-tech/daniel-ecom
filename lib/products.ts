@@ -2,11 +2,11 @@ import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/lib/firebaseConfig";
 
 export interface Product {
-  brand: string;
-  material: string;
   id: string;
   name: string;
   category: string;
+  images: string[];
+  colors: { name: string; hex?: string }[];
   image: string;
   currentPrice: number;
   originalPrice: number;
@@ -14,6 +14,13 @@ export interface Product {
   stock: number;
   rating: number;
   reviewsCount: number;
+  brand: string;
+  sku: string;
+  sizes: (string | number)[];
+  outOfStockSizes?: (string | number)[];
+  description: string;
+  material: string;
+  features: string[];
 }
 
 export async function getProducts(): Promise<Product[]> {
@@ -31,13 +38,13 @@ export async function getProducts(): Promise<Product[]> {
   }
 }
 
-export async function getProductById(productId: string) {
+export async function getProductById(productId: string): Promise<Product> {
   try {
     const productDoc = doc(firestore, "products", productId);
     const snapshot = await getDoc(productDoc);
 
     if (snapshot.exists()) {
-      return { id: snapshot.id, ...snapshot.data() };
+      return { id: snapshot.id, ...snapshot.data() } as Product; // Ensure correct typing
     } else {
       throw new Error("Product not found");
     }

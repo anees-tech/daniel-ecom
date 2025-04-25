@@ -42,11 +42,16 @@ const categoryMap = {
   ],
 };
 
-const sizes = ["XS", "S", "M", "L", "XL"];
-const brands = ["Louis Vuitton", "Hermès", "Gucci", "Chanel", "Loewe"];
-const materials = ["Linen", "Silk", "Wool", "Satin", "Cotton", "Leather"];
-
-const SideBar = () => {
+// const sizes = ["XS", "S", "M", "L", "XL"];
+// const brands = ["Louis Vuitton", "Hermès", "Gucci", "Chanel", "Loewe"];
+// const materials = ["Linen", "Silk", "Wool", "Satin", "Cotton", "Leather"];
+interface ProductListProps {
+  brands: string[];
+  size: (string | number)[];
+  materials: string[];
+  setIsLoading?: (loading: boolean) => void;
+}
+const SideBar = ({ brands, size, materials }: ProductListProps) => {
   const {
     selectedFilters,
     setPriceFilter,
@@ -98,28 +103,26 @@ const SideBar = () => {
         {/* Price Filter */}
         <div className="mb-4 space-y-2">
           <h3 className="text-sm font-semibold text-gray-900">Price</h3>
-          {["High To Low Price", "Low To High Price", "On Sale"].map(
-            (price) => (
-              <button
-                key={price}
-                onClick={() => setPriceFilter(price)}
-                className={`text-sm w-full text-left py-1 px-2 rounded-md transition-all duration-200 cursor-pointer ${
-                  selectedFilters.price === price
-                    ? "bg-red-500 text-white"
-                    : "text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                {price}
-              </button>
-            )
-          )}
+          {["Low to High", "High to Low", "On Sale"].map((price) => (
+            <button
+              key={price}
+              onClick={() => setPriceFilter(price)}
+              className={`text-sm w-full text-left py-1 px-2 rounded-md transition-all duration-200 cursor-pointer ${
+                selectedFilters.price === "Price: " + price
+                  ? "bg-red-500 text-white"
+                  : "text-gray-600 hover:bg-gray-200"
+              }`}
+            >
+              {price}
+            </button>
+          ))}
         </div>
 
         {/* Size Filter */}
         <div className="mb-6">
           <h3 className="text-sm font-semibold text-gray-900 mb-2">Size</h3>
           <div className="flex flex-wrap gap-2">
-            {sizes.map((size) => (
+            {size.map((size) => (
               <button
                 key={size}
                 onClick={() => toggleSizeFilter(size)}

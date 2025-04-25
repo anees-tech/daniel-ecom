@@ -22,14 +22,14 @@ export default function DropDownFilter({
             onSortChange(e.target.value);
           }}
         >
-          <option value="" className="text-black px-5 mx-5">
+          <option value="" className="text-black px-5 mx-5 w-full">
             Sort By
           </option>
           {filters.map((filter) => (
             <option
               key={filter}
               value={filter}
-              className="text-black px-5 mx-5"
+              className="text-black p-0 mx-10 w-full"
             >
               {filter}
             </option>

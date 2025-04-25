@@ -1,5 +1,5 @@
 interface CategoryProductsInterface {
-  id: number;
+  id: string;
   name: string;
   category: string;
   images: string[];

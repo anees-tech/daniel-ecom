@@ -70,7 +70,7 @@ export default function Navbar() {
     {
       title: "Shop",
       href: "/products",
-      children: categories
+      children: categories,
     },
     {
       title: "Service",
@@ -354,11 +354,6 @@ export default function Navbar() {
                 <DropdownMenuItem asChild>
                   <Link href="/orders" className="cursor-pointer">
                     Orders
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/wishlist" className="cursor-pointer">
-                    Wishlist
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

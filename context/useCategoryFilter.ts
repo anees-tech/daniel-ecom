@@ -5,12 +5,12 @@ import { create } from "zustand";
 interface CategoryFilterState {
   selectedFilters: {
     price: string | null;
-    sizes: string[];
+    sizes: (string | number)[];
     brand: string | null;
     material: string | null;
   };
   setPriceFilter: (price: string | null) => void;
-  toggleSizeFilter: (size: string) => void;
+  toggleSizeFilter: (size: string | number) => void;
   setBrandFilter: (brand: string | null) => void;
   setMaterialFilter: (material: string | null) => void;
   clearFilters: () => void;
@@ -39,6 +39,7 @@ export const useCategoryFilter = create<CategoryFilterState>((set) => ({
           : [...state.selectedFilters.sizes, size],
       },
     })),
+
   setBrandFilter: (brand) =>
     set((state) => ({
       selectedFilters: {

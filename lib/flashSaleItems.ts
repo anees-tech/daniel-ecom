@@ -5,6 +5,7 @@ export interface FlashSaleItem {
   id: string;
   name: string;
   category: string;
+  images: string[];
   image: string;
   currentPrice: number;
   originalPrice: number;
@@ -12,6 +13,13 @@ export interface FlashSaleItem {
   stock: number;
   rating: number;
   reviewsCount: number;
+  brand: string;
+  sku: string;
+  sizes: (string | number)[];
+  outOfStockSizes?: (string | number)[];
+  description: string;
+  material: string;
+  features: string[];
 }
 
 export async function getFlashSaleItems(): Promise<FlashSaleItem[]> {

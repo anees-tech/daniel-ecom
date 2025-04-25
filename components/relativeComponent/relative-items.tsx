@@ -11,6 +11,8 @@ import ItemCardSkeleton from "@/components/item-card-skeleton"; // Importing you
 import TextBox from "@/components/text-box";
 import Image from "next/image";
 import productsDetails from "@/data/ItemProductDetail";
+import CategoryProductsInterface from "@/interfaces/categoriesInterface";
+import { getProducts } from "@/lib/products";
 
 interface RelativeItemsProps {
   category?: string;
@@ -20,6 +22,32 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
   const sliderRef = useRef<Slider | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<CategoryProductsInterface[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    async function fetchProducts() {
+      setIsLoading(true);
+      const items = await getProducts();
+
+      // Map Firestore products to match ItemCardInterface
+      const mappedProducts: CategoryProductsInterface[] = items
+        .filter(
+          (product) =>
+            product.category.toLowerCase() === category?.toLowerCase()
+        )
+        .map((product) => ({
+          ...product,
+          id: String(product.id), // Convert number to string
+          brand: product.brand || "Unknown Brand",
+          material: product.material || "Unknown Material",
+        }));
+
+      setProducts(mappedProducts);
+      setIsLoading(false);
+    }
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -53,7 +81,7 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
 
   const settings = {
     mobileFirst: true,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: isMobile ? 2 : 4,
     slidesToScroll: 1,
@@ -104,19 +132,17 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
         key={isMobile ? "mobile" : "desktop"}
       >
         {loading ? (
-          Array(4)
+          Array(products.length)
             .fill(null)
             .map((_, index) => (
               <div key={index} className="px-2">
                 <ItemCardSkeleton /> {/* Using existing skeleton */}
               </div>
             ))
-        ) : displayProducts.length > 0 ? (
-          displayProducts.map((product) => (
+        ) : products.length > 0 ? (
+          products.map((product) => (
             <div key={product.id} className="px-2">
-              <ItemCard
-                {...product}
-              />
+              <ItemCard {...product} />
             </div>
           ))
         ) : (

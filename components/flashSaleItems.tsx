@@ -10,6 +10,7 @@ import TextBox from "@/components/text-box";
 import Image from "next/image";
 import ItemCardSkeleton from "./item-card-skeleton";
 import { getFlashSaleItems, FlashSaleItem } from "@/lib/flashSaleItems";
+import { Item } from "@radix-ui/react-dropdown-menu";
 
 const FlashSaleCarousel = () => {
   const sliderRef = useRef<Slider | null>(null);
@@ -89,8 +90,7 @@ const FlashSaleCarousel = () => {
         key={isMobile ? "mobile" : "desktop"}
       >
         {loading
-          ?
-            Array(4)
+          ? Array(Item.length)
               .fill(null)
               .map((_, index) => (
                 <div key={index} className="px-2">
@@ -106,7 +106,7 @@ const FlashSaleCarousel = () => {
 
               return (
                 <div key={product.id} className="px-2">
-                  <ItemCard brand={""} material={""} {...product} id={product.id} />
+                  <ItemCard {...product} id={product.id.toString()} />
                 </div>
               );
             })}
@@ -127,4 +127,3 @@ const FlashSaleCarousel = () => {
 };
 
 export default FlashSaleCarousel;
-

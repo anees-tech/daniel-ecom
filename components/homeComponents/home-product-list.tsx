@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import ItemCard from "../item-card";
 import ItemCardSkeleton from "../item-card-skeleton";
 import { Pagination } from "../pagination";
-import ItemCardInterface from "@/interfaces/itemCardInterface";
+
+import CategoryProductsInterface from "@/interfaces/categoriesInterface";
 
 interface ProductListProps {
-  products: ItemCardInterface[];
+  products: CategoryProductsInterface[];
 }
 
 export default function ProductList({ products }: ProductListProps) {
@@ -30,7 +31,7 @@ export default function ProductList({ products }: ProductListProps) {
     <div>
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
-          {Array.from({ length: itemsPerPage }).map((_, index) => (
+          {Array.from({ length: products.length }).map((_, index) => (
             <ItemCardSkeleton key={index} />
           ))}
         </div>
@@ -39,7 +40,7 @@ export default function ProductList({ products }: ProductListProps) {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
           {displayedProducts.map((product) => (
-            <ItemCard key={product.id} {...product} />
+            <ItemCard key={product.id.toString()} {...product} />
           ))}
         </div>
       )}

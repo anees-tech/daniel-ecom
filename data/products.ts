@@ -2,7 +2,7 @@ import ItemCardInterface from "@/interfaces/itemCardInterface";
 
 const products: ItemCardInterface[] = [
   {
-    id: 1,
+    id: "1",
     name: "Men's Casual Shirt",
     image: "/pngegg.png",
     category: "men",
@@ -16,7 +16,7 @@ const products: ItemCardInterface[] = [
     material: "Cotton",
   },
   {
-    id: 2,
+    id: "2",
     name: "Women's Summer Dress",
     image: "/pngegg.png",
     category: "women",
@@ -30,7 +30,7 @@ const products: ItemCardInterface[] = [
     material: "Polyester",
   },
   {
-    id: 3,
+    id: "3",
     name: "Running Shoes",
     image: "/pngegg.png",
     category: "shoes",
@@ -44,7 +44,7 @@ const products: ItemCardInterface[] = [
     material: "Mesh",
   },
   {
-    id: 4,
+    id: "4",
     name: "Leather Jacket",
     image: "/pngegg.png",
     category: "kids",
@@ -58,7 +58,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 5,
+    id: "5",
     name: "Work Boots",
     image: "/pngegg.png",
     category: "workwear",
@@ -72,7 +72,7 @@ const products: ItemCardInterface[] = [
     material: "Leather",
   },
   {
-    id: 6,
+    id: "6",
     name: "Men's Formal Shirt",
     image: "/pngegg.png",
     category: "men",
@@ -86,7 +86,7 @@ const products: ItemCardInterface[] = [
     material: "Cotton",
   },
   {
-    id: 7,
+    id: "7",
     name: "Women's Leather Handbag",
     image: "/pngegg.png",
     category: "kids",
@@ -100,7 +100,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 8,
+    id: "8",
     name: "Casual Sneakers",
     image: "/pngegg.png",
     category: "shoes",
@@ -114,7 +114,7 @@ const products: ItemCardInterface[] = [
     material: "Canvas",
   },
   {
-    id: 9,
+    id: "9",
     name: "Men's Work Pants",
     image: "/pngegg.png",
     category: "workwear",
@@ -128,7 +128,7 @@ const products: ItemCardInterface[] = [
     material: "Denim",
   },
   {
-    id: 10,
+    id: "10",
     name: "Women's Leather Jacket",
     image: "/pngegg.png",
     category: "kids",
@@ -142,7 +142,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 11,
+    id: "11",
     name: "Men's Running Shoes",
     image: "/pngegg.png",
     category: "shoes",
@@ -156,7 +156,7 @@ const products: ItemCardInterface[] = [
     material: "Mesh",
   },
   {
-    id: 12,
+    id: "12",
     name: "Women's Casual Blouse",
     image: "/pngegg.png",
     category: "women",
@@ -170,7 +170,7 @@ const products: ItemCardInterface[] = [
     material: "Silk",
   },
   {
-    id: 13,
+    id: "13",
     name: "Men's Leather Belt",
     image: "/pngegg.png",
     category: "kids",
@@ -184,7 +184,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 14,
+    id: "14",
     name: "Women's High Heels",
     image: "/pngegg.png",
     category: "shoes",
@@ -198,7 +198,7 @@ const products: ItemCardInterface[] = [
     material: "Synthetic",
   },
   {
-    id: 15,
+    id: "15",
     name: "Men's Work Boots",
     image: "/pngegg.png",
     category: "workwear",
@@ -212,7 +212,7 @@ const products: ItemCardInterface[] = [
     material: "Leather",
   },
   {
-    id: 16,
+    id: "16",
     name: "Women's Leather Boots",
     image: "/pngegg.png",
     category: "kids",
@@ -226,7 +226,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 17,
+    id: "17",
     name: "Men's Casual Pants",
     image: "/pngegg.png",
     category: "men",
@@ -240,7 +240,7 @@ const products: ItemCardInterface[] = [
     material: "Cotton",
   },
   {
-    id: 18,
+    id: "18",
     name: "Women's Work Blouse",
     image: "/pngegg.png",
     category: "workwear",
@@ -254,7 +254,7 @@ const products: ItemCardInterface[] = [
     material: "Polyester",
   },
   {
-    id: 19,
+    id: "19",
     name: "Men's Leather Wallet",
     image: "/pngegg.png",
     category: "kids",
@@ -268,7 +268,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 20,
+    id: "20",
     name: "Women's Running Shoes",
     image: "/pngegg.png",
     category: "shoes",
@@ -282,7 +282,7 @@ const products: ItemCardInterface[] = [
     material: "Mesh",
   },
   {
-    id: 21,
+    id: "21",
     name: "Men's Leather Jacket",
     image: "/pngegg.png",
     category: "kids",
@@ -296,7 +296,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 22,
+    id: "22",
     name: "Women's Casual Sneakers",
     image: "/pngegg.png",
     category: "shoes",
@@ -310,7 +310,7 @@ const products: ItemCardInterface[] = [
     material: "Canvas",
   },
   {
-    id: 23,
+    id: "23",
     name: "Men's Winter Coat",
     image: "/pngegg.png",
     category: "men",
@@ -324,7 +324,7 @@ const products: ItemCardInterface[] = [
     material: "Wool",
   },
   {
-    id: 24,
+    id: "24",
     name: "Women's Yoga Pants",
     image: "/pngegg.png",
     category: "women",
@@ -338,7 +338,7 @@ const products: ItemCardInterface[] = [
     material: "Spandex",
   },
   {
-    id: 25,
+    id: "25",
     name: "Men's Dress Shoes",
     image: "/pngegg.png",
     category: "shoes",
@@ -352,7 +352,7 @@ const products: ItemCardInterface[] = [
     material: "Leather",
   },
   {
-    id: 26,
+    id: "26",
     name: "Women's Leather Gloves",
     image: "/pngegg.png",
     category: "kids",
@@ -366,7 +366,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 27,
+    id: "27",
     name: "Men's Work Gloves",
     image: "/pngegg.png",
     category: "workwear",
@@ -380,7 +380,7 @@ const products: ItemCardInterface[] = [
     material: "Leather",
   },
   {
-    id: 28,
+    id: "28",
     name: "Women's Winter Boots",
     image: "/pngegg.png",
     category: "shoes",
@@ -394,7 +394,7 @@ const products: ItemCardInterface[] = [
     material: "Suede",
   },
   {
-    id: 29,
+    id: "29",
     name: "Men's Casual Sneakers",
     image: "/pngegg.png",
     category: "shoes",
@@ -408,7 +408,7 @@ const products: ItemCardInterface[] = [
     material: "Canvas",
   },
   {
-    id: 30,
+    id: "30",
     name: "Women's Leather Skirt",
     image: "/pngegg.png",
     category: "kids",
@@ -422,7 +422,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 31,
+    id: "31",
     name: "Men's Hooded Sweatshirt",
     image: "/pngegg.png",
     category: "men",
@@ -436,7 +436,7 @@ const products: ItemCardInterface[] = [
     material: "Cotton",
   },
   {
-    id: 32,
+    id: "32",
     name: "Women's Denim Jacket",
     image: "/pngegg.png",
     category: "women",
@@ -450,7 +450,7 @@ const products: ItemCardInterface[] = [
     material: "Denim",
   },
   {
-    id: 33,
+    id: "33",
     name: "Men's Leather Backpack",
     image: "/pngegg.png",
     category: "kids",
@@ -464,7 +464,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 34,
+    id: "34",
     name: "Women's Running Shorts",
     image: "/pngegg.png",
     category: "women",
@@ -478,7 +478,7 @@ const products: ItemCardInterface[] = [
     material: "Polyester",
   },
   {
-    id: 35,
+    id: "35",
     name: "Men's Formal Pants",
     image: "/pngegg.png",
     category: "men",
@@ -492,7 +492,7 @@ const products: ItemCardInterface[] = [
     material: "Wool",
   },
   {
-    id: 36,
+    id: "36",
     name: "Women's Leather Jacket",
     image: "/pngegg.png",
     category: "kids",
@@ -506,7 +506,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 37,
+    id: "37",
     name: "Men's Work Jacket",
     image: "/pngegg.png",
     category: "workwear",
@@ -520,7 +520,7 @@ const products: ItemCardInterface[] = [
     material: "Denim",
   },
   {
-    id: 38,
+    id: "38",
     name: "Women's Casual Dress",
     image: "/pngegg.png",
     category: "women",
@@ -534,7 +534,7 @@ const products: ItemCardInterface[] = [
     material: "Cotton",
   },
   {
-    id: 39,
+    id: "39",
     name: "Men's Leather Shoes",
     image: "/pngegg.png",
     category: "shoes",
@@ -548,7 +548,7 @@ const products: ItemCardInterface[] = [
     material: "Leather",
   },
   {
-    id: 40,
+    id: "40",
     name: "Women's Work Boots",
     image: "/pngegg.png",
     category: "workwear",
@@ -562,7 +562,7 @@ const products: ItemCardInterface[] = [
     material: "Leather",
   },
   {
-    id: 41,
+    id: "41",
     name: "Men's Leather Watch Strap",
     image: "/pngegg.png",
     category: "kids",
@@ -576,7 +576,7 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
   {
-    id: 42,
+    id: "42",
     name: "Women's Leather Purse",
     image: "/pngegg.png",
     category: "kids",
@@ -590,6 +590,5 @@ const products: ItemCardInterface[] = [
     material: "Genuine Leather",
   },
 ];
-
 
 export default products;

@@ -15,7 +15,7 @@ interface ProductListProps {
 function CategoryProducts({ productsArray, setIsLoading }: ProductListProps) {
   const { selectedFilters } = useCategoryFilter();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
   const [filteredProducts, setFilteredProducts] =
     useState<CategoryProductsInterface[]>(productsArray);
   const [sortOption, setSortOption] = useState("Featured");
@@ -29,7 +29,7 @@ function CategoryProducts({ productsArray, setIsLoading }: ProductListProps) {
     setTimeout(() => {
       let updatedProducts = [...productsArray];
 
-      if (selectedFilters.price === "On Sale") {
+      if (selectedFilters.price === "Price: On Sale") {
         updatedProducts = updatedProducts.filter(
           (product) => product.discount > 0
         );

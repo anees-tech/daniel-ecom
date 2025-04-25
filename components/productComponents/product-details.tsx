@@ -38,7 +38,11 @@ export default function ProductDetailPage({
       try {
         const firestoreProduct = await getProductById(productId);
         setProduct(firestoreProduct);
-        setSelectedColor(firestoreProduct?.colors?.[0]?.name || "");
+        setSelectedColor(
+          firestoreProduct && Array.isArray(firestoreProduct.colors)
+            ? firestoreProduct.colors[0]?.name || ""
+            : ""
+        );
       } catch (error) {
         console.error("Error fetching product from Firestore:", error);
 

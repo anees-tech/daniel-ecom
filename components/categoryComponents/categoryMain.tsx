@@ -1,3 +1,5 @@
+"use client";
+
 import { notFound } from "next/navigation";
 import { Filter } from "lucide-react";
 import SideBar from "./SideBar";
@@ -6,6 +8,9 @@ import Image from "next/image";
 import categoryProducts from "@/data/categoriesData";
 import HomeLink from "../home-link";
 import TextField from "../text-field";
+import { useEffect, useState } from "react";
+import { getProducts } from "@/lib/products";
+import CategoryProductsInterface from "@/interfaces/categoriesInterface";
 
 const allowedCategories = ["shoes", "leather", "workwear", "men", "women"];
 
@@ -14,6 +19,59 @@ export async function generateStaticParams() {
 }
 
 export default function CategoryPage({ params }: { params: { slug: string } }) {
+  const [products, setProducts] = useState<CategoryProductsInterface[]>([]);
+  const [brands, setBrands] = useState<string[]>([]);
+  const [size, setSizes] = useState<(string | number)[]>([]);
+  const [material, setMaterials] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    async function fetchProducts() {
+      setIsLoading(true);
+      const items = await getProducts();
+
+      // Map Firestore products to match ItemCardInterface
+      const mappedProducts: CategoryProductsInterface[] = items
+        .filter(
+          (product) =>
+            product.category.toLowerCase() === params.slug.toLowerCase()
+        )
+        .map((product) => ({
+          ...product,
+          id: String(product.id), // Convert number to string
+          brand: product.brand || "Unknown Brand",
+          material: product.material || "Unknown Material",
+        }));
+
+      const uniqueSizes: (string | number)[] = Array.from(
+        new Set(
+          mappedProducts
+            .flatMap((product) => product.sizes || []) // flatten sizes
+            .filter(Boolean) // remove undefined/null
+        )
+      );
+
+      setSizes(uniqueSizes);
+
+      const uniqueBrands = Array.from(
+        new Set(mappedProducts.map((product) => product.brand).filter(Boolean))
+      );
+
+      const uniqueMaterials = Array.from(
+        new Set(
+          mappedProducts.map((product) => product.material).filter(Boolean)
+        )
+      );
+
+      setBrands(uniqueBrands);
+      setMaterials(uniqueMaterials);
+
+      setProducts(mappedProducts);
+      setIsLoading(false);
+    }
+
+    fetchProducts();
+  }, []);
+
   if (!allowedCategories.includes(params.slug)) {
     return notFound();
   }
@@ -21,7 +79,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   return (
     <div className="min-h-screen flex flex-col pt-0 pb-20">
       {/* Page Layout with padding to avoid overlap */}
-      <div className="flex-1 py-8 mt-15 lg:mt-20 relative">
+      <div className="flex-1 py-8 mt-0 lg:mt-0 relative">
         <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-4 capitalize">
           <HomeLink />
           <span className="text-gray-400">/</span>
@@ -59,7 +117,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
               </span>
             </summary>
             <div className="p-4 border-t">
-              <SideBar />
+              <SideBar brands={brands} size={size} materials={material} />
             </div>
           </details>
         </div>
@@ -68,13 +126,13 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           {/* Sidebar on the left - Hidden on mobile */}
           <aside className="hidden md:block md:w-1/4">
             <div className="p-4 rounded-lg sticky top-24">
-              <SideBar />
+              <SideBar brands={brands} size={size} materials={material} />
             </div>
           </aside>
 
           {/* Main content */}
           <main className="w-full md:w-3/4 p-5 rounded-xl">
-            <CategoryProducts productsArray={categoryProducts} />
+            <CategoryProducts productsArray={products} />
           </main>
         </div>
       </div>

@@ -10,10 +10,11 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 interface ProductCardEnhancedProps {
-  id: string; // Ensure id is a string
+  id: string;
   name: string;
-  image: string;
   category: string;
+  images: string[];
+  image: string;
   currentPrice: number;
   originalPrice: number;
   discount: number;
@@ -21,7 +22,12 @@ interface ProductCardEnhancedProps {
   rating: number;
   reviewsCount: number;
   brand: string;
+  sku: string;
+  sizes: (string | number)[];
+  outOfStockSizes?: (string | number)[];
+  description: string;
   material: string;
+  features: string[];
 }
 
 export default function ItemCard({
@@ -70,7 +76,7 @@ export default function ItemCard({
         </Link>
         {discount > 0 && (
           <Badge className="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-full text-sm">
-            {discount}% OFF
+            {discount} % OFF
           </Badge>
         )}
 

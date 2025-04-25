@@ -6,11 +6,11 @@ import Button from "../button";
 import Carousel from "./carousel";
 import Image from "next/image";
 
-const carouselData = [
-  { id: 1, image: "/bag.png" },
-  { id: 2, image: "/bag2.png" },
-  { id: 3, image: "/pngegg.png" },
-];
+// const carouselData = [
+//   { id: 1, image: "/bag.png" },
+//   { id: 2, image: "/bag2.png" },
+//   { id: 3, image: "/pngegg.png" },
+// ];
 
 const Hero = () => {
   return (
@@ -83,7 +83,7 @@ const Hero = () => {
               className="w-70 h-70 md:w-90 md:h-90 lg:w-100 lg:h-100 absolute -z-50"
             />
             <div className="absolute">
-              <Carousel data={carouselData} />
+              <Carousel />
             </div>
           </div>
         </div>

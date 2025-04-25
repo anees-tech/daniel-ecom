@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import ProductList from "./home-product-list";
 import FilterProducts from "./home-product-filter";
 import DropDownFilter from "../drop-down-filter";
-import { getProducts, Product } from "@/lib/products";
-import ItemCardInterface from "@/interfaces/itemCardInterface";
+import { getProducts } from "@/lib/products";
+import CategoryProductsInterface from "@/interfaces/categoriesInterface";
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<ItemCardInterface[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<ItemCardInterface[]>([]);
+  const [products, setProducts] = useState<CategoryProductsInterface[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<
+    CategoryProductsInterface[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sortFilter, setSortFilter] = useState("");
   const [category, setCategory] = useState("all");
@@ -22,12 +24,14 @@ export default function ProductsPage() {
       const items = await getProducts();
 
       // Map Firestore products to match ItemCardInterface
-      const mappedProducts: ItemCardInterface[] = items.map((product) => ({
-        ...product,
-        id: product.id, // Keep id as a string
-        brand: product.brand || "Unknown Brand",
-        material: product.material || "Unknown Material",
-      }));
+      const mappedProducts: CategoryProductsInterface[] = items.map(
+        (product) => ({
+          ...product,
+          id: String(product.id), // Keep id as a string
+          brand: product.brand || "Unknown Brand",
+          material: product.material || "Unknown Material",
+        })
+      );
 
       setProducts(mappedProducts);
       setFilteredProducts(mappedProducts); // Initialize filtered products
@@ -56,8 +60,7 @@ export default function ProductsPage() {
       // Apply category filter
       if (category !== "all") {
         updatedProducts = updatedProducts.filter(
-          (product) =>
-            product.category.toLowerCase() === category.toLowerCase()
+          (product) => product.category.toLowerCase() === category.toLowerCase()
         );
       }
 
