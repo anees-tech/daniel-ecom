@@ -1,111 +1,206 @@
-import Link from "next/link";
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { servicesData } from "@/data/service-data";
-import { use } from "react";
+import Link from "next/link";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "@/lib/firebaseConfig";
 import HomeLink from "@/components/home-link";
-import TextField from "@/components/text-field";
+import Button from "@/components/button";
+import { ArrowLeft, ChevronRight } from "lucide-react";
 
-export default function ServiceDetail({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = use(params);
-  const service = servicesData.find((s) => s.id === id);
+interface Service {
+  id: string;
+  name: string;
+  details: string;
+  mainImage: string;
+  subImages: string[];
+  createdAt: {
+    seconds: number;
+    nanoseconds: number;
+  };
+}
 
-  if (!service) {
-    notFound();
+export default function ServiceDetailPage({ params }: { params: { id: string } }) {
+  const serviceId = params.id; // Access the id directly
+  const [service, setService] = useState<Service | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchService() {
+      try {
+        setLoading(true);
+        const docRef = doc(firestore, "services", serviceId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const serviceData = {
+            id: docSnap.id,
+            ...docSnap.data(),
+          } as Service;
+
+          setService(serviceData);
+          setSelectedImage(serviceData.mainImage);
+        } else {
+          console.log("No such service!");
+        }
+      } catch (error) {
+        console.error("Error fetching service details:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (serviceId) {
+      fetchService();
+    }
+  }, [serviceId]);
+
+  // Handle selecting a different image
+  const handleImageSelect = (image: string) => {
+    setSelectedImage(image);
+  };
+
+  if (loading) {
+    return (
+      <div className="pt-16 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="animate-pulse">
+          <div className="h-6 bg-gray-200 rounded w-1/4 mb-6"></div>
+          <div className="h-10 bg-gray-200 rounded w-1/2 mb-10"></div>
+
+          <div className="grid md:grid-cols-2 gap-10">
+            {/* Main image skeleton */}
+            <div className="aspect-square bg-gray-200 rounded-lg"></div>
+
+            {/* Content skeleton */}
+            <div className="space-y-4">
+              <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+              <div className="space-y-2">
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-full"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 bg-gray-200 rounded w-36"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Thumbnails skeleton */}
+          <div className="mt-8 flex space-x-4">
+            <div className="w-20 h-20 bg-gray-200 rounded"></div>
+            <div className="w-20 h-20 bg-gray-200 rounded"></div>
+            <div className="w-20 h-20 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
+  if (!service) {
+    return (
+      <div className="pt-16 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="text-3xl font-bold text-red-500 mb-4">Service Not Found</h1>
+        <p className="text-gray-600 mb-8">The service you're looking for doesn't exist or has been removed.</p>
+        <Link href="/services">
+          <Button text="Back to Services" />
+        </Link>
+      </div>
+    );
+  }
+
+  const allImages = [service.mainImage, ...(service.subImages || [])];
+
   return (
-    <main className="pt-10 relative">
+    <main className="pt-10 pb-20 relative">
       <Image
         src="/design.svg"
         alt="Design"
         width={200}
         height={200}
         priority
-        className="absolute right-0 -z-50"
+        className="absolute right-0 top-0 -z-50"
       />
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-8 lg:px-12 py-8">
-        <div className="mb-5 flex flex-row gap-2 items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="red"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"
-            />
-          </svg>
-          <Link href="/" className=" text-red-500  hover:text-red-600">
-            Back to Services
-          </Link>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize">
+        <nav className="flex items-center mb-8 text-sm md:text-lg">
           <HomeLink />
-          <span className="mx-2 text-gray-400">/</span>
-          <Link href="/services" className="text-gray-500 hover:text-gray-700">
+          <ChevronRight className="mx-2 h-4 w-4 text-gray-400" />
+          <Link href="/services" className="text-gray-600 hover:text-gray-800">
             Services
           </Link>
-          <span className="mx-2 text-gray-400">/</span>
-          <span className="text-red-500">{service.title}</span>
+          <ChevronRight className="mx-2 h-4 w-4 text-gray-400" />
+          <span className="text-red-500 font-medium truncate">{service.name}</span>
         </nav>
 
-        <TextField text={service.title} />
-
-        {/* Service Header */}
-        <div className="mb-8">
-          <div className="h-80 relative rounded-lg overflow-hidden">
-            <Image
-              src={service.image || "/placeholder.svg"}
-              alt={service.title}
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
-
-        {/* Service Content */}
-        <div className="prose max-w-none bg-white p-8 rounded-md">
-          <p className="text-lg mb-6">{service.shortDescription}</p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-8">
-            {service.additionalImages.map((img, index) => (
-              <div
-                key={index}
-                className="h-60 relative rounded-lg overflow-hidden"
-              >
+        <div className="bg-white rounded-xl shadow-md p-6 md:p-10">
+          <div className="grid md:grid-cols-2 gap-10">
+            {/* Left column - Images */}
+            <div className="space-y-6">
+              {/* Main selected image */}
+              <div className="aspect-square relative rounded-lg overflow-hidden border border-gray-200">
                 <Image
-                  src={img || "/placeholder.svg"}
-                  alt={`${service.title} image ${index + 1}`}
+                  src={selectedImage || service.mainImage}
+                  alt={service.name}
                   fill
                   className="object-cover"
                 />
               </div>
-            ))}
-          </div>
 
-          <div className="space-y-4">
-            {service.fullDescription.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
+              {/* Image thumbnails */}
+              {allImages.length > 1 && (
+                <div className="flex space-x-4 overflow-x-auto pb-2">
+                  {allImages.map((image, index) => (
+                    <div
+                      key={index}
+                      onClick={() => handleImageSelect(image)}
+                      className={`w-20 h-20 relative rounded cursor-pointer border-2 ${
+                        selectedImage === image
+                          ? "border-red-500"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                    >
+                      <Image
+                        src={image}
+                        alt={`${service.name} thumbnail ${index + 1}`}
+                        fill
+                        className="object-cover rounded"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Right column - Content */}
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 mb-6">{service.name}</h1>
+              <div className="prose prose-lg text-gray-600 mb-8">
+                <p>{service.details}</p>
+              </div>
+              <Link href="/contact" className="inline-block">
+                <Button text="Contact Us About This Service" />
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Back Button */}
+        {/* Back to services button */}
+        <div className="mt-10 flex justify-center">
+          <Link href="/services" className="inline-flex items-center text-red-500 hover:text-red-600">
+            <ArrowLeft className="mr-2 h-5 w-5" />
+            <span>Back to All Services</span>
+          </Link>
+        </div>
       </div>
+
       <Image
         src="/design2.svg"
         alt="Design"
         width={200}
         height={200}
-        priority
         className="absolute left-0 bottom-0 -z-50"
       />
     </main>

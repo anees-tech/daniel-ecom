@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import {
   Award,
   Clock,
@@ -11,9 +14,52 @@ import {
 } from "lucide-react";
 import HomeLink from "@/components/home-link";
 import TextField from "@/components/text-field";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "@/lib/firebaseConfig";
+
+// Define interfaces for our data structure
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+}
+
+interface AboutUsData {
+  storyTitle: string;
+  storyText: string[];
+  storyImage: string;
+  teamTitle: string;
+  teamDescription: string;
+  teamMembers: TeamMember[];
+}
 
 export default function About() {
-  console.log("About Us page is rendering");
+  const [aboutData, setAboutData] = useState<AboutUsData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAboutData = async () => {
+      try {
+        const docRef = doc(firestore, "settings", "aboutUs");
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          setAboutData(docSnap.data() as AboutUsData);
+        } else {
+          console.log("No about us data found!");
+        }
+      } catch (error) {
+        console.error("Error fetching about us data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAboutData();
+  }, []);
+
   return (
     <div className="bg-white mt-10">
       <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-2 capitalize">
@@ -22,46 +68,42 @@ export default function About() {
         <span className="text-red-500">About</span>
       </div>
       <TextField text={"About"} />
-      {/* Our Story Section */}
+      
+      {/* Our Story Section - Dynamic from Firebase */}
       <section className="py-16 md:py-24 container mx-auto px-0">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Our Story
+              {loading ? "Loading..." : aboutData?.storyTitle || "Our Story"}
             </h2>
             <div className="w-20 h-1 bg-red-600 mb-8"></div>
-            <p className="text-gray-600 mb-6">
-              Founded in 2015, Daniel's E-commerce began with a simple mission:
-              to provide customers with high-quality products at affordable
-              prices. What started as a small online store has grown into a
-              trusted marketplace serving thousands of satisfied customers
-              worldwide.
-            </p>
-            <p className="text-gray-600 mb-6">
-              Our founder, Daniel, recognized a gap in the market for an
-              e-commerce platform that truly puts customers first. With a
-              background in retail and technology, he assembled a team of
-              passionate individuals who shared his vision for creating an
-              exceptional shopping experience.
-            </p>
-            <p className="text-gray-600">
-              Today, we continue to innovate and expand our offerings while
-              staying true to our core values of quality, affordability, and
-              customer satisfaction.
-            </p>
+            
+            {loading ? (
+              <div className="animate-pulse h-64 bg-gray-200 rounded"></div>
+            ) : (
+              aboutData?.storyText.map((paragraph, index) => (
+                <p key={index} className="text-gray-600 mb-6">
+                  {paragraph}
+                </p>
+              ))
+            )}
           </div>
           <div className="relative h-[400px] rounded-lg overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80"
-              alt="Our Story"
-              fill
-              className="object-cover"
-            />
+            {loading ? (
+              <div className="animate-pulse h-full w-full bg-gray-200"></div>
+            ) : (
+              <Image
+                src={aboutData?.storyImage || "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80"}
+                alt="Our Story"
+                fill
+                className="object-cover"
+              />
+            )}
           </div>
         </div>
       </section>
 
-      {/* Values Section */}
+      {/* Values Section - Static, keeping as is */}
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -131,7 +173,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
+      {/* Why Choose Us Section - Static, keeping as is */}
       <section className="py-16 md:py-24 container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
@@ -186,111 +228,61 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Team Section - Dynamic from Firebase */}
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Meet Our Team
+              {loading ? "Loading..." : aboutData?.teamTitle || "Meet Our Team"}
             </h2>
             <div className="w-20 h-1 bg-orange-500 mx-auto mb-8"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              The dedicated professionals behind Daniel's E-commerce who work
-              tirelessly to serve you better.
+              {loading ? "Loading..." : aboutData?.teamDescription || 
+                "The dedicated professionals behind Daniel's E-commerce who work tirelessly to serve you better."}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white rounded-lg overflow-hidden shadow-md">
-              <div className="relative h-64">
-                <Image
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=300&q=80"
-                  alt="Daniel Johnson"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">
-                  Daniel Johnson
-                </h3>
-                <p className="text-orange-500 mb-4">Founder & CEO</p>
-                <p className="text-gray-600 text-sm">
-                  With over 15 years of experience in retail and e-commerce,
-                  Daniel leads our company with vision and passion.
-                </p>
-              </div>
+          {loading ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[1, 2, 3, 4].map((item) => (
+                <div key={item} className="animate-pulse bg-white rounded-lg overflow-hidden shadow-md">
+                  <div className="h-64 bg-gray-200"></div>
+                  <div className="p-6">
+                    <div className="h-4 bg-gray-200 rounded mb-3"></div>
+                    <div className="h-3 bg-gray-200 rounded mb-4 w-1/2"></div>
+                    <div className="h-3 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded mb-2"></div>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            <div className="bg-white rounded-lg overflow-hidden shadow-md">
-              <div className="relative h-64">
-                <Image
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=300&q=80"
-                  alt="Sarah Martinez"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">
-                  Sarah Martinez
-                </h3>
-                <p className="text-orange-500 mb-4">Chief Operations Officer</p>
-                <p className="text-gray-600 text-sm">
-                  Sarah ensures our operations run smoothly and efficiently to
-                  deliver the best customer experience.
-                </p>
-              </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {aboutData?.teamMembers.map((member) => (
+                <div key={member.id} className="bg-white rounded-lg overflow-hidden shadow-md">
+                  <div className="relative h-64">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-1">
+                      {member.name}
+                    </h3>
+                    <p className="text-orange-500 mb-4">{member.role}</p>
+                    <p className="text-gray-600 text-sm">{member.bio}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            <div className="bg-white rounded-lg overflow-hidden shadow-md">
-              <div className="relative h-64">
-                <Image
-                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=300&q=80"
-                  alt="Michael Chen"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">
-                  Michael Chen
-                </h3>
-                <p className="text-orange-500 mb-4">Head of Technology</p>
-                <p className="text-gray-600 text-sm">
-                  Michael leads our tech team in developing and maintaining our
-                  cutting-edge e-commerce platform.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg overflow-hidden shadow-md">
-              <div className="relative h-64">
-                <Image
-                  src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=300&q=80"
-                  alt="Emily Wilson"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">
-                  Emily Wilson
-                </h3>
-                <p className="text-orange-500 mb-4">
-                  Customer Experience Manager
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Emily and her team work tirelessly to ensure every customer
-                  interaction exceeds expectations.
-                </p>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA Section - Static, keeping as is */}
       <section className="py-16 md:py-24 bg-gradient-to-r from-red-600 to-orange-500 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -309,7 +301,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Contact Info Section */}
+      {/* Contact Info Section - Static, keeping as is */}
       <section className="py-16 container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center p-6">
