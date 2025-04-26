@@ -8,6 +8,7 @@ import HomeLink from "@/components/home-link";
 import TextField from "@/components/text-field";
 import { collection, getDocs } from "firebase/firestore";
 import { firestore } from "@/lib/firebaseConfig";
+import Loading from "../loading";
 
 interface Service {
   id: string;
@@ -31,14 +32,14 @@ export default function ServicesPage() {
         setLoading(true);
         const querySnapshot = await getDocs(collection(firestore, "services"));
         const servicesData: Service[] = [];
-        
+
         querySnapshot.forEach((doc) => {
           servicesData.push({
             id: doc.id,
-            ...doc.data() as Omit<Service, 'id'>
+            ...(doc.data() as Omit<Service, "id">),
           });
         });
-        
+
         setServices(servicesData);
       } catch (error) {
         console.error("Error fetching services:", error);
@@ -50,6 +51,13 @@ export default function ServicesPage() {
     fetchServices();
   }, []);
 
+  // Create a fixed-size placeholder array for loading state
+  const placeholderArray = Array.from({ length: 6 });
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <main className="pt-10 relative pb-10">
       <Image
@@ -60,7 +68,7 @@ export default function ServicesPage() {
         priority
         className="absolute right-0 -z-50"
       />
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-8 lg:px-12 py-8">
+      <div className="px-2 sm:px-4 md:px-8 lg:px-12 py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize">
           <HomeLink />
@@ -71,44 +79,9 @@ export default function ServicesPage() {
         {/* Services Header */}
         <TextField text={"Services"} />
 
-        {/* Services Grid with Enhanced Skeleton Loader */}
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((placeholder) => (
-              <div key={placeholder} className="bg-white rounded-lg overflow-hidden shadow-lg animate-pulse">
-                {/* Image Skeleton */}
-                <div className="h-48 bg-gray-200 relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
-                </div>
-                <div className="p-5">
-                  {/* Title Skeleton */}
-                  <div className="h-6 bg-gray-200 rounded w-3/4 mb-4">
-                    <div className="h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
-                  </div>
-                  
-                  {/* Description Lines Skeleton */}
-                  <div className="space-y-2 mb-6">
-                    <div className="h-4 bg-gray-200 rounded w-full">
-                      <div className="h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
-                    </div>
-                    <div className="h-4 bg-gray-200 rounded w-5/6">
-                      <div className="h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
-                    </div>
-                    <div className="h-4 bg-gray-200 rounded w-4/6">
-                      <div className="h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
-                    </div>
-                  </div>
-                  
-                  {/* Button Skeleton */}
-                  <div className="h-10 bg-gray-200 rounded w-28 mx-auto">
-                    <div className="h-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Services Grid */}
+        {services.length > 0 ? (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {services.map((service) => (
               <div
                 key={service.id}
@@ -123,7 +96,9 @@ export default function ServicesPage() {
                   />
                 </div>
                 <div className="p-5">
-                  <h2 className="text-xl font-bold mb-2 text-gray-800">{service.name}</h2>
+                  <h2 className="text-xl font-bold mb-2 text-gray-800">
+                    {service.name}
+                  </h2>
                   <p className="text-gray-600 text-sm mb-6 line-clamp-3 h-[4.5rem]">
                     {service.details}
                   </p>
@@ -137,19 +112,23 @@ export default function ServicesPage() {
               </div>
             ))}
           </div>
-        )}
-
-        {services.length === 0 && !loading && (
-          <div className="text-center py-16 bg-white rounded-lg shadow-md">
-            <Image 
-              src="/empty-box.svg" 
-              alt="No services found" 
-              width={120} 
-              height={120} 
-              className="mx-auto mb-4" 
-            />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">No Services Found</h3>
-            <p className="text-gray-500">We couldn't find any services at the moment.</p>
+        ) : (
+          <div className="flex items-center justify-center h-[50vh]">
+            <div className="text-center py-16 bg-white rounded-lg shadow-md max-w-md w-full">
+              <Image
+                src="/empty-box.svg"
+                alt="No services found"
+                width={120}
+                height={120}
+                className="mx-auto mb-4"
+              />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                No Services Found
+              </h3>
+              <p className="text-gray-500">
+                We couldn&apos;t find any services at the moment.
+              </p>
+            </div>
           </div>
         )}
       </div>

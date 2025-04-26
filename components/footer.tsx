@@ -14,7 +14,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-orange-400 to-red-500 text-white py-12 rounded-t-3xl">
+    <footer className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white py-12 rounded-t-3xl">
       <div className="max-w-full border-b-white border-b-[1px]">
         {/* Left Section - Brand */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-10 relative pl-6 md:pl-0">

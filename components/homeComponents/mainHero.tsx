@@ -30,7 +30,7 @@ const Hero = () => {
           </p>
 
           {/* Button with Hover, Active & Shadow Effects */}
-          <Link href="/shop" className="mt-4 md:mt-8 inline-block">
+          <Link href="#products" className="mt-4 md:mt-8 inline-block">
             <Button text="Shop Now" />
           </Link>
 

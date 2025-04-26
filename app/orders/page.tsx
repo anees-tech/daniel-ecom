@@ -5,7 +5,12 @@ import { useUser } from "@/context/userContext";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { firestore } from "@/lib/firebaseConfig";
 import Link from "next/link";
-import InvoiceModal from "../payments/invoice-modal"; // Import the modal
+import Image from "next/image";
+import HomeLink from "@/components/home-link";
+import TextField from "@/components/text-field";
+import Loading from "../loading";
+import InvoiceModal from "../payments/invoice-modal";
+import ProductReviewModal from "@/components/productComponents/product-reiw-modal";
 
 interface Order {
   id: string;
@@ -13,6 +18,7 @@ interface Order {
   status: string;
   total: number;
   items: Array<{
+    id: string;
     name: string;
     quantity: number;
     price: number;
@@ -54,10 +60,23 @@ export default function OrdersPage() {
         const ordersRef = collection(firestore, `users/${user.uid}/orders`);
         const q = query(ordersRef, orderBy("createdAt", "desc"));
         const snapshot = await getDocs(q);
-        const fetchedOrders: Order[] = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Order[];
+        const fetchedOrders: Order[] = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            createdAt: data.createdAt,
+            total: data.total,
+            items: data.items || [],
+            invoice: data.invoice || undefined,
+            customerInfo: data.customerInfo || undefined,
+            subtotal: data.subtotal,
+            tax: data.tax,
+            deliveryFee: data.deliveryFee,
+            paymentMethod: data.paymentDetails?.paymentMethod || "",
+            paymentDetails: data.paymentDetails || {},
+            status: data.paymentDetails?.status || "Pending",
+          } as Order;
+        });
         setOrders(fetchedOrders);
       } catch (err) {
         console.error("Failed to fetch orders:", err);
@@ -69,100 +88,185 @@ export default function OrdersPage() {
   }, [user]);
 
   if (loading || fetching) {
-    return <div className="p-8 text-center">Loading orders...</div>;
+    return <Loading />;
   }
 
-  if (!user) {
-    return (
-      <div className="p-8 text-center">
-        <p>
-          Please{" "}
-          <Link href="/">
-            <span className="text-blue-600 underline">login</span>
-          </Link>{" "}
-          to view your orders.
-        </p>
-      </div>
-    );
-  }
+  const handleAddReview = (review: {
+    name: string;
+    rating: number;
+    comment: string;
+  }) => {
+    // In a real application, you would send this to your API
+    console.log("New review:", review);
 
-  if (orders.length === 0) {
-    return (
-      <div className="p-8 text-center">
-        <p>You have no orders yet.</p>
-        <Link href="/">
-          <span className="text-orange-600 underline">Shop now</span>
-        </Link>
-      </div>
-    );
-  }
+    // This would need to be implemented with proper state management
+    console.log("Would update product with new review:", review);
+  };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Your Orders</h1>
-      <div className="space-y-6">
-        {orders.map((order) => (
-          <div key={order.id} className="border rounded-lg p-4 shadow-sm bg-white">
-            <div className="flex justify-between items-center mb-2">
-              <div>
-                <span className="font-semibold">Order ID:</span> {order.id}
-              </div>
-              <div>
-                <span className="font-semibold">Status:</span>{" "}
-                <span
-                  className={
-                    order.status === "Completed"
-                      ? "text-green-600"
-                      : order.status === "Pending"
-                      ? "text-yellow-600"
-                      : "text-gray-600"
-                  }
-                >
-                  {order.status}
-                </span>
-              </div>
-            </div>
-            <div className="text-sm text-gray-500 mb-2">
-              Placed on:{" "}
-              {order.createdAt
-                ? new Date(order.createdAt).toLocaleString()
-                : "N/A"}
-            </div>
-            <div>
-              <span className="font-semibold">Items:</span>
-              <ul className="ml-4 list-disc">
-                {order.items.map((item, idx) => (
-                  <li key={idx}>
-                    {item.name} x{item.quantity} — ${item.price}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="mt-2">
-              <span className="font-semibold">Total:</span> ${order.total}
-            </div>
-            {order.invoice && (
-              <div className="mt-2 text-xs text-gray-400">
-                Invoice: {order.invoice.invoiceId} |{" "}
-                {order.invoice.date &&
-                  new Date(order.invoice.date).toLocaleString()}
-              </div>
-            )}
-            {/* Download Invoice Button */}
-            <div className="mt-4 flex justify-end">
-              <button
-                className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:bg-red-600 text-white py-2 px-4 rounded-full text-sm font-semibold"
-                onClick={() => {
-                  setSelectedOrder(order);
-                  setShowInvoiceModal(true);
-                }}
-              >
-                Download Invoice
-              </button>
-            </div>
-          </div>
-        ))}
+    <div className="bg-white mt-10 pb-10">
+      <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-2 capitalize">
+        <HomeLink />
+        <span className="text-gray-400">/</span>
+        <span className="text-red-500">Orders</span>
       </div>
+      <TextField text={"Orders"} />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        {!user ? (
+          <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <Image
+              src="/empty-box.svg"
+              alt="Please login"
+              width={120}
+              height={120}
+              className="mx-auto mb-4"
+            />
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">
+              Please Login
+            </h3>
+            <p className="text-gray-500 mb-4">
+              You need to be logged in to view your orders.
+            </p>
+            <Link href="/">
+              <span className="inline-block bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white py-2 px-6 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity">
+                Go to Login
+              </span>
+            </Link>
+          </div>
+        ) : orders.length === 0 ? (
+          <div className="bg-white rounded-lg shadow-md p-8 text-center">
+            <Image
+              src="/empty-box.svg"
+              alt="No orders"
+              width={120}
+              height={120}
+              className="mx-auto mb-4"
+            />
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">
+              No Orders Found
+            </h3>
+            <p className="text-gray-500 mb-4">
+              You haven&apos;t placed any orders yet.
+            </p>
+            <Link href="/">
+              <span className="inline-block bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white py-2 px-6 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity">
+                Shop Now
+              </span>
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {orders.map((order) => (
+              <div
+                key={order.id}
+                className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition-shadow"
+              >
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                  <div>
+                    <span className="text-gray-500 text-sm">Order ID:</span>
+                    <span className="font-semibold ml-2 text-gray-800">
+                      {order.id}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500 text-sm">Status:</span>
+                    <span
+                      className={`ml-2 font-medium px-3 py-1 rounded-full text-xs ${
+                        order.status === "Completed"
+                          ? "bg-green-100 text-green-800"
+                          : order.status === "Pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : order.status === "Processing"
+                          ? "bg-blue-100 text-blue-800"
+                          : order.status === "Delivered"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="text-sm text-gray-500 mb-4">
+                  Placed on:{" "}
+                  {order.createdAt
+                    ? new Date(order.createdAt).toLocaleString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })
+                    : "N/A"}
+                </div>
+
+                <div className="border-t border-b py-4 my-4">
+                  <h4 className="font-medium text-gray-800 mb-2">Items:</h4>
+                  <ul className="space-y-4">
+                    {order.items.map((item, idx) => (
+                      <li key={idx} className="flex flex-col gap-2">
+                        <div className="flex justify-between items-center">
+                          <div className="flex-1">
+                            <span className="font-medium">{item.name}</span>
+                            <span className="text-gray-500 ml-2">
+                              x{item.quantity}
+                            </span>
+                          </div>
+                          <div className="text-right font-medium">
+                            ${(item.price * item.quantity).toFixed(2)}
+                          </div>
+                        </div>
+
+                        {order.status === "Delivered" && (
+                          <div className="w-full mt-2 flex justify-end">
+                            <ProductReviewModal
+                              onAddReview={handleAddReview}
+                              product={{
+                                id: item.id,
+                                name: item.name,
+                                image: item.image!,
+                              }}
+                            />
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                  <div>
+                    <span className="text-gray-500">Total:</span>
+                    <span className="ml-2 text-lg font-bold text-gray-800">
+                      ${order.total.toFixed(2)}
+                    </span>
+                    {order.invoice && (
+                      <div className="mt-1 text-xs text-gray-400">
+                        Invoice: {order.invoice.invoiceId} |{" "}
+                        {order.invoice.date &&
+                          new Date(order.invoice.date).toLocaleString()}
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    className="w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:opacity-90 transition-opacity text-white py-2 px-6 rounded-full text-sm font-semibold"
+                    onClick={() => {
+                      setSelectedOrder(order);
+                      setShowInvoiceModal(true);
+                    }}
+                  >
+                    Download Invoice
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Invoice Modal */}
       {selectedOrder && (
         <InvoiceModal
@@ -184,7 +288,7 @@ export default function OrdersPage() {
               phone: "",
             },
             items: selectedOrder.items,
-            status: selectedOrder.status, // Pass status to modal
+            status: selectedOrder.status,
           }}
         />
       )}

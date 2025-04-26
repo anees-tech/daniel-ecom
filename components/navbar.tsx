@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +45,8 @@ import { fetchCategories, Category } from "@/lib/categories";
 
 export default function Navbar() {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     fetchCategories().then(setCategories);
@@ -121,6 +123,14 @@ export default function Navbar() {
       .join("")
       .toUpperCase()
       .substring(0, 2);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+    }
   };
 
   return (
@@ -298,13 +308,15 @@ export default function Navbar() {
           isSearchOpen ? "flex" : "hidden md:flex"
         )}
       >
-        <form className="w-full">
+        <form className="w-full" onSubmit={handleSearchSubmit}>
           <div className="relative">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search products..."
               className="search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-full border-none"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </form>

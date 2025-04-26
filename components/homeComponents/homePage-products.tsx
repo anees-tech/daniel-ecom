@@ -89,7 +89,7 @@ export default function ProductsPage() {
   }, [category, searchTerm, sortFilter, products]);
 
   return (
-    <div className="p-6 px-4 lg:px-8 xl:px-12">
+    <div className="p-6 px-4 lg:px-8 xl:px-12" id="products">
       <h2 className="text-2xl font-bold mb-4">What&apos;s trending now</h2>
       <p className="text-gray-500 mb-6">
         Discover the most trending products in our store.

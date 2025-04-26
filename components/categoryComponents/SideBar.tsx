@@ -101,7 +101,7 @@ const SideBar = ({ brands, size, materials }: ProductListProps) => {
         <h2 className="text-lg font-medium text-gray-900 mb-3">Filters</h2>
 
         {/* Price Filter */}
-        <div className="mb-4 space-y-2">
+        {/* <div className="mb-4 space-y-2">
           <h3 className="text-sm font-semibold text-gray-900">Price</h3>
           {["Low to High", "High to Low", "On Sale"].map((price) => (
             <button
@@ -116,7 +116,7 @@ const SideBar = ({ brands, size, materials }: ProductListProps) => {
               {price}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Size Filter */}
         <div className="mb-6">

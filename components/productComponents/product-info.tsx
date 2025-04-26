@@ -31,18 +31,6 @@ export default function ProductInfo({
   const hasHalfStar = product.rating % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
-  const handleAddReview = (review: {
-    name: string;
-    rating: number;
-    comment: string;
-  }) => {
-    // In a real application, you would send this to your API
-    console.log("New review:", review);
-
-    // This would need to be implemented with proper state management
-    console.log("Would update product with new review:", review);
-  };
-
   return (
     <div className="w-full md:w-[300px] lg:w-auto space-y-6 p-5 rounded-lg bg-white">
       {/* Title and Rating */}
@@ -176,9 +164,6 @@ export default function ProductInfo({
 
       {/* Action Buttons */}
       <div className="flex flex-row gap-3 pt-4 justify-start items-center">
-        <div className="w-auto">
-          <ProductReviewModal product={product} onAddReview={handleAddReview} />
-        </div>
         <Button
           text={"Add to Cart"}
           onClick={() => {

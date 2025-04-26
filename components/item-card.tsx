@@ -76,7 +76,7 @@ export default function ItemCard({
         </Link>
         {discount > 0 && (
           <Badge className="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-full text-sm">
-            {discount} % OFF
+            ${discount} OFF
           </Badge>
         )}
 

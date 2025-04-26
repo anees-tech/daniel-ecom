@@ -16,6 +16,7 @@ import HomeLink from "@/components/home-link";
 import TextField from "@/components/text-field";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/lib/firebaseConfig";
+import Loading from "../loading";
 
 // Define interfaces for our data structure
 interface TeamMember {
@@ -44,7 +45,7 @@ export default function About() {
       try {
         const docRef = doc(firestore, "settings", "aboutUs");
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
           setAboutData(docSnap.data() as AboutUsData);
         } else {
@@ -60,6 +61,11 @@ export default function About() {
     fetchAboutData();
   }, []);
 
+  // Show the loading component while data is being fetched
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="bg-white mt-10">
       <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-2 capitalize">
@@ -68,37 +74,34 @@ export default function About() {
         <span className="text-red-500">About</span>
       </div>
       <TextField text={"About"} />
-      
+
       {/* Our Story Section - Dynamic from Firebase */}
-      <section className="py-16 md:py-24 container mx-auto px-0">
+      <section className="py-16 md:py-24 px-2 sm:px-4 md:px-8 lg:px-12">
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="text-center md:text-left">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              {loading ? "Loading..." : aboutData?.storyTitle || "Our Story"}
+              {aboutData?.storyTitle || "Our Story"}
             </h2>
-            <div className="w-20 h-1 bg-red-600 mb-8"></div>
-            
-            {loading ? (
-              <div className="animate-pulse h-64 bg-gray-200 rounded"></div>
-            ) : (
-              aboutData?.storyText.map((paragraph, index) => (
-                <p key={index} className="text-gray-600 mb-6">
-                  {paragraph}
-                </p>
-              ))
-            )}
+            <div className="w-20 h-1 bg-red-600 mb-8 mx-auto md:mx-0"></div>
+
+            {aboutData?.storyText.map((paragraph, index) => (
+              <p key={index} className="text-gray-600 mb-6">
+                {paragraph}
+              </p>
+            ))}
           </div>
-          <div className="relative h-[400px] rounded-lg overflow-hidden">
-            {loading ? (
-              <div className="animate-pulse h-full w-full bg-gray-200"></div>
-            ) : (
-              <Image
-                src={aboutData?.storyImage || "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80"}
-                alt="Our Story"
-                fill
-                className="object-cover"
-              />
-            )}
+          <div className="relative h-[400px] rounded-lg overflow-hidden mx-auto w-full">
+            <Image
+              src={
+                aboutData?.storyImage ||
+                "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80" ||
+                "/placeholder.svg" ||
+                "/placeholder.svg"
+              }
+              alt="Our Story"
+              fill
+              className="object-cover"
+            />
           </div>
         </div>
       </section>
@@ -126,8 +129,8 @@ export default function About() {
                 Customer First
               </h3>
               <p className="text-gray-600">
-                We prioritize our customers' needs and strive to exceed their
-                expectations in every interaction.
+                We prioritize our customers&apos; needs and strive to exceed
+                their expectations in every interaction.
               </p>
             </div>
 
@@ -181,7 +184,7 @@ export default function About() {
           </h2>
           <div className="w-20 h-1 bg-red-600 mx-auto mb-8"></div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            We're committed to providing you with the best online shopping
+            We&apos;re committed to providing you with the best online shopping
             experience possible.
           </p>
         </div>
@@ -194,7 +197,7 @@ export default function About() {
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
               Wide Selection
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-center">
               Browse thousands of products across multiple categories to find
               exactly what you need.
             </p>
@@ -207,7 +210,7 @@ export default function About() {
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
               Fast Delivery
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-center">
               Enjoy quick and reliable shipping options to get your purchases
               delivered right to your doorstep.
             </p>
@@ -220,7 +223,7 @@ export default function About() {
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
               Global Reach
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-center">
               We ship to customers worldwide, bringing our products to shoppers
               across the globe.
             </p>
@@ -233,42 +236,31 @@ export default function About() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              {loading ? "Loading..." : aboutData?.teamTitle || "Meet Our Team"}
+              {aboutData?.teamTitle || "Meet Our Team"}
             </h2>
             <div className="w-20 h-1 bg-orange-500 mx-auto mb-8"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              {loading ? "Loading..." : aboutData?.teamDescription || 
+              {aboutData?.teamDescription ||
                 "The dedicated professionals behind Daniel's E-commerce who work tirelessly to serve you better."}
             </p>
           </div>
 
-          {loading ? (
+          {aboutData?.teamMembers && aboutData.teamMembers.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {[1, 2, 3, 4].map((item) => (
-                <div key={item} className="animate-pulse bg-white rounded-lg overflow-hidden shadow-md">
-                  <div className="h-64 bg-gray-200"></div>
-                  <div className="p-6">
-                    <div className="h-4 bg-gray-200 rounded mb-3"></div>
-                    <div className="h-3 bg-gray-200 rounded mb-4 w-1/2"></div>
-                    <div className="h-3 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-3 bg-gray-200 rounded mb-2"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {aboutData?.teamMembers.map((member) => (
-                <div key={member.id} className="bg-white rounded-lg overflow-hidden shadow-md">
+              {aboutData.teamMembers.map((member) => (
+                <div
+                  key={member.id}
+                  className="bg-white rounded-lg overflow-hidden shadow-md mx-auto w-full max-w-xs md:max-w-none"
+                >
                   <div className="relative h-64">
                     <Image
-                      src={member.image}
+                      src={member.image || "/placeholder.svg"}
                       alt={member.name}
                       fill
                       className="object-cover"
                     />
                   </div>
-                  <div className="p-6">
+                  <div className="p-6 text-center md:text-left">
                     <h3 className="text-xl font-semibold text-gray-800 mb-1">
                       {member.name}
                     </h3>
@@ -277,6 +269,22 @@ export default function About() {
                   </div>
                 </div>
               ))}
+            </div>
+          ) : (
+            <div className="text-center py-16 bg-white rounded-lg shadow-md max-w-md mx-auto">
+              <Image
+                src="/empty-box.svg"
+                alt="No team members found"
+                width={120}
+                height={120}
+                className="mx-auto mb-4"
+              />
+              <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                No Team Members Found
+              </h3>
+              <p className="text-gray-500">
+                We couldn&apos;t find any team members at the moment.
+              </p>
             </div>
           )}
         </div>
@@ -289,7 +297,7 @@ export default function About() {
             Ready to Start Shopping?
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who trust Daniel's E-commerce
+            Join thousands of satisfied customers who trust Daniel&apos;s E-commerce
             for their shopping needs.
           </p>
           <Link
@@ -311,7 +319,7 @@ export default function About() {
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
               Our Location
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-center">
               123 Commerce Street
               <br />
               Suite 500
@@ -327,7 +335,7 @@ export default function About() {
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
               Business Hours
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-center">
               Monday - Friday: 9am - 6pm
               <br />
               Saturday: 10am - 4pm
@@ -343,7 +351,7 @@ export default function About() {
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
               Customer Support
             </h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 text-center">
               Email: support@danielsecommerce.com
               <br />
               Phone: (555) 123-4567
