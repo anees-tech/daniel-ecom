@@ -183,27 +183,76 @@ export default function ProductReviewModal({
     setIsSubmitting(true);
     setSubmitError("");
 
-    try {
-      // First determine which collection the item belongs to
-      let collectionName = "";
+    // Ensure product and product.id are valid before proceeding
+    if (!product || !product.id) {
+      console.error("Product data or product ID is missing.");
+      setSubmitError("Product information is missing. Cannot submit review.");
+      setIsSubmitting(false);
+      return false;
+    }
 
-      // Check if item exists in products collection
-      const productDoc = await getDoc(doc(firestore, "products", product.id));
-      if (productDoc.exists()) {
-        collectionName = "products";
-      } else {
-        // Check if item exists in flashSaleItems collection
-        const flashSaleDoc = await getDoc(
-          doc(firestore, "flashSaleItems", product.id)
-        );
-        if (flashSaleDoc.exists()) {
-          collectionName = "flashSaleItems";
+    // Use stable variables inside the async function
+    const currentProductId = product.id;
+    const currentItemType = itemType;
+
+    console.log(
+      `[Review Submit] Attempting for ID: ${currentProductId}, Type: ${currentItemType}`
+    );
+
+    try {
+      let collectionName = currentItemType === "flashSaleItem" ? "flashSaleItems" : "products";
+      let docRef = doc(firestore, collectionName, currentProductId);
+      let docSnapshot;
+      let found = false;
+
+      // --- Primary Collection Check ---
+      console.log(`[Review Submit] Checking primary collection: '${collectionName}' for ID: ${currentProductId}`);
+      try {
+        docSnapshot = await getDoc(docRef);
+        if (docSnapshot.exists()) {
+          console.log(`[Review Submit] Found item in primary collection: '${collectionName}'`);
+          found = true;
         } else {
-          throw new Error("Item not found in any collection");
+          console.log(`[Review Submit] Item NOT found in primary collection: '${collectionName}'.`);
+        }
+      } catch (getDocError: any) {
+         console.error(`[Review Submit] Error checking primary collection '${collectionName}':`, getDocError);
+         // Decide if you want to stop or try fallback even if primary check failed
+      }
+      // --- End Primary Collection Check ---
+
+
+      // --- Fallback Collection Check ---
+      if (!found) {
+        const fallbackCollection = collectionName === "products" ? "flashSaleItems" : "products";
+        console.log(`[Review Submit] Checking fallback collection: '${fallbackCollection}' for ID: ${currentProductId}`);
+        // Update docRef for the fallback check AND for potential update later
+        docRef = doc(firestore, fallbackCollection, currentProductId);
+        try {
+           docSnapshot = await getDoc(docRef);
+           if (docSnapshot.exists()) {
+             collectionName = fallbackCollection; // IMPORTANT: Update collectionName if found in fallback
+             console.log(`[Review Submit] Found item in fallback collection: '${fallbackCollection}'`);
+             found = true;
+           } else {
+             console.log(`[Review Submit] Item NOT found in fallback collection: '${fallbackCollection}'.`);
+           }
+        } catch (getDocError: any) {
+           console.error(`[Review Submit] Error checking fallback collection '${fallbackCollection}':`, getDocError);
         }
       }
+      // --- End Fallback Collection Check ---
 
-      // Create a new review document
+
+      if (!found) {
+        // Not found in either collection after checks
+        console.error(`[Review Submit] FINAL: Item with ID ${currentProductId} not found in 'products' or 'flashSaleItems'.`);
+        throw new Error(`Item not found in any collection. ID: ${currentProductId}`);
+      }
+
+      // --- If found, proceed with review submission ---
+      console.log(`[Review Submit] Proceeding to add review to collection '${collectionName}', ID: ${currentProductId}`);
+
       const reviewData: Omit<Review, "id"> = {
         name: review.name,
         rating: review.rating,
@@ -211,51 +260,54 @@ export default function ProductReviewModal({
         createdAt: serverTimestamp() as Timestamp,
       };
 
-      // Add review to the appropriate subcollection
       const reviewsCollectionRef = collection(
         firestore,
-        `${collectionName}/${product.id}/reviews`
+        `${collectionName}/${currentProductId}/reviews`
       );
-
       await addDoc(reviewsCollectionRef, reviewData);
+      console.log(`[Review Submit] Review added successfully to subcollection.`);
 
-      // Fetch all reviews again to calculate new average rating
+      // Fetch updated reviews to calculate new average rating
       const reviewsSnapshot = await getDocs(reviewsCollectionRef);
       const updatedReviews = reviewsSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       })) as Review[];
 
-      // Calculate new average rating
-      const totalRating = updatedReviews.reduce(
-        (sum, review) => sum + (review.rating || 0),
-        0
-      );
-      const newAverageRating =
-        updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
+      const totalRating = updatedReviews.reduce((sum, r) => sum + (r.rating || 0), 0);
+      const newAverageRating = updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
       const newReviewsCount = updatedReviews.length;
 
-      // Update the item's rating and reviewsCount in Firestore
-      const itemDocRef = doc(firestore, collectionName, product.id);
-      await updateDoc(itemDocRef, {
+      console.log(`[Review Submit] Updating item document. New Rating: ${newAverageRating}, Count: ${newReviewsCount}`);
+      // Use the final 'docRef' which points to the document where the item was found
+      await updateDoc(docRef, {
         rating: newAverageRating,
         reviewsCount: newReviewsCount,
       });
+      console.log(`[Review Submit] Item document updated successfully.`);
 
       // Update local state
       setReviews(updatedReviews);
       setProductRating(newAverageRating);
       setReviewsCount(newReviewsCount);
 
-      // Call the onAddReview callback if provided
       if (onAddReview) {
         onAddReview(review);
       }
 
       return true;
-    } catch (error) {
-      console.error("Error submitting review:", error);
-      setSubmitError("Failed to submit review. Please try again.");
+      // --- End review submission logic ---
+
+    } catch (error: any) {
+      console.error("[Review Submit] Error during submission process:", error);
+      if (error.message.includes("Item not found")) {
+         setSubmitError(`Could not find the item (ID: ${currentProductId}) to add the review to. Please double-check the item exists or contact support.`);
+      } else if (error.code === 'permission-denied') {
+         setSubmitError("Permission denied. You might not have the necessary rights to perform this action.");
+      }
+      else {
+         setSubmitError("Failed to submit review due to an unexpected error. Please try again.");
+      }
       return false;
     } finally {
       setIsSubmitting(false);
