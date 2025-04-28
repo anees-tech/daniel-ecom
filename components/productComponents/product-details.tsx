@@ -32,27 +32,38 @@ export default function ProductDetailPage({
 
   useEffect(() => {
     async function fetchProduct() {
-      const { productId } = await params;
-
-      // Firestore fetching logic
       try {
+        setIsLoading(true);
+        const { productId } = await params;
+        
+        // Use our enhanced getProductById function that checks both collections
         const firestoreProduct = await getProductById(productId);
+        
+        console.log("Product fetched successfully:", firestoreProduct);
         setProduct(firestoreProduct);
+        
+        // Set the initial selected color if available
         setSelectedColor(
           firestoreProduct && Array.isArray(firestoreProduct.colors)
             ? firestoreProduct.colors[0]?.name || ""
             : ""
         );
       } catch (error) {
-        console.error("Error fetching product from Firestore:", error);
+        console.error("Error fetching product:", error);
+        
+        // Fallback to hardcoded products data (if needed)
+        try {
+          const { productId } = await params;
+          const oProductId = Number.parseInt(productId);
+          const foundProduct =
+            products.find((p) => p.id === oProductId) || products[0];
 
-        // Fallback to existing logic
-        const oProductId = Number.parseInt(productId);
-        const foundProduct =
-          products.find((p) => p.id === oProductId) || products[0];
-
-        setProduct(foundProduct);
-        setSelectedColor(foundProduct?.colors?.[0]?.name || "");
+          console.log("Using fallback product data:", foundProduct);
+          setProduct(foundProduct);
+          setSelectedColor(foundProduct?.colors?.[0]?.name || "");
+        } catch (fallbackError) {
+          console.error("Even fallback failed:", fallbackError);
+        }
       } finally {
         setIsLoading(false);
       }

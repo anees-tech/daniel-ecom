@@ -43,27 +43,15 @@ export default function ItemCard({
   reviewsCount = 24,
 }: ProductCardEnhancedProps) {
   const [isHovered, setIsHovered] = useState(false);
-  // console.log(
-  //   "ItemCard Props:",
-  //   id,
-  //   name,
-  //   currentPrice,
-  //   originalPrice,
-  //   image,
-  //   category,
-  //   discount,
-  //   stock,
-  //   rating,
-  //   reviewsCount
-  // )
+
   return (
     <div
       className="group relative bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-[0.25px] border-gray-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative aspect-square overflow-hidden bg-gray-100 p-4">
-        <Link href={`/product/${id}`}>
+      <div className="relative aspect-square overflow-hidden bg-gray-100 p-4" style={{ position: 'relative' }}>
+        <Link href={`/product/${id}`} className="block relative w-full h-full">
           <Image
             src={image || "/placeholder.svg"}
             alt={name}

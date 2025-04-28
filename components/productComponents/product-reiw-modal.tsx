@@ -458,7 +458,6 @@ export default function ProductReviewModal({
               <Button
                 text={"Cancel"}
                 onClick={() => setOpen(false)}
-                type="button"
               />
               <Button
                 text={isSubmitting ? "Submitting..." : "Submit Review"}

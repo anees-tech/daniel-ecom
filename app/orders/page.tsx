@@ -74,7 +74,7 @@ export default function OrdersPage() {
             deliveryFee: data.deliveryFee,
             paymentMethod: data.paymentDetails?.paymentMethod || "",
             paymentDetails: data.paymentDetails || {},
-            status: data.paymentDetails?.status || "Pending",
+            status: data.status || "Pending",
           } as Order;
         });
         setOrders(fetchedOrders);

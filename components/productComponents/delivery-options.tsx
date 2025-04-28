@@ -6,20 +6,6 @@ export default function DeliveryOptions() {
     <div className="md:w-[320px] border border-gray-300 rounded-3xl overflow-hidden bg-white">
       {/* Header with Location */}
       <div className="p-5 space-y-5">
-        <h3 className="font-semibold text-lg text-gray-800">
-          Delivery Options
-        </h3>
-        <div className="flex items-start justify-between">
-          <div className="flex gap-2">
-            <MapPin className="w-5 h-5 mt-0.5 text-gray-600 flex-shrink-0" />
-            <p className="text-sm text-gray-600">
-              Berlin, Hamburg, Munich, Stuttgart, Düsseldorf, Cologne
-            </p>
-          </div>
-          <button className="text-orange-500 text-sm font-semibold hover:underline transition">
-            CHANGE
-          </button>
-        </div>
 
         {/* Delivery Methods */}
         <div className="space-y-4">
