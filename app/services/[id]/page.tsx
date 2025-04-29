@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { use } from "react"; // Add this import
 import Image from "next/image";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
@@ -25,9 +26,10 @@ interface Service {
 export default function ServiceDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>; // Update params type to be a Promise
 }) {
-  const serviceId = params.id;
+  const resolvedParams = use(params);
+  const serviceId = resolvedParams.id;
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -157,7 +159,7 @@ export default function ServiceDetailPage({
 
       <div className="px-2 sm:px-4 md:px-8 lg:px-12 relative z-10">
         {/* Breadcrumb */}
-        <nav className="flex items-center mb-8 text-sm md:text-lg py-2 px-4 inline-flex animate-fade-in-down">
+        <nav className="flex items-center mb-8 text-sm md:text-lg py-2 px-4 animate-fade-in-down">
           <HomeLink />
           <ChevronRight className="mx-2 h-4 w-4 text-gray-400" />
           <Link

@@ -461,8 +461,6 @@ export default function ProductReviewModal({
               />
               <Button
                 text={isSubmitting ? "Submitting..." : "Submit Review"}
-                disabled={isSubmitting}
-                type="submit"
               />
             </DialogFooter>
           </form>
