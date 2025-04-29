@@ -358,11 +358,11 @@ export default function Navbar() {
               <DropdownMenuContent align="end" className="w-56 bg-white">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
+                {/* <DropdownMenuItem asChild>
                   <Link href="/profile" className="cursor-pointer">
                     Profile
                   </Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuItem asChild>
                   <Link href="/orders" className="cursor-pointer">
                     Orders

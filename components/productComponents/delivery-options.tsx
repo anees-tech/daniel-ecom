@@ -3,11 +3,9 @@ import { MapPin, Truck, RotateCcw } from "lucide-react";
 
 export default function DeliveryOptions() {
   return (
-    <div className="md:w-[320px] border border-gray-300 rounded-3xl overflow-hidden bg-white">
-      {/* Header with Location */}
+    <div className="w-full h-full border border-gray-300 rounded-3xl overflow-hidden bg-white">
+      {/* Delivery Methods */}
       <div className="p-5 space-y-5">
-
-        {/* Delivery Methods */}
         <div className="space-y-4">
           {deliveryOptions.map((option, index) => (
             <div
@@ -30,7 +28,7 @@ export default function DeliveryOptions() {
       {/* Seller Ratings */}
       <div className="p-5">
         <h4 className="font-medium mb-4 text-gray-800">Seller Ratings</h4>
-        <div className="flex gap-6">
+        <div className="flex gap-6 justify-center">
           <RatingCircle percentage={89} label="Shipping on time" />
           <RatingCircle percentage={95} label="Response rate" />
         </div>

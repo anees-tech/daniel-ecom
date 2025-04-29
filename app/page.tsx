@@ -19,7 +19,7 @@ export default function Home() {
       <ProductsPage />
       <HomeServices />
       <ShippingPartners images={shippingPartnersImages} />
-      <CustomerReviews reviews={reviews} />
+      {/* <CustomerReviews reviews={reviews} /> */}
     </main>
   );
 }
