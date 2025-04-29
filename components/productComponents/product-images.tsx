@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -101,7 +101,7 @@ export default function ProductImages({
                 onClick={() => setSelectedImage(index)}
               >
                 <Image
-                  src={image}
+                  src={image || "/placeholder.svg"}
                   alt={`${productName} thumbnail ${index + 1}`}
                   width={100}
                   height={100}
@@ -131,7 +131,7 @@ export default function ProductImages({
           onMouseLeave={() => setIsZooming(false)}
         >
           <Image
-            src={images[selectedImage]}
+            src={images[selectedImage] || "/placeholder.svg"}
             alt={productName}
             width={400}
             height={400}
@@ -182,7 +182,7 @@ export default function ProductImages({
                   onClick={() => setSelectedImage(index)}
                 >
                   <Image
-                    src={image}
+                    src={image || "/placeholder.svg"}
                     alt={`${productName} thumbnail ${index + 1}`}
                     width={100}
                     height={100}

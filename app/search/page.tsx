@@ -3,27 +3,14 @@ import { Suspense } from "react";
 import Loading from "../loading";
 import { use } from "react";
 
-// Define the expected shape of the resolved searchParams
-interface ResolvedSearchParams {
-  query?: string;
-  page?: string;
-}
-
 export default function SearchPage({
   searchParams,
 }: {
-  // Update the type here to indicate it's a Promise
-  searchParams: Promise<ResolvedSearchParams>;
+  searchParams: { query?: string; page?: string };
 }) {
   // Use React.use to unwrap the Promise
-  // Note: 'use' hook should ideally be used directly within the component body
-  // but since Next.js handles the promise nature of searchParams,
-  // we can often access it directly after awaiting or using 'use'.
-  // However, the type definition MUST reflect the Promise.
-
-  // Your existing logic using React.use is correct for accessing the values
-  const resolvedSearchParams = use(searchParams); // Use the promise directly
-
+  const resolvedSearchParams = use(Promise.resolve(searchParams));
+  
   const query = resolvedSearchParams.query || "";
   const page = Number.parseInt(resolvedSearchParams.page || "1", 10);
 

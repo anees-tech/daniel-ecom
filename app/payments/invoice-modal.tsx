@@ -9,6 +9,7 @@ interface InvoiceModalProps {
   isOpen: boolean;
   onClose: () => void;
   orderData: {
+    id: string;
     items: any[];
     customerInfo: {
       name: string;
@@ -21,6 +22,11 @@ interface InvoiceModalProps {
     tax: number;
     shipping: number;
     total: number;
+    invoice: {
+      invoiceId: string;
+      details: string;
+      date: string;
+    };
     paymentMethod: string;
     paymentDetails?: {
       cardType?: string;
@@ -108,8 +114,11 @@ export default function InvoiceModal({
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
     doc.setFont("helvetica", "normal");
-    doc.text(`Invoice #: ${invoiceNumber}`, 20, 58);
+    doc.text(`Invoice #: ${orderData.invoice.invoiceId}`, 20, 58);
     doc.text(`Date: ${currentDate}`, 20, 65);
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Order #: ${orderData.id}`, 105, 58);
 
     // Horizontal line
     doc.setDrawColor(220, 38, 38);
@@ -129,7 +138,11 @@ export default function InvoiceModal({
     doc.setTextColor(100, 100, 100);
     doc.setFont("helvetica", "normal");
     doc.text(`${orderData.customerInfo.name}`, 20, 95);
-    doc.text(`${orderData.customerInfo.address}`, 20, 102);
+    const addressLines = orderData.customerInfo.address.split(", ");
+    doc.text(addressLines[0], 20, 102);
+    doc.text(addressLines[1] || "", 20, 106);
+
+
     doc.text(`${orderData.customerInfo.city}`, 20, 109);
     doc.text(`Phone: ${orderData.customerInfo.phone}`, 20, 116);
     doc.text(`Email: ${orderData.customerInfo.email}`, 20, 123);
@@ -338,8 +351,7 @@ export default function InvoiceModal({
               </div>
               <h2 className="text-2xl font-bold mb-2">Order Confirmed!</h2>
               <p className="text-gray-600 text-center mb-6">
-                Your order has been placed and your invoice has
-                been downloaded.
+                Your order has been placed and your invoice has been downloaded.
               </p>
               <button
                 onClick={onClose}
@@ -355,8 +367,7 @@ export default function InvoiceModal({
               </div>
               <h2 className="text-2xl font-bold mb-2">Order Confirmed!</h2>
               <p className="text-gray-600 text-center mb-6">
-                Your order has been placed. Thank you for shopping
-                with us!
+                Your order has been placed. Thank you for shopping with us!
               </p>
               <button
                 onClick={generateInvoicePDF}

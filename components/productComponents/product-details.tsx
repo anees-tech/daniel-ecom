@@ -1,18 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { getProductById } from "@/lib/products";
 import products from "@/data/ItemProductDetail";
-import { getProductById } from "@/lib/products"; // Import Firestore fetching logic
 import ProductImages from "./product-images";
 import ProductInfo from "./product-info";
 import DeliveryOptions from "./delivery-options";
 import ProductReviews from "../reviewsComponents/product-reviews";
 import TextBox from "../text-box";
-import Image from "next/image";
-import RelativeItems from "../relativeComponent/relative-items";
-import Link from "next/link";
 import TextField from "../text-field";
 import HomeLink from "../home-link";
+import RelativeItems from "../relativeComponent/relative-items";
 import ProductImagesSkeleton from "./image-skeleton";
 import ProductInfoSkeleton from "./product-info-skeleton-card";
 import { DeliveryOptionsSkeleton } from "./delivery-option-skeleton-loader";
@@ -35,13 +35,13 @@ export default function ProductDetailPage({
       try {
         setIsLoading(true);
         const { productId } = await params;
-        
+
         // Use our enhanced getProductById function that checks both collections
         const firestoreProduct = await getProductById(productId);
-        
+
         console.log("Product fetched successfully:", firestoreProduct);
         setProduct(firestoreProduct);
-        
+
         // Set the initial selected color if available
         setSelectedColor(
           firestoreProduct && Array.isArray(firestoreProduct.colors)
@@ -50,7 +50,7 @@ export default function ProductDetailPage({
         );
       } catch (error) {
         console.error("Error fetching product:", error);
-        
+
         // Fallback to hardcoded products data (if needed)
         try {
           const { productId } = await params;
@@ -104,11 +104,11 @@ export default function ProductDetailPage({
         {/* Product Title */}
         <TextField text={!isLoading ? product.name : "Loading..."} />
 
-        {/* Product Content */}
-        <div className="px-0 sm:px-2 md:px-4 lg:px-8">
-          <div className="flex flex-col md:flex-row gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-xl justify-center shadow-sm md:shadow-md">
-            {/* Product Images */}
-            <div className="w-full md:w-1/2">
+        {/* Top Section: Images and Delivery Options */}
+        <div className="px-0 sm:px-2 md:px-4 lg:px-8 mb-8">
+          <div className="flex flex-col lg:flex-row gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-xl justify-center shadow-sm md:shadow-md">
+            {/* Product Images - Now at the top/left */}
+            <div className="w-full lg:w-3/4">
               {isLoading ? (
                 <ProductImagesSkeleton />
               ) : (
@@ -120,7 +120,16 @@ export default function ProductDetailPage({
               )}
             </div>
 
-            {/* Product Details */}
+            {/* Delivery Options - Now on the right side of images */}
+            <div className="w-full lg:w-1/4">
+              {isLoading ? <DeliveryOptionsSkeleton /> : <DeliveryOptions />}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section: Product Details - Full Width */}
+        <div className="px-0 sm:px-2 md:px-4 lg:px-8 mb-8">
+          <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-sm md:shadow-md">
             {isLoading ? (
               <ProductInfoSkeleton />
             ) : (
@@ -134,9 +143,6 @@ export default function ProductDetailPage({
                 handleQuantityChange={handleQuantityChange}
               />
             )}
-
-            {/* Delivery Options */}
-            {isLoading ? <DeliveryOptionsSkeleton /> : <DeliveryOptions />}
           </div>
         </div>
 

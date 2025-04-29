@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,12 +21,11 @@ interface Service {
   };
 }
 
-export default function ServiceDetailPage({
-  params,
+export default function ServiceDetailPageClient({
+  serviceId,
 }: {
-  params: { id: string };
+  serviceId: string;
 }) {
-  const serviceId = params.id;
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);

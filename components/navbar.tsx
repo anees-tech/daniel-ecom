@@ -116,8 +116,8 @@ export default function Navbar() {
   };
 
   const getUserInitials = () => {
-    if (!user?.displayName) return "U";
-    return user.displayName
+    if (!user?.email) return "U";
+    return user?.email
       .split(" ")
       .map((name) => name[0])
       .join("")
@@ -358,11 +358,11 @@ export default function Navbar() {
               <DropdownMenuContent align="end" className="w-56 bg-white">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
+                {/* <DropdownMenuItem asChild>
                   <Link href="/profile" className="cursor-pointer">
                     Profile
                   </Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
                 <DropdownMenuItem asChild>
                   <Link href="/orders" className="cursor-pointer">
                     Orders

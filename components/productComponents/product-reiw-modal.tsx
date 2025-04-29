@@ -16,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import Button from "../button";
 import {
   collection,
   addDoc,
@@ -28,6 +27,7 @@ import {
   type Timestamp,
 } from "firebase/firestore";
 import { firestore } from "@/lib/firebaseConfig";
+import { Button } from "../ui/button";
 
 // Define item types
 type ItemType = "product" | "flashSaleItem";
@@ -200,58 +200,82 @@ export default function ProductReviewModal({
     );
 
     try {
-      let collectionName = currentItemType === "flashSaleItem" ? "flashSaleItems" : "products";
+      let collectionName =
+        currentItemType === "flashSaleItem" ? "flashSaleItems" : "products";
       let docRef = doc(firestore, collectionName, currentProductId);
       let docSnapshot;
       let found = false;
 
       // --- Primary Collection Check ---
-      console.log(`[Review Submit] Checking primary collection: '${collectionName}' for ID: ${currentProductId}`);
+      console.log(
+        `[Review Submit] Checking primary collection: '${collectionName}' for ID: ${currentProductId}`
+      );
       try {
         docSnapshot = await getDoc(docRef);
         if (docSnapshot.exists()) {
-          console.log(`[Review Submit] Found item in primary collection: '${collectionName}'`);
+          console.log(
+            `[Review Submit] Found item in primary collection: '${collectionName}'`
+          );
           found = true;
         } else {
-          console.log(`[Review Submit] Item NOT found in primary collection: '${collectionName}'.`);
+          console.log(
+            `[Review Submit] Item NOT found in primary collection: '${collectionName}'.`
+          );
         }
       } catch (getDocError: any) {
-         console.error(`[Review Submit] Error checking primary collection '${collectionName}':`, getDocError);
-         // Decide if you want to stop or try fallback even if primary check failed
+        console.error(
+          `[Review Submit] Error checking primary collection '${collectionName}':`,
+          getDocError
+        );
+        // Decide if you want to stop or try fallback even if primary check failed
       }
       // --- End Primary Collection Check ---
 
-
       // --- Fallback Collection Check ---
       if (!found) {
-        const fallbackCollection = collectionName === "products" ? "flashSaleItems" : "products";
-        console.log(`[Review Submit] Checking fallback collection: '${fallbackCollection}' for ID: ${currentProductId}`);
+        const fallbackCollection =
+          collectionName === "products" ? "flashSaleItems" : "products";
+        console.log(
+          `[Review Submit] Checking fallback collection: '${fallbackCollection}' for ID: ${currentProductId}`
+        );
         // Update docRef for the fallback check AND for potential update later
         docRef = doc(firestore, fallbackCollection, currentProductId);
         try {
-           docSnapshot = await getDoc(docRef);
-           if (docSnapshot.exists()) {
-             collectionName = fallbackCollection; // IMPORTANT: Update collectionName if found in fallback
-             console.log(`[Review Submit] Found item in fallback collection: '${fallbackCollection}'`);
-             found = true;
-           } else {
-             console.log(`[Review Submit] Item NOT found in fallback collection: '${fallbackCollection}'.`);
-           }
+          docSnapshot = await getDoc(docRef);
+          if (docSnapshot.exists()) {
+            collectionName = fallbackCollection; // IMPORTANT: Update collectionName if found in fallback
+            console.log(
+              `[Review Submit] Found item in fallback collection: '${fallbackCollection}'`
+            );
+            found = true;
+          } else {
+            console.log(
+              `[Review Submit] Item NOT found in fallback collection: '${fallbackCollection}'.`
+            );
+          }
         } catch (getDocError: any) {
-           console.error(`[Review Submit] Error checking fallback collection '${fallbackCollection}':`, getDocError);
+          console.error(
+            `[Review Submit] Error checking fallback collection '${fallbackCollection}':`,
+            getDocError
+          );
         }
       }
       // --- End Fallback Collection Check ---
 
-
       if (!found) {
         // Not found in either collection after checks
-        console.error(`[Review Submit] FINAL: Item with ID ${currentProductId} not found in 'products' or 'flashSaleItems'.`);
-        throw new Error(`Item not found in any collection. ID: ${currentProductId}`);
+        console.error(
+          `[Review Submit] FINAL: Item with ID ${currentProductId} not found in 'products' or 'flashSaleItems'.`
+        );
+        throw new Error(
+          `Item not found in any collection. ID: ${currentProductId}`
+        );
       }
 
       // --- If found, proceed with review submission ---
-      console.log(`[Review Submit] Proceeding to add review to collection '${collectionName}', ID: ${currentProductId}`);
+      console.log(
+        `[Review Submit] Proceeding to add review to collection '${collectionName}', ID: ${currentProductId}`
+      );
 
       const reviewData: Omit<Review, "id"> = {
         name: review.name,
@@ -265,7 +289,9 @@ export default function ProductReviewModal({
         `${collectionName}/${currentProductId}/reviews`
       );
       await addDoc(reviewsCollectionRef, reviewData);
-      console.log(`[Review Submit] Review added successfully to subcollection.`);
+      console.log(
+        `[Review Submit] Review added successfully to subcollection.`
+      );
 
       // Fetch updated reviews to calculate new average rating
       const reviewsSnapshot = await getDocs(reviewsCollectionRef);
@@ -274,11 +300,17 @@ export default function ProductReviewModal({
         ...doc.data(),
       })) as Review[];
 
-      const totalRating = updatedReviews.reduce((sum, r) => sum + (r.rating || 0), 0);
-      const newAverageRating = updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
+      const totalRating = updatedReviews.reduce(
+        (sum, r) => sum + (r.rating || 0),
+        0
+      );
+      const newAverageRating =
+        updatedReviews.length > 0 ? totalRating / updatedReviews.length : 0;
       const newReviewsCount = updatedReviews.length;
 
-      console.log(`[Review Submit] Updating item document. New Rating: ${newAverageRating}, Count: ${newReviewsCount}`);
+      console.log(
+        `[Review Submit] Updating item document. New Rating: ${newAverageRating}, Count: ${newReviewsCount}`
+      );
       // Use the final 'docRef' which points to the document where the item was found
       await updateDoc(docRef, {
         rating: newAverageRating,
@@ -297,16 +329,20 @@ export default function ProductReviewModal({
 
       return true;
       // --- End review submission logic ---
-
     } catch (error: any) {
       console.error("[Review Submit] Error during submission process:", error);
       if (error.message.includes("Item not found")) {
-         setSubmitError(`Could not find the item (ID: ${currentProductId}) to add the review to. Please double-check the item exists or contact support.`);
-      } else if (error.code === 'permission-denied') {
-         setSubmitError("Permission denied. You might not have the necessary rights to perform this action.");
-      }
-      else {
-         setSubmitError("Failed to submit review due to an unexpected error. Please try again.");
+        setSubmitError(
+          `Could not find the item (ID: ${currentProductId}) to add the review to. Please double-check the item exists or contact support.`
+        );
+      } else if (error.code === "permission-denied") {
+        setSubmitError(
+          "Permission denied. You might not have the necessary rights to perform this action."
+        );
+      } else {
+        setSubmitError(
+          "Failed to submit review due to an unexpected error. Please try again."
+        );
       }
       return false;
     } finally {
@@ -341,7 +377,12 @@ export default function ProductReviewModal({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button text={"Write Review"} />
+        <Button
+          className="flex items-center gap-2 px-3 md:px-5 py-1 md:py-2
+        bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-md text-white font-semibold rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-100 hover:shadow-lg active:scale-95 cursor-pointer text-center"
+        >
+          Write Review
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] bg-white">
         <DialogHeader>
@@ -456,11 +497,16 @@ export default function ProductReviewModal({
 
             <DialogFooter className="flex flex-row justify-end items-center gap-2">
               <Button
-                text={"Cancel"}
                 onClick={() => setOpen(false)}
-              />
+                className="flex items-center gap-2 px-3 md:px-5 py-1 md:py-2
+        bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-md text-white font-semibold rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-100 hover:shadow-lg active:scale-95 cursor-pointer text-center"
+              >
+                Cancel
+              </Button>
               <Button
                 text={isSubmitting ? "Submitting..." : "Submit Review"}
+                disabled={isSubmitting}
+                type="submit"
               />
             </DialogFooter>
           </form>
