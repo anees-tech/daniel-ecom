@@ -289,6 +289,12 @@ export default function OrdersPage() {
             },
             items: selectedOrder.items,
             status: selectedOrder.status,
+            // Add a default invoice object if none exists
+            invoice: selectedOrder.invoice ?? {
+              invoiceId: `INV-${Date.now()}`,
+              details: `Invoice generated for order ${selectedOrder.id}`,
+              date: new Date().toISOString()
+            }
           }}
         />
       )}

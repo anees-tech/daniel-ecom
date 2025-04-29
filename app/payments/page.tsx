@@ -41,6 +41,9 @@ export default function Payments() {
     isOpen: boolean;
     onClose: () => void;
     orderData: {
+      status: string;
+      invoice: { invoiceId: string; details: string; date: string; };
+      id: string;
       items: any[];
       customerInfo: {
         name: string;
@@ -187,6 +190,13 @@ export default function Payments() {
           total: order.total,
           paymentMethod: order.paymentMethod,
           paymentDetails: order.paymentDetails,
+          status: "",
+          invoice: {
+            invoiceId: "",
+            details: "",
+            date: ""
+          },
+          id: ""
         },
       });
       // Save order to user's profile in Firestore
@@ -509,11 +519,22 @@ export default function Payments() {
         )}
 
         {/* Invoice Modal */}
-        {invoiceData && (
+        {showInvoiceModal && invoiceData?.orderData && (
           <InvoiceModal
             isOpen={showInvoiceModal}
             onClose={closeInvoiceModal}
-            orderData={invoiceData?.orderData}
+            orderData={{
+              ...invoiceData.orderData,
+              // Add required fields that are missing
+              id: invoiceData.orderData.id || `order-${Date.now()}`, // Provide a fallback ID if missing
+              invoice: invoiceData.orderData.invoice || {
+                invoiceId: `INV-${Date.now()}`,
+                details: "Thank you for your order!",
+                date: new Date().toISOString().split("T")[0],
+              },
+              // Ensure other required fields have default values
+              status: invoiceData.orderData.status || "completed",
+            }}
           />
         )}
       </div>

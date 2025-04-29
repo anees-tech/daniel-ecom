@@ -3,16 +3,20 @@ import { Suspense } from "react";
 import Loading from "../loading";
 import { use } from "react";
 
+interface SearchParams {
+  query?: string;
+  page?: string;
+}
+
 export default function SearchPage({
   searchParams,
 }: {
-  searchParams: { query?: string; page?: string };
+  searchParams: Promise<SearchParams>;
 }) {
-  // Use React.use to unwrap the Promise
-  const resolvedSearchParams = use(Promise.resolve(searchParams));
+  const resolvedParams = use(searchParams);
   
-  const query = resolvedSearchParams.query || "";
-  const page = Number.parseInt(resolvedSearchParams.page || "1", 10);
+  const query = resolvedParams.query || "";
+  const page = Number.parseInt(resolvedParams.page || "1", 10);
 
   return (
     <div className="py-8 px-2 sm:px-4 md:px-8 lg:px-12">

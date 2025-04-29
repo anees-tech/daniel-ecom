@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { use } from "react"; // Add this import
 import Image from "next/image";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
@@ -25,9 +26,13 @@ interface Service {
 export default function ServiceDetailPage({
   params,
 }: {
-  params: { id: string };
+  // Update the params type to be a Promise
+  params: Promise<{ id: string }>;
 }) {
-  const serviceId = params.id;
+  // Use the use() hook to resolve the Promise
+  const resolvedParams = use(params);
+  const serviceId = resolvedParams.id;
+
   const [service, setService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
