@@ -1,18 +1,16 @@
 import { SearchResults } from "@/components/searchComponenet/search-result";
 import { Suspense } from "react";
 import Loading from "../loading";
-import { use } from "react";
 
-export default function SearchPage({
+export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { query?: string; page?: string };
+  searchParams: Promise<{ query?: string; page?: string }>;
 }) {
-  // Use React.use to unwrap the Promise
-  const resolvedSearchParams = use(Promise.resolve(searchParams));
-  
-  const query = resolvedSearchParams.query || "";
-  const page = Number.parseInt(resolvedSearchParams.page || "1", 10);
+  // No need to use Promise.resolve and use() here
+  // searchParams is already a plain object
+  const query = (await searchParams).query || "";
+  const page = Number.parseInt((await searchParams).page || "1", 10);
 
   return (
     <div className="py-8 px-2 sm:px-4 md:px-8 lg:px-12">
