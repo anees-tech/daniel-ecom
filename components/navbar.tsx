@@ -116,8 +116,8 @@ export default function Navbar() {
   };
 
   const getUserInitials = () => {
-    if (!user?.displayName) return "U";
-    return user.displayName
+    if (!user?.email) return "U";
+    return user?.email
       .split(" ")
       .map((name) => name[0])
       .join("")
