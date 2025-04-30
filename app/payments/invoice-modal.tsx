@@ -142,7 +142,6 @@ export default function InvoiceModal({
     doc.text(addressLines[0], 20, 102);
     doc.text(addressLines[1] || "", 20, 106);
 
-
     doc.text(`${orderData.customerInfo.city}`, 20, 109);
     doc.text(`Phone: ${orderData.customerInfo.phone}`, 20, 116);
     doc.text(`Email: ${orderData.customerInfo.email}`, 20, 123);
@@ -247,70 +246,209 @@ export default function InvoiceModal({
         3: { cellWidth: 40, halign: "right" },
       },
       margin: { left: 20, right: 20 },
+      // Add these options for better page handling
+      didDrawPage: (data) => {
+        // Add header to each page
+        doc.setFillColor(248, 249, 250);
+        doc.rect(0, 0, pageWidth, 40, "F");
+
+        // Accent color bar on left side of each page
+        doc.setFillColor(220, 38, 38);
+        doc.rect(0, 0, 10, pageHeight, "F");
+
+        // Add logo and title to each page
+        doc.setFontSize(24);
+        doc.setTextColor(220, 38, 38);
+        doc.setFont("helvetica", "bold");
+        doc.text("DANIEL", 20, 20);
+        doc.setFontSize(12);
+        doc.text("E-COMMERCE", 20, 28);
+
+        // Add logo on right side of each page
+        try {
+          doc.addImage("/logo.png", "PNG", logoX, logoY, logoWidth, logoHeight);
+        } catch (error) {
+          // Fallback to text if image fails to load
+          doc.setFillColor(220, 38, 38);
+          doc.rect(logoX, logoY, logoWidth, logoHeight, "F");
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(10);
+          doc.text("DANIEL", logoX + logoWidth / 2, logoY + 10, {
+            align: "center",
+          });
+          doc.text("SHOP", logoX + logoWidth / 2, logoY + 15, {
+            align: "center",
+          });
+        }
+
+        // Add footer to each page
+        const footerY = pageHeight - 20;
+        doc.setDrawColor(220, 38, 38);
+        doc.setLineWidth(0.5);
+        doc.line(20, footerY - 10, pageWidth - 20, footerY - 10);
+
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.setFont("helvetica", "normal");
+        doc.text(
+          "Thank you for shopping with Daniel E-Commerce!",
+          pageWidth / 2,
+          footerY - 5,
+          { align: "center" }
+        );
+        doc.text(
+          `www.daniel-ecommerce.com | support@daniel-ecommerce.com | +1 (555) 123-4567`,
+          pageWidth / 2,
+          footerY,
+          { align: "center" }
+        );
+      },
+      // Enable automatic page breaks
+      startY: 145,
+      showHead: "firstPage",
     });
 
     // Get the final Y position after the table
     const finalY = (doc as any).lastAutoTable.finalY + 10;
 
-    // Summary box with totals
-    doc.setFillColor(248, 249, 250);
-    doc.roundedRect(pageWidth - 100, finalY, 80, 50, 3, 3, "F");
+    // Check if there's enough space for the summary box
+    const summaryBoxHeight = 60;
+    if (finalY + summaryBoxHeight > pageHeight - 30) {
+      // Not enough space, add a new page
+      doc.addPage();
+      // Reset finalY to top of the new page with some margin
+      const newFinalY = 40; // Start after the header
 
-    // Add summary with right alignment
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(100, 100, 100);
-    doc.text(`Subtotal:`, pageWidth - 60, finalY + 10, { align: "right" });
-    doc.text(`Tax:`, pageWidth - 60, finalY + 20, { align: "right" });
-    doc.text(`Shipping:`, pageWidth - 60, finalY + 30, { align: "right" });
+      // Add the header to the new page
+      doc.setFillColor(248, 249, 250);
+      doc.rect(0, 0, pageWidth, 40, "F");
 
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(60, 60, 60);
-    doc.text(`$${orderData.subtotal.toFixed(2)}`, pageWidth - 25, finalY + 10, {
-      align: "right",
-    });
-    doc.text(`$${orderData.tax.toFixed(2)}`, pageWidth - 25, finalY + 20, {
-      align: "right",
-    });
-    doc.text(`$${orderData.shipping.toFixed(2)}`, pageWidth - 25, finalY + 30, {
-      align: "right",
-    });
+      // Accent color bar on left side
+      doc.setFillColor(220, 38, 38);
+      doc.rect(0, 0, 10, pageHeight, "F");
 
-    // Total with highlight
-    doc.setDrawColor(220, 38, 38);
-    doc.setLineWidth(0.5);
-    doc.line(pageWidth - 100, finalY + 40, pageWidth - 20, finalY + 40);
+      // Add logo and title to the new page
+      doc.setFontSize(24);
+      doc.setTextColor(220, 38, 38);
+      doc.setFont("helvetica", "bold");
+      doc.text("DANIEL", 20, 20);
+      doc.setFontSize(12);
+      doc.text("E-COMMERCE", 20, 28);
 
-    doc.setFontSize(12);
-    doc.setTextColor(220, 38, 38);
-    doc.text(`TOTAL:`, pageWidth - 60, finalY + 48, { align: "right" });
-    doc.text(`$${orderData.total.toFixed(2)}`, pageWidth - 25, finalY + 48, {
-      align: "right",
-    });
-
-    // Footer
-    const footerY = pageHeight - 20;
-    doc.setDrawColor(220, 38, 38);
-    doc.setLineWidth(0.5);
-    doc.line(20, footerY - 10, pageWidth - 20, footerY - 10);
-
-    doc.setFontSize(8);
-    doc.setTextColor(150, 150, 150);
-    doc.setFont("helvetica", "normal");
-    doc.text(
-      "Thank you for shopping with Daniel E-Commerce!",
-      pageWidth / 2,
-      footerY - 5,
-      { align: "center" }
-    );
-    doc.text(
-      `www.daniel-ecommerce.com | support@daniel-ecommerce.com | +1 (555) 123-4567`,
-      pageWidth / 2,
-      footerY,
-      {
-        align: "center",
+      // Add logo on right side
+      try {
+        doc.addImage("/logo.png", "PNG", logoX, logoY, logoWidth, logoHeight);
+      } catch (error) {
+        // Fallback to text if image fails to load
+        doc.setFillColor(220, 38, 38);
+        doc.rect(logoX, logoY, logoWidth, logoHeight, "F");
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(10);
+        doc.text("DANIEL", logoX + logoWidth / 2, logoY + 10, {
+          align: "center",
+        });
+        doc.text("SHOP", logoX + logoWidth / 2, logoY + 15, {
+          align: "center",
+        });
       }
-    );
+
+      // Summary box with totals on the new page
+      doc.setFillColor(248, 249, 250);
+      doc.roundedRect(pageWidth - 100, newFinalY, 80, 50, 3, 3, "F");
+
+      // Add summary with right alignment
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Subtotal:`, pageWidth - 60, newFinalY + 10, { align: "right" });
+      doc.text(`Tax:`, pageWidth - 60, newFinalY + 20, { align: "right" });
+      doc.text(`Shipping:`, pageWidth - 60, newFinalY + 30, { align: "right" });
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(60, 60, 60);
+      doc.text(
+        `$${orderData.subtotal.toFixed(2)}`,
+        pageWidth - 25,
+        newFinalY + 10,
+        {
+          align: "right",
+        }
+      );
+      doc.text(`$${orderData.tax.toFixed(2)}`, pageWidth - 25, newFinalY + 20, {
+        align: "right",
+      });
+      doc.text(
+        `$${orderData.shipping.toFixed(2)}`,
+        pageWidth - 25,
+        newFinalY + 30,
+        {
+          align: "right",
+        }
+      );
+
+      // Total with highlight
+      doc.setDrawColor(220, 38, 38);
+      doc.setLineWidth(0.5);
+      doc.line(pageWidth - 100, newFinalY + 40, pageWidth - 20, newFinalY + 40);
+
+      doc.setFontSize(12);
+      doc.setTextColor(220, 38, 38);
+      doc.text(`TOTAL:`, pageWidth - 60, newFinalY + 48, { align: "right" });
+      doc.text(
+        `$${orderData.total.toFixed(2)}`,
+        pageWidth - 25,
+        newFinalY + 48,
+        {
+          align: "right",
+        }
+      );
+    } else {
+      // Enough space, add summary box on the same page
+      doc.setFillColor(248, 249, 250);
+      doc.roundedRect(pageWidth - 100, finalY, 80, 50, 3, 3, "F");
+
+      // Add summary with right alignment
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Subtotal:`, pageWidth - 60, finalY + 10, { align: "right" });
+      doc.text(`Tax:`, pageWidth - 60, finalY + 20, { align: "right" });
+      doc.text(`Shipping:`, pageWidth - 60, finalY + 30, { align: "right" });
+
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(60, 60, 60);
+      doc.text(
+        `$${orderData.subtotal.toFixed(2)}`,
+        pageWidth - 25,
+        finalY + 10,
+        {
+          align: "right",
+        }
+      );
+      doc.text(`$${orderData.tax.toFixed(2)}`, pageWidth - 25, finalY + 20, {
+        align: "right",
+      });
+      doc.text(
+        `$${orderData.shipping.toFixed(2)}`,
+        pageWidth - 25,
+        finalY + 30,
+        {
+          align: "right",
+        }
+      );
+
+      // Total with highlight
+      doc.setDrawColor(220, 38, 38);
+      doc.setLineWidth(0.5);
+      doc.line(pageWidth - 100, finalY + 40, pageWidth - 20, finalY + 40);
+
+      doc.setFontSize(12);
+      doc.setTextColor(220, 38, 38);
+      doc.text(`TOTAL:`, pageWidth - 60, finalY + 48, { align: "right" });
+      doc.text(`$${orderData.total.toFixed(2)}`, pageWidth - 25, finalY + 48, {
+        align: "right",
+      });
+    }
 
     // Save the PDF
     doc.save(`invoice-${invoiceNumber}.pdf`);

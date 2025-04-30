@@ -52,7 +52,7 @@ export default function HomeServices() {
   const serviceRows = chunkArray(homeServices, 2);
 
   return (
-    <section className="py-12 mx-auto max-w-7xl">
+    <section className="py-12">
       <TextBox text="Services" />
       <ShippingPartners images={shippingPartnersImages} />
 
