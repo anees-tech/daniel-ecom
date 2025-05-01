@@ -27,14 +27,94 @@ interface TeamMember {
   image: string;
 }
 
+interface MissionValue {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface ChooseUsReason {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface ContactInfo {
+  address: {
+    line1: string;
+    line2: string;
+    line3: string;
+  };
+  hours: {
+    weekdays: string;
+    saturday: string;
+    sunday: string;
+  };
+  support: {
+    email: string;
+    phone: string;
+    chat: string;
+  };
+}
+
+interface CTASection {
+  title: string;
+  description: string;
+  buttonText: string;
+  buttonLink: string;
+}
+
 interface AboutUsData {
+  // Our Story Section
   storyTitle: string;
   storyText: string[];
   storyImage: string;
+
+  // Team Section
   teamTitle: string;
   teamDescription: string;
   teamMembers: TeamMember[];
+
+  // Mission Statement Section
+  missionTitle: string;
+  missionDescription: string;
+  missionValues: MissionValue[];
+
+  // Why Choose Us Section
+  chooseUsTitle: string;
+  chooseUsDescription: string;
+  chooseUsReasons: ChooseUsReason[];
+
+  // Contact Info Section
+  contactInfo: ContactInfo;
+
+  // CTA Section
+  ctaSection: CTASection;
 }
+
+// Helper function to render icon based on icon name
+const renderIcon = (iconName: string) => {
+  switch (iconName) {
+    case "heart":
+      return <Heart className="w-8 h-8 text-red-600" />;
+    case "award":
+      return <Award className="w-8 h-8 text-orange-500" />;
+    case "truck":
+      return <Truck className="w-8 h-8 text-gray-700" />;
+    case "users":
+      return <Users className="w-8 h-8 text-red-600" />;
+    case "shopping-bag":
+      return <ShoppingBag className="w-8 h-8 text-orange-500" />;
+    case "clock":
+      return <Clock className="w-8 h-8 text-red-600" />;
+    case "map-pin":
+      return <MapPin className="w-8 h-8 text-gray-700" />;
+    default:
+      return <Heart className="w-8 h-8 text-red-600" />;
+  }
+};
 
 export default function About() {
   const [aboutData, setAboutData] = useState<AboutUsData | null>(null);
@@ -94,7 +174,6 @@ export default function About() {
             <Image
               src={
                 aboutData?.storyImage ||
-                "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=400&q=80" ||
                 "/placeholder.svg" ||
                 "/placeholder.svg"
               }
@@ -106,128 +185,169 @@ export default function About() {
         </div>
       </section>
 
-      {/* Values Section - Static, keeping as is */}
+      {/* Values Section - Dynamic from Firebase */}
       <section className="py-16 bg-gray-100">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-              Our Core Values
+              {aboutData?.missionTitle || "Mission Statement"}
             </h2>
             <div className="w-20 h-1 bg-orange-500 mx-auto mb-8"></div>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              These principles guide everything we do and help us deliver an
-              exceptional experience to our customers.
+              {aboutData?.missionDescription ||
+                "These principles guide everything we do and help us deliver an exceptional experience to our customers."}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-md text-center">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Heart className="w-8 h-8 text-red-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                Customer First
-              </h3>
-              <p className="text-gray-600">
-                We prioritize our customers&apos; needs and strive to exceed
-                their expectations in every interaction.
-              </p>
-            </div>
+            {aboutData?.missionValues && aboutData.missionValues.length > 0 ? (
+              aboutData.missionValues.map((value) => (
+                <div
+                  key={value.id}
+                  className="bg-white p-8 rounded-lg shadow-md text-center"
+                >
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    {renderIcon(value.icon)}
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    {value.title}
+                  </h3>
+                  <p className="text-gray-600">{value.description}</p>
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="bg-white p-8 rounded-lg shadow-md text-center">
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Heart className="w-8 h-8 text-red-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    Customer First
+                  </h3>
+                  <p className="text-gray-600">
+                    We prioritize our customers&apos; needs and strive to exceed
+                    their expectations in every interaction.
+                  </p>
+                </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-md text-center">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Award className="w-8 h-8 text-orange-500" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                Quality
-              </h3>
-              <p className="text-gray-600">
-                We carefully curate our product selection to ensure we offer
-                only the highest quality items.
-              </p>
-            </div>
+                <div className="bg-white p-8 rounded-lg shadow-md text-center">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Award className="w-8 h-8 text-orange-500" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    Quality
+                  </h3>
+                  <p className="text-gray-600">
+                    We carefully curate our product selection to ensure we offer
+                    only the highest quality items.
+                  </p>
+                </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-md text-center">
-              <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Truck className="w-8 h-8 text-gray-700" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                Reliability
-              </h3>
-              <p className="text-gray-600">
-                We deliver on our promises with fast shipping, secure
-                transactions, and dependable service.
-              </p>
-            </div>
+                <div className="bg-white p-8 rounded-lg shadow-md text-center">
+                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Truck className="w-8 h-8 text-gray-700" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    Reliability
+                  </h3>
+                  <p className="text-gray-600">
+                    We deliver on our promises with fast shipping, secure
+                    transactions, and dependable service.
+                  </p>
+                </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-md text-center">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Users className="w-8 h-8 text-red-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                Community
-              </h3>
-              <p className="text-gray-600">
-                We build meaningful relationships with our customers, partners,
-                and the communities we serve.
-              </p>
-            </div>
+                <div className="bg-white p-8 rounded-lg shadow-md text-center">
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <Users className="w-8 h-8 text-red-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                    Community
+                  </h3>
+                  <p className="text-gray-600">
+                    We build meaningful relationships with our customers,
+                    partners, and the communities we serve.
+                  </p>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Why Choose Us Section - Static, keeping as is */}
+      {/* Why Choose Us Section - Dynamic from Firebase */}
       <section className="py-16 md:py-24 container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">
-            Why Choose Us
+            {aboutData?.chooseUsTitle || "Why Choose Us"}
           </h2>
           <div className="w-20 h-1 bg-red-600 mx-auto mb-8"></div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            We&apos;re committed to providing you with the best online shopping
-            experience possible.
+            {aboutData?.chooseUsDescription ||
+              "We're committed to providing you with the best online shopping experience possible."}
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="flex flex-col items-center text-center p-6">
-            <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-6">
-              <ShoppingBag className="w-8 h-8 text-orange-500" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Wide Selection
-            </h3>
-            <p className="text-gray-600 text-center">
-              Browse thousands of products across multiple categories to find
-              exactly what you need.
-            </p>
-          </div>
+          {aboutData?.chooseUsReasons &&
+          aboutData.chooseUsReasons.length > 0 ? (
+            aboutData.chooseUsReasons.map((reason) => (
+              <div
+                key={reason.id}
+                className="flex flex-col items-center text-center p-6"
+              >
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-6">
+                  {renderIcon(reason.icon)}
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  {reason.title}
+                </h3>
+                <p className="text-gray-600 text-center">
+                  {reason.description}
+                </p>
+              </div>
+            ))
+          ) : (
+            <>
+              <div className="flex flex-col items-center text-center p-6">
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mb-6">
+                  <ShoppingBag className="w-8 h-8 text-orange-500" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Wide Selection
+                </h3>
+                <p className="text-gray-600 text-center">
+                  Browse thousands of products across multiple categories to
+                  find exactly what you need.
+                </p>
+              </div>
 
-          <div className="flex flex-col items-center text-center p-6">
-            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
-              <Clock className="w-8 h-8 text-red-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Fast Delivery
-            </h3>
-            <p className="text-gray-600 text-center">
-              Enjoy quick and reliable shipping options to get your purchases
-              delivered right to your doorstep.
-            </p>
-          </div>
+              <div className="flex flex-col items-center text-center p-6">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
+                  <Clock className="w-8 h-8 text-red-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Fast Delivery
+                </h3>
+                <p className="text-gray-600 text-center">
+                  Enjoy quick and reliable shipping options to get your
+                  purchases delivered right to your doorstep.
+                </p>
+              </div>
 
-          <div className="flex flex-col items-center text-center p-6">
-            <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-6">
-              <MapPin className="w-8 h-8 text-gray-700" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Global Reach
-            </h3>
-            <p className="text-gray-600 text-center">
-              We ship to customers worldwide, bringing our products to shoppers
-              across the globe.
-            </p>
-          </div>
+              <div className="flex flex-col items-center text-center p-6">
+                <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-6">
+                  <MapPin className="w-8 h-8 text-gray-700" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Global Reach
+                </h3>
+                <p className="text-gray-600 text-center">
+                  We ship to customers worldwide, bringing our products to
+                  shoppers across the globe.
+                </p>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -245,30 +365,34 @@ export default function About() {
             </p>
           </div>
 
-          {aboutData?.teamMembers && aboutData.teamMembers.length > 0 ? (
+          {aboutData?.teamMembers &&
+          aboutData.teamMembers.length > 0 &&
+          aboutData.teamMembers[0].name ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {aboutData.teamMembers.map((member) => (
-                <div
-                  key={member.id}
-                  className="bg-white rounded-lg overflow-hidden shadow-md mx-auto w-full max-w-xs md:max-w-none"
-                >
-                  <div className="relative h-64">
-                    <Image
-                      src={member.image || "/placeholder.svg"}
-                      alt={member.name}
-                      fill
-                      className="object-cover"
-                    />
+              {aboutData.teamMembers
+                .filter((member) => member.name)
+                .map((member) => (
+                  <div
+                    key={member.id}
+                    className="bg-white rounded-lg overflow-hidden shadow-md mx-auto w-full max-w-xs md:max-w-none"
+                  >
+                    <div className="relative h-64">
+                      <Image
+                        src={member.image || "/placeholder.svg"}
+                        alt={member.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-6 text-center md:text-left">
+                      <h3 className="text-xl font-semibold text-gray-800 mb-1">
+                        {member.name}
+                      </h3>
+                      <p className="text-orange-500 mb-4">{member.role}</p>
+                      <p className="text-gray-600 text-sm">{member.bio}</p>
+                    </div>
                   </div>
-                  <div className="p-6 text-center md:text-left">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-1">
-                      {member.name}
-                    </h3>
-                    <p className="text-orange-500 mb-4">{member.role}</p>
-                    <p className="text-gray-600 text-sm">{member.bio}</p>
-                  </div>
-                </div>
-              ))}
+                ))}
             </div>
           ) : (
             <div className="text-center py-16 bg-white rounded-lg shadow-md max-w-md mx-auto">
@@ -290,26 +414,26 @@ export default function About() {
         </div>
       </section>
 
-      {/* CTA Section - Static, keeping as is */}
+      {/* CTA Section - Dynamic from Firebase */}
       <section className="py-16 md:py-24 bg-gradient-to-r from-red-600 to-orange-500 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Start Shopping?
+            {aboutData?.ctaSection?.title || "Ready to Start Shopping?"}
           </h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who trust Daniel&apos;s E-commerce
-            for their shopping needs.
+            {aboutData?.ctaSection?.description ||
+              "Join thousands of satisfied customers who trust Daniel's E-commerce for their shopping needs."}
           </p>
           <Link
-            href="/"
+            href={aboutData?.ctaSection?.buttonLink || "/"}
             className="inline-block bg-white text-red-600 px-8 py-3 rounded-md font-semibold text-lg hover:bg-gray-100 transition duration-300"
           >
-            Browse Our Products
+            {aboutData?.ctaSection?.buttonText || "Browse Our Products"}
           </Link>
         </div>
       </section>
 
-      {/* Contact Info Section - Static, keeping as is */}
+      {/* Contact Info Section - Dynamic from Firebase */}
       <section className="py-16 container mx-auto px-4">
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center p-6">
@@ -320,11 +444,11 @@ export default function About() {
               Our Location
             </h3>
             <p className="text-gray-600 text-center">
-              123 Commerce Street
+              {aboutData?.contactInfo?.address?.line1 || "123 Commerce Street"}
               <br />
-              Suite 500
+              {aboutData?.contactInfo?.address?.line2 || "Suite 500"}
               <br />
-              New York, NY 10001
+              {aboutData?.contactInfo?.address?.line3 || "New York, NY 10001"}
             </p>
           </div>
 
@@ -336,11 +460,13 @@ export default function About() {
               Business Hours
             </h3>
             <p className="text-gray-600 text-center">
-              Monday - Friday: 9am - 6pm
+              {aboutData?.contactInfo?.hours?.weekdays ||
+                "Monday - Friday: 9am - 6pm"}
               <br />
-              Saturday: 10am - 4pm
+              {aboutData?.contactInfo?.hours?.saturday ||
+                "Saturday: 10am - 4pm"}
               <br />
-              Sunday: Closed
+              {aboutData?.contactInfo?.hours?.sunday || "Sunday: Closed"}
             </p>
           </div>
 
@@ -352,11 +478,15 @@ export default function About() {
               Customer Support
             </h3>
             <p className="text-gray-600 text-center">
-              Email: support@danielsecommerce.com
+              Email:{" "}
+              {aboutData?.contactInfo?.support?.email ||
+                "support@danielsecommerce.com"}
               <br />
-              Phone: (555) 123-4567
+              Phone:{" "}
+              {aboutData?.contactInfo?.support?.phone || "(555) 123-4567"}
               <br />
-              Live Chat: Available 24/7
+              Live Chat:{" "}
+              {aboutData?.contactInfo?.support?.chat || "Available 24/7"}
             </p>
           </div>
         </div>

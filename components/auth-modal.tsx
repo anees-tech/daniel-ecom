@@ -76,8 +76,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       await setDoc(doc(firestore, "users", user.uid), {
         uid: user.uid,
         email: user.email,
-        name: user.displayName || null,
-        photoURL: user.photoURL || null,
         createdAt: new Date().toISOString(),
       });
 

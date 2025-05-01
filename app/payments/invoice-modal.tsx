@@ -304,7 +304,6 @@ export default function InvoiceModal({
         );
       },
       // Enable automatic page breaks
-      startY: 145,
       showHead: "firstPage",
     });
 

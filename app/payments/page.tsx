@@ -128,6 +128,8 @@ export default function Payments() {
           price: item.price,
           quantity: item.quantity,
           image: item.image || "",
+          size: item.size,
+          color:item.color,
         })),
         total: totalPrice,
         subtotal: subtotal,
