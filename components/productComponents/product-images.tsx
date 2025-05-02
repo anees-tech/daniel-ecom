@@ -133,9 +133,9 @@ export default function ProductImages({
           <Image
             src={images[selectedImage] || "/placeholder.svg"}
             alt={productName}
-            width={400}
-            height={400}
-            className="object-contain w-full h-auto"
+            width={200}
+            height={200}
+            className="object-contain w-3/4 h-auto"
           />
 
           {/* Zoom Lens */}

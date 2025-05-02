@@ -31,27 +31,31 @@ export default function ProductInfo({
   const hasHalfStar = product.rating % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
+  const availableSizes = product.sizes?.filter(
+    (size: string) => !product.outOfStockSizes.includes(size)
+  );
+
   return (
     <div className="w-full space-y-6">
       {/* Title and Rating */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold mb-2 text-gray-900">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-semibold text-gray-900">
             {product.name}
           </h1>
           <div className="flex items-center gap-2">
-            <div className="flex">
+            <div className="flex gap-1">
               {Array.from({ length: fullStars }).map((_, i) => (
                 <Star
                   key={`full-${i}`}
-                  className="w-5 h-5 fill-yellow-400 text-yellow-400 transition-transform duration-300 hover:scale-110"
+                  className="w-5 h-5 fill-yellow-400 text-yellow-400"
                 />
               ))}
               {hasHalfStar && (
                 <div className="relative">
                   <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   <Star
-                    className="w-5 h-5 absolute top-0 left-0 fill-white text-yellow-400 overflow-hidden"
+                    className="w-5 h-5 absolute top-0 left-0 fill-white text-yellow-400"
                     style={{
                       clipPath: "polygon(50% 0%, 50% 100%, 0% 100%, 0% 0%)",
                     }}
@@ -81,32 +85,57 @@ export default function ProductInfo({
             ${product.currentPrice.toFixed(2)}
           </span>
           {product.originalPrice > product.currentPrice && (
-            <span className="text-gray-500 line-through">
+            <span className="text-gray-500 line-through text-lg">
               ${product.originalPrice.toFixed(2)}
             </span>
           )}
         </div>
       </div>
 
-      {/* Details */}
+      {/* Category, Brand, Material */}
+      <div className="grid md:grid-cols-3 gap-6">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-700">Category</h2>
+          <p className="text-gray-600">{product.category}</p>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold text-gray-700">Brand</h2>
+          <p className="text-gray-600">{product.brand}</p>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold text-gray-700">Material</h2>
+          <p className="text-gray-600">{product.material}</p>
+        </div>
+      </div>
+
+      {/* Features */}
+      {product.features?.length > 0 && (
+        <div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">Features</h2>
+          <ul className="list-disc list-inside text-gray-600 space-y-1">
+            {product.features.map((feature: string, index: number) => (
+              <li key={index}>{feature}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Description */}
       <div>
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Details</h2>
+        <h2 className="text-xl font-semibold text-gray-800 mb-2">
+          Description
+        </h2>
         <p className="text-gray-600">{product.description}</p>
       </div>
 
+      {/* Colors and Sizes */}
       <div className="grid md:grid-cols-2 gap-8">
+        {/* Colors */}
         <div className="space-y-6">
-          {/* Brand */}
-          <div className="flex flex-row gap-2 items-center">
-            <h2 className="text-xl font-semibold text-gray-800">Brand</h2>
-            <p className="text-gray-700">"{product.brand}"</p>
-          </div>
-
-          {/* Colors */}
           <div>
-            <h2 className="text-xl font-semibold mb-2 text-gray-800">Colors</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Colors</h2>
             <div className="flex gap-3">
-              {product.colors.map((color: { name: string; hex: string }) => (
+              {product.colors?.map((color: { name: string; hex: string }) => (
                 <button
                   key={color.name}
                   onClick={() => setSelectedColor(color.name)}
@@ -123,12 +152,12 @@ export default function ProductInfo({
           </div>
         </div>
 
+        {/* Sizes */}
         <div className="space-y-6">
-          {/* Size */}
           <div>
-            <h2 className="text-xl font-semibold mb-2 text-gray-800">Size</h2>
-            <div className="flex gap-3">
-              {["XS", "S", "M", "L", "XL"].map((size) => (
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Sizes</h2>
+            <div className="flex flex-wrap gap-3">
+              {availableSizes.map((size: string) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
@@ -146,7 +175,7 @@ export default function ProductInfo({
 
           {/* Quantity */}
           <div>
-            <h2 className="text-xl font-semibold mb-2 text-gray-800">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
               Quantity
             </h2>
             <div className="flex items-center gap-2">
@@ -173,23 +202,40 @@ export default function ProductInfo({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-row gap-3 pt-4 justify-start items-center">
-        <Button
-          text={"Add to Cart"}
-          onClick={() => {
-            addToCart({
-              id: product.id,
-              name: product.name,
-              price: product.currentPrice,
-              image: product.image,
-              quantity,
-              color: selectedColor,
-              size: selectedSize,
-            });
-            toast("Item has been added to cart");
-          }}
-        />
-        <ProductReviewModal product={product} />
+      <div className="flex flex-row gap-0 pt-4 items-center">
+        <div className="w-30 md:w-35 lg:w-35 xl:w-35">
+          <Button
+            text={"Add to Cart"}
+            onClick={() => {
+              console.log("Selected color:", selectedColor);
+              console.log("Selected size:", selectedSize);
+
+              if (
+                !selectedColor ||
+                selectedColor.trim() === "" ||
+                !selectedSize ||
+                selectedSize.trim() === ""
+              ) {
+                toast.error("Please select a color and size");
+                return;
+              }
+
+              addToCart({
+                id: product.productId || product.id,
+                name: product.name,
+                price: product.currentPrice,
+                image: product.image,
+                quantity,
+                color: selectedColor,
+                size: selectedSize,
+              });
+              toast.success("Item added to cart");
+            }}
+          />
+        </div>
+        <div className="w-30 md:w-35 lg:w-35 xl:w-35">
+          <ProductReviewModal product={product} />
+        </div>
       </div>
     </div>
   );

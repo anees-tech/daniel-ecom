@@ -51,15 +51,12 @@ export default function ServicesPage() {
     fetchServices();
   }, []);
 
-  // Create a fixed-size placeholder array for loading state
-  const placeholderArray = Array.from({ length: 6 });
-
   if (loading) {
     return <Loading />;
   }
 
   return (
-    <main className="pt-10 relative pb-10">
+    <main className="pt-0 relative pb-10">
       <Image
         src="/design.svg"
         alt="Design"
@@ -86,6 +83,7 @@ export default function ServicesPage() {
               <div
                 key={service.id}
                 className="bg-white rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105"
+                title={service.name}
               >
                 <div className="h-48 relative">
                   <Image
@@ -96,15 +94,15 @@ export default function ServicesPage() {
                   />
                 </div>
                 <div className="p-5">
-                  <h2 className="text-xl font-bold mb-2 text-gray-800">
+                  <h2 className="text-lg font-bold mb-2 text-gray-800 line-clamp-2 h-[4.5rem]">
                     {service.name}
                   </h2>
-                  <p className="text-gray-600 text-sm mb-6 line-clamp-3 h-[4.5rem]">
+                  <p className="text-gray-600 mb-6 line-clamp-3 h-[4.5rem]">
                     {service.details}
                   </p>
                   <Link
                     href={`/services/${service.id}`}
-                    className="flex justify-center"
+                    className="flex justify-center items-center m-auto"
                   >
                     <Button text={"Read More"} />
                   </Link>

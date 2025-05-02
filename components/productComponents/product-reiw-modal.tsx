@@ -27,7 +27,7 @@ import {
   type Timestamp,
 } from "firebase/firestore";
 import { firestore } from "@/lib/firebaseConfig";
-import { Button } from "../ui/button";
+import Button from "../button";
 
 // Define item types
 type ItemType = "product" | "flashSaleItem";
@@ -377,12 +377,7 @@ export default function ProductReviewModal({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className="flex items-center gap-2 px-3 md:px-5 py-1 md:py-2
-        bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-md text-white font-semibold rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-100 hover:shadow-lg active:scale-95 cursor-pointer text-center"
-        >
-          Write Review
-        </Button>
+        <Button text={"Write Review"} />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] bg-white">
         <DialogHeader>
@@ -496,21 +491,11 @@ export default function ProductReviewModal({
             )}
 
             <DialogFooter className="flex flex-row justify-end items-center gap-2">
+              <Button text={"Cnacel"} onClick={() => setOpen(false)} />
               <Button
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2 px-3 md:px-5 py-1 md:py-2
-        bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-md text-white font-semibold rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-100 hover:shadow-lg active:scale-95 cursor-pointer text-center"
-              >
-                Cancel
-              </Button>
-              <Button
-                disabled={isSubmitting}
+                text={isSubmitting ? "Submitting..." : "Submit Review"}
                 type="submit"
-                className="flex items-center gap-2 px-3 md:px-5 py-1 md:py-2
-                bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-md text-white font-semibold rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-100 hover:shadow-lg active:scale-95 cursor-pointer text-center"
-              >
-                {isSubmitting ? "Submitting..." : "Submit Review"}
-              </Button>
+              />
             </DialogFooter>
           </form>
         )}
