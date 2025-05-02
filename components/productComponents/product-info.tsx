@@ -126,11 +126,11 @@ export default function ProductInfo({
       </div>
 
       {/* Features */}
-      {product.features?.length > 0 && (
+      {(product.features ?? []).length > 0 && (
         <div>
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Features</h2>
           <ul className="list-disc list-inside text-gray-600 space-y-1">
-            {product.features.map((feature: string, index: number) => (
+            {(product.features ?? []).map((feature: string, index: number) => (
               <li key={index}>{feature}</li>
             ))}
           </ul>
