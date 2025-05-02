@@ -52,6 +52,11 @@ export default function ProductInfo({
   const hasHalfStar = product.rating % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
+  // Ensure product.sizes is an array, default to empty if not
+  const availableSizes = Array.isArray(product.sizes) ? product.sizes : [];
+  // Ensure product.outOfStockSizes is an array, default to empty if not
+  const outOfStock = Array.isArray(product.outOfStockSizes) ? product.outOfStockSizes : [];
+
   return (
     <div className="w-full space-y-6">
       {/* Title and Rating */}
@@ -140,7 +145,21 @@ export default function ProductInfo({
       {/* Description */}
       <div>
         <h2 className="text-xl font-semibold mb-2 text-gray-800">Details</h2>
-        <p className="text-gray-600">{product.description}</p>
+        <p className="text-gray-600 mb-4">{product.description}</p>
+        {/* Display SKU, Brand, Material */}
+        <div className="text-sm text-gray-500 space-y-1">
+          <p>
+            <strong>SKU:</strong> {product.sku || "N/A"}
+          </p>
+          <p>
+            <strong>Brand:</strong> {product.brand || "N/A"}
+          </p>
+          {product.material && (
+            <p>
+              <strong>Material:</strong> {product.material}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Features */}
@@ -159,13 +178,6 @@ export default function ProductInfo({
       <div className="grid md:grid-cols-2 gap-8">
         {/* Colors */}
         <div className="space-y-6">
-          {/* Brand */}
-          <div className="flex flex-row gap-2 items-center">
-            <h2 className="text-xl font-semibold text-gray-800">Brand</h2>
-            <p className="text-gray-700">"{product.brand}"</p>
-          </div>
-
-          {/* Colors */}
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Colors</h2>
             <div className="flex gap-3">
@@ -188,23 +200,32 @@ export default function ProductInfo({
 
         {/* Sizes */}
         <div className="space-y-6">
-          {/* Size */}
           <div>
             <h2 className="text-xl font-semibold mb-2 text-gray-800">Size</h2>
-            <div className="flex gap-3">
-              {["XS", "S", "M", "L", "XL"].map((size) => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`w-12 h-8 rounded-full border font-medium transition-all duration-300 ${
-                    selectedSize === size
-                      ? "bg-red-500 text-white border-red-500 shadow-md"
-                      : "border-gray-300 text-gray-700 hover:bg-gray-100"
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
+            <div className="flex flex-wrap gap-3">
+              {availableSizes.length > 0 ? (
+                availableSizes.map((size) => {
+                  const isOutOfStock = outOfStock.includes(size);
+                  return (
+                    <button
+                      key={size}
+                      onClick={() => !isOutOfStock && setSelectedSize(size)}
+                      disabled={isOutOfStock}
+                      className={`w-12 h-8 rounded-full border font-medium transition-all duration-300 ${
+                        selectedSize === size && !isOutOfStock
+                          ? "bg-red-500 text-white border-red-500 shadow-md"
+                          : isOutOfStock
+                          ? "border-gray-300 text-gray-400 bg-gray-100 line-through cursor-not-allowed"
+                          : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  );
+                })
+              ) : (
+                <p className="text-gray-500 text-sm">No sizes available.</p>
+              )}
             </div>
           </div>
 
