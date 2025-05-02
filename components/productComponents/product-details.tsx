@@ -80,7 +80,7 @@ export default function ProductDetailPage({
 
   return (
     <div className="w-full overflow-hidden">
-      <div className="pt-40 pb-20">
+      <div className="pt-5 pb-20">
         {/* Breadcrumb */}
         <div className="text-sm md:text-xl font-small mb-10 capitalize flex gap-1 md:gap-2 px-2 sm:px-4 md:px-8 lg:px-12">
           <HomeLink />

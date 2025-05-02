@@ -52,32 +52,27 @@ export default function ProductInfo({
   const hasHalfStar = product.rating % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
-  // Ensure product.sizes is an array, default to empty if not
-  const availableSizes = Array.isArray(product.sizes) ? product.sizes : [];
-  // Ensure product.outOfStockSizes is an array, default to empty if not
-  const outOfStock = Array.isArray(product.outOfStockSizes) ? product.outOfStockSizes : [];
-
   return (
     <div className="w-full space-y-6">
       {/* Title and Rating */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold mb-2 text-gray-900">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-semibold text-gray-900">
             {product.name}
           </h1>
           <div className="flex items-center gap-2">
-            <div className="flex">
+            <div className="flex gap-1">
               {Array.from({ length: fullStars }).map((_, i) => (
                 <Star
                   key={`full-${i}`}
-                  className="w-5 h-5 fill-yellow-400 text-yellow-400 transition-transform duration-300 hover:scale-110"
+                  className="w-5 h-5 fill-yellow-400 text-yellow-400"
                 />
               ))}
               {hasHalfStar && (
                 <div className="relative">
                   <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   <Star
-                    className="w-5 h-5 absolute top-0 left-0 fill-white text-yellow-400 overflow-hidden"
+                    className="w-5 h-5 absolute top-0 left-0 fill-white text-yellow-400"
                     style={{
                       clipPath: "polygon(50% 0%, 50% 100%, 0% 100%, 0% 0%)",
                     }}
@@ -107,23 +102,45 @@ export default function ProductInfo({
             ${product.currentPrice.toFixed(2)}
           </span>
           {product.originalPrice > product.currentPrice && (
-            <span className="text-gray-500 line-through">
+            <span className="text-gray-500 line-through text-lg">
               ${product.originalPrice.toFixed(2)}
             </span>
           )}
         </div>
       </div>
 
-      {/* Details */}
+      {/* Category, Brand, Material */}
+      <div className="grid md:grid-cols-3 gap-6">
+        <div>
+          <h2 className="text-lg font-semibold text-gray-700">Category</h2>
+          <p className="text-gray-600">{product.category}</p>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold text-gray-700">Brand</h2>
+          <p className="text-gray-600">{product.brand}</p>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold text-gray-700">Material</h2>
+          <p className="text-gray-600">{product.material}</p>
+        </div>
+      </div>
+
+      {/* Features */}
+      {product.features?.length > 0 && (
+        <div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">Features</h2>
+          <ul className="list-disc list-inside text-gray-600 space-y-1">
+            {product.features.map((feature: string, index: number) => (
+              <li key={index}>{feature}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Description */}
       <div>
         <h2 className="text-xl font-semibold mb-2 text-gray-800">Details</h2>
-        <p className="text-gray-600 mb-4">{product.description}</p>
-        {/* Display SKU, Brand, Material */}
-        <div className="text-sm text-gray-500 space-y-1">
-          <p><strong>SKU:</strong> {product.sku || 'N/A'}</p>
-          <p><strong>Brand:</strong> {product.brand || 'N/A'}</p>
-          {product.material && <p><strong>Material:</strong> {product.material}</p>}
-        </div>
+        <p className="text-gray-600">{product.description}</p>
       </div>
 
       {/* Features */}
@@ -138,13 +155,21 @@ export default function ProductInfo({
         </div>
       )}
 
+      {/* Colors and Sizes */}
       <div className="grid md:grid-cols-2 gap-8">
+        {/* Colors */}
         <div className="space-y-6">
+          {/* Brand */}
+          <div className="flex flex-row gap-2 items-center">
+            <h2 className="text-xl font-semibold text-gray-800">Brand</h2>
+            <p className="text-gray-700">"{product.brand}"</p>
+          </div>
+
           {/* Colors */}
           <div>
-            <h2 className="text-xl font-semibold mb-2 text-gray-800">Colors</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Colors</h2>
             <div className="flex gap-3">
-              {product.colors.map((color: { name: string; hex: string }) => (
+              {product.colors?.map((color: { name: string; hex: string }) => (
                 <button
                   key={color.name}
                   onClick={() => setSelectedColor(color.name)}
@@ -161,40 +186,31 @@ export default function ProductInfo({
           </div>
         </div>
 
+        {/* Sizes */}
         <div className="space-y-6">
-          {/* Size - Now Dynamic */}
+          {/* Size */}
           <div>
             <h2 className="text-xl font-semibold mb-2 text-gray-800">Size</h2>
-            <div className="flex flex-wrap gap-3"> {/* Added flex-wrap */}
-              {availableSizes.length > 0 ? (
-                availableSizes.map((size) => {
-                  const isOutOfStock = outOfStock.includes(size);
-                  return (
-                    <button
-                      key={size}
-                      onClick={() => !isOutOfStock && setSelectedSize(size)}
-                      disabled={isOutOfStock} // Disable button if size is out of stock
-                      className={`w-12 h-8 rounded-full border font-medium transition-all duration-300 ${
-                        selectedSize === size && !isOutOfStock
-                          ? "bg-red-500 text-white border-red-500 shadow-md" // Selected style
-                          : isOutOfStock
-                          ? "border-gray-300 text-gray-400 bg-gray-100 line-through cursor-not-allowed" // Out of stock style
-                          : "border-gray-300 text-gray-700 hover:bg-gray-100" // Default style
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  );
-                })
-              ) : (
-                <p className="text-gray-500 text-sm">No sizes available.</p>
-              )}
+            <div className="flex gap-3">
+              {["XS", "S", "M", "L", "XL"].map((size) => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  className={`w-12 h-8 rounded-full border font-medium transition-all duration-300 ${
+                    selectedSize === size
+                      ? "bg-red-500 text-white border-red-500 shadow-md"
+                      : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Quantity */}
           <div>
-            <h2 className="text-xl font-semibold mb-2 text-gray-800">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">
               Quantity
             </h2>
             <div className="flex items-center gap-2">
@@ -237,6 +253,7 @@ export default function ProductInfo({
             toast("Item has been added to cart");
           }}
         />
+        <ProductReviewModal product={product} />
       </div>
     </div>
   );

@@ -38,8 +38,8 @@ export default function ProductReviewsSkeleton() {
 
       <Separator className="my-8" />
 
-      <div className="space-y-6">
-        {[...Array(2)].map((_, i) => (
+      {/* <div className="space-y-6">
+        {[...Array(0)].map((_, i) => (
           <Card key={i} className="border border-gray-200 bg-white">
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-4">
@@ -75,7 +75,7 @@ export default function ProductReviewsSkeleton() {
             className="bg-gray-300 h-10 w-40 rounded"
           ></Button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
