@@ -206,7 +206,9 @@ export default function ServiceDetailPage({
               </h1>
 
               <div className="prose prose-lg text-gray-600 mb-8 flex-grow">
-                <p className="leading-relaxed">{service.details}</p>
+                <pre className="mr-5 whitespace-pre-wrap font-sans">
+                  {service.details}
+                </pre>
               </div>
 
               <div className="mt-auto">
