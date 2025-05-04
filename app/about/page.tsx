@@ -165,9 +165,12 @@ export default function About() {
             <div className="w-20 h-1 bg-red-600 mb-8 mx-auto md:mx-0"></div>
 
             {aboutData?.storyText.map((paragraph, index) => (
-              <p key={index} className="text-gray-600 mb-6">
+              <pre
+                key={index}
+                className="text-gray-600 mb-6 mr-5 whitespace-pre-wrap font-sans"
+              >
                 {paragraph}
-              </p>
+              </pre>
             ))}
           </div>
           <div className="relative h-[400px] rounded-lg overflow-hidden mx-auto w-full">
@@ -193,10 +196,10 @@ export default function About() {
               {aboutData?.missionTitle || "Mission Statement"}
             </h2>
             <div className="w-20 h-1 bg-orange-500 mx-auto mb-8"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <pre className="text-gray-600 max-w-2xl mx-auto whitespace-pre-wrap font-sans text-center">
               {aboutData?.missionDescription ||
                 "These principles guide everything we do and help us deliver an exceptional experience to our customers."}
-            </p>
+            </pre>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -212,7 +215,9 @@ export default function About() {
                   <h3 className="text-xl font-semibold text-gray-800 mb-4">
                     {value.title}
                   </h3>
-                  <p className="text-gray-600">{value.description}</p>
+                  <pre className="text-gray-600 mr-5 whitespace-pre-wrap font-sans text-center mx-auto">
+                    {value.description}
+                  </pre>
                 </div>
               ))
             ) : (
@@ -224,7 +229,7 @@ export default function About() {
                   <h3 className="text-xl font-semibold text-gray-800 mb-4">
                     Customer First
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mr-5">
                     We prioritize our customers&apos; needs and strive to exceed
                     their expectations in every interaction.
                   </p>
@@ -281,10 +286,10 @@ export default function About() {
             {aboutData?.chooseUsTitle || "Why Choose Us"}
           </h2>
           <div className="w-20 h-1 bg-red-600 mx-auto mb-8"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <pre className="text-gray-600 max-w-2xl mx-auto whitespace-pre-wrap font-sans text-center">
             {aboutData?.chooseUsDescription ||
               "We're committed to providing you with the best online shopping experience possible."}
-          </p>
+          </pre>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -301,9 +306,9 @@ export default function About() {
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">
                   {reason.title}
                 </h3>
-                <p className="text-gray-600 text-center">
+                <pre className="text-gray-600 mx-auto whitespace-pre-wrap font-sans text-center">
                   {reason.description}
-                </p>
+                </pre>
               </div>
             ))
           ) : (
@@ -359,10 +364,10 @@ export default function About() {
               {aboutData?.teamTitle || "Meet Our Team"}
             </h2>
             <div className="w-20 h-1 bg-orange-500 mx-auto mb-8"></div>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <pre className="text-gray-600 max-w-2xl mx-auto whitespace-pre-wrap font-sans text-center">
               {aboutData?.teamDescription ||
                 "The dedicated professionals behind Daniel's E-commerce who work tirelessly to serve you better."}
-            </p>
+            </pre>
           </div>
 
           {aboutData?.teamMembers &&
@@ -389,7 +394,9 @@ export default function About() {
                         {member.name}
                       </h3>
                       <p className="text-orange-500 mb-4">{member.role}</p>
-                      <p className="text-gray-600 text-sm">{member.bio}</p>
+                      <pre className="text-gray-600 text-sm mr-5 whitespace-pre-wrap font-sans">
+                        {member.bio}
+                      </pre>
                     </div>
                   </div>
                 ))}
@@ -420,10 +427,10 @@ export default function About() {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             {aboutData?.ctaSection?.title || "Ready to Start Shopping?"}
           </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
+          <pre className="text-xl mb-8 max-w-2xl mx-auto whitespace-pre-wrap font-sans text-center">
             {aboutData?.ctaSection?.description ||
               "Join thousands of satisfied customers who trust Daniel's E-commerce for their shopping needs."}
-          </p>
+          </pre>
           <Link
             href={aboutData?.ctaSection?.buttonLink || "/"}
             className="inline-block bg-white text-red-600 px-8 py-3 rounded-md font-semibold text-lg hover:bg-gray-100 transition duration-300"

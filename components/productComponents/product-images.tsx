@@ -135,7 +135,7 @@ export default function ProductImages({
             alt={productName}
             width={200}
             height={200}
-            className="object-contain w-3/4 h-auto"
+            className="object-contain w-full h-auto"
           />
 
           {/* Zoom Lens */}

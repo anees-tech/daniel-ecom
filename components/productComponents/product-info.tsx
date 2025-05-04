@@ -55,16 +55,30 @@ export default function ProductInfo({
   // Ensure product.sizes is an array, default to empty if not
   const availableSizes = Array.isArray(product.sizes) ? product.sizes : [];
   // Ensure product.outOfStockSizes is an array, default to empty if not
-  const outOfStock = Array.isArray(product.outOfStockSizes) ? product.outOfStockSizes : [];
+  const outOfStock = Array.isArray(product.outOfStockSizes)
+    ? product.outOfStockSizes
+    : [];
 
   return (
     <div className="w-full space-y-6">
       {/* Title and Rating */}
-      <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-semibold text-gray-900">
-            {product.name}
-          </h1>
+      <div className="flex flex-col md:justify-between md:items-start gap-4">
+        <div className="flex flex-col gap-2 w-full">
+          <div className="flex justify-between items-center">
+            <h1 className="text-3xl font-semibold text-gray-900">
+              {product.name}
+            </h1>
+            <div className="flex items-center gap-3">
+              <span className="text-3xl font-bold text-green-500">
+                ${product.currentPrice.toFixed(2)}
+              </span>
+              {product.originalPrice > product.currentPrice && (
+                <span className="text-red-500 line-through text-lg">
+                  ${product.originalPrice.toFixed(2)}
+                </span>
+              )}
+            </div>
+          </div>
           <div className="flex items-center gap-2">
             <div className="flex gap-1">
               {Array.from({ length: fullStars }).map((_, i) => (
@@ -88,34 +102,35 @@ export default function ProductInfo({
                 <Star key={`empty-${i}`} className="w-5 h-5 text-gray-300" />
               ))}
             </div>
-            <span className="text-gray-600 text-sm">
-              ({product.reviewsCount} Reviews)
-            </span>
-            <span
-              className={`text-sm font-medium ${
-                product.stock > 0 ? "text-green-500" : "text-red-500"
-              }`}
-            >
-              {product.stock > 0 ? "In Stock" : "Out of Stock"}
-            </span>
+            <div className="flex items-center gap-2 text-sm text-gray-600 whitespace-nowrap">
+              <span>({product.reviewsCount} Reviews)</span>
+              <span
+                className={`font-medium ${
+                  product.stock > 0 ? "text-green-500" : "text-red-500"
+                }`}
+              >
+                {product.stock > 0 ? "In Stock" : "Out of Stock"}
+              </span>
+            </div>
           </div>
         </div>
-
-        {/* Price */}
-        <div className="flex items-center gap-3">
-          <span className="text-3xl font-bold text-gray-900">
-            ${product.currentPrice.toFixed(2)}
-          </span>
-          {product.originalPrice > product.currentPrice && (
-            <span className="text-gray-500 line-through text-lg">
-              ${product.originalPrice.toFixed(2)}
-            </span>
-          )}
+        {/* Description */}
+        <div>
+          <h2 className="text-xl font-semibold mb-2 text-gray-800">Details</h2>
+          <pre className="text-gray-600 mb-4 mr-5 whitespace-pre-wrap font-sans">
+            {product.description}
+          </pre>
+          {/* Display SKU, Brand, Material */}
+          <div className="text-sm text-gray-500 space-y-1">
+            <p>
+              <strong>SKU:</strong> {product.sku || "N/A"}
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Category, Brand, Material */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         <div>
           <h2 className="text-lg font-semibold text-gray-700">Category</h2>
           <p className="text-gray-600">{product.category}</p>
@@ -134,50 +149,24 @@ export default function ProductInfo({
       {(product.features ?? []).length > 0 && (
         <div>
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Features</h2>
-          <ul className="list-disc list-inside text-gray-600 space-y-1">
+          <ul className="grid gap-2 text-gray-700 text-sm">
             {(product.features ?? []).map((feature: string, index: number) => (
-              <li key={index}>{feature}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Description */}
-      <div>
-        <h2 className="text-xl font-semibold mb-2 text-gray-800">Details</h2>
-        <p className="text-gray-600 mb-4">{product.description}</p>
-        {/* Display SKU, Brand, Material */}
-        <div className="text-sm text-gray-500 space-y-1">
-          <p>
-            <strong>SKU:</strong> {product.sku || "N/A"}
-          </p>
-          <p>
-            <strong>Brand:</strong> {product.brand || "N/A"}
-          </p>
-          {product.material && (
-            <p>
-              <strong>Material:</strong> {product.material}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Features */}
-      {product.features && product.features.length > 0 && (
-        <div>
-          <h2 className="text-xl font-semibold mb-2 text-gray-800">Features</h2>
-          <ul className="list-disc list-inside text-gray-600 space-y-1">
-            {product.features.map((feature, index) => (
-              <li key={index}>{feature}</li>
+              <li
+                key={index}
+                className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-lg shadow-sm shadow-sm"
+              >
+                <span className="text-green-500 text-lg">✓</span>
+                <span className="leading-snug">{feature}</span>
+              </li>
             ))}
           </ul>
         </div>
       )}
 
       {/* Colors and Sizes */}
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="flex flex-col gap-2">
         {/* Colors */}
-        <div className="space-y-6">
+        <div>
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Colors</h2>
             <div className="flex gap-3">
@@ -199,7 +188,7 @@ export default function ProductInfo({
         </div>
 
         {/* Sizes */}
-        <div className="space-y-6">
+        <div>
           <div>
             <h2 className="text-xl font-semibold mb-2 text-gray-800">Size</h2>
             <div className="flex flex-wrap gap-3">

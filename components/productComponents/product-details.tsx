@@ -108,7 +108,7 @@ export default function ProductDetailPage({
         <div className="px-0 sm:px-2 md:px-4 lg:px-8 mb-8">
           <div className="flex flex-col lg:flex-row gap-4 bg-white p-4 sm:p-6 md:p-8 rounded-xl justify-center shadow-sm md:shadow-md">
             {/* Product Images - Now at the top/left */}
-            <div className="w-full lg:w-3/4">
+            <div className="w-full lg:w-1/2">
               {isLoading ? (
                 <ProductImagesSkeleton />
               ) : (
@@ -119,7 +119,23 @@ export default function ProductDetailPage({
                 />
               )}
             </div>
-
+            <div className="px-0 sm:px-2 md:px-4 lg:px-8 mb-8">
+              <div className="bg-white p-4 sm:p-6 md:p-8">
+                {isLoading ? (
+                  <ProductInfoSkeleton />
+                ) : (
+                  <ProductInfo
+                    product={product}
+                    selectedColor={selectedColor}
+                    setSelectedColor={setSelectedColor}
+                    selectedSize={selectedSize}
+                    setSelectedSize={setSelectedSize}
+                    quantity={quantity}
+                    handleQuantityChange={handleQuantityChange}
+                  />
+                )}
+              </div>
+            </div>
             {/* Delivery Options - Now on the right side of images */}
             <div className="w-full lg:w-1/4">
               {isLoading ? <DeliveryOptionsSkeleton /> : <DeliveryOptions />}
@@ -128,23 +144,6 @@ export default function ProductDetailPage({
         </div>
 
         {/* Bottom Section: Product Details - Full Width */}
-        <div className="px-0 sm:px-2 md:px-4 lg:px-8 mb-8">
-          <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-sm md:shadow-md">
-            {isLoading ? (
-              <ProductInfoSkeleton />
-            ) : (
-              <ProductInfo
-                product={product}
-                selectedColor={selectedColor}
-                setSelectedColor={setSelectedColor}
-                selectedSize={selectedSize}
-                setSelectedSize={setSelectedSize}
-                quantity={quantity}
-                handleQuantityChange={handleQuantityChange}
-              />
-            )}
-          </div>
-        </div>
 
         {/* Reviews Section */}
         <div className="relative mt-10">

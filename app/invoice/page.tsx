@@ -55,8 +55,7 @@ export default function InvoiceInfoPage() {
           </div>
           <p className="text-gray-600 text-base mb-4">
             After successfully placing an order on{" "}
-            <strong>Daniel E-commerce Store</strong>, you’ll receive a
-            confirmation screen with an option to download your invoice.
+            <strong>Daniel E-commerce Store</strong>, you’ll be navigate to the orders page from where you can click on the download button of the relevant order for which you want to generate invoice.
           </p>
           <div className="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-400 mb-6">
             <h2 className="text-purple-700 font-semibold text-lg mb-1">
