@@ -119,7 +119,7 @@ export default function ProductDetailPage({
                 />
               )}
             </div>
-            <div className="px-0 sm:px-2 md:px-4 lg:px-8 mb-8">
+            <div className="px-0 sm:px-2 md:px-4 lg:px-8 mb-8 w-full md:w-1/3">
               <div className="bg-white p-4 sm:p-6 md:p-8">
                 {isLoading ? (
                   <ProductInfoSkeleton />
