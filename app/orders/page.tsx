@@ -142,9 +142,7 @@ export default function OrdersPage() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 mb-6">
-          <h2 className="text-blue-700 font-semibold text-lg mb-1">
-            Reminder
-          </h2>
+          <h2 className="text-blue-700 font-semibold text-lg mb-1">Reminder</h2>
           <p className="text-blue-800">
             Order Can Only be Cancelled when the Status of Order is
             <strong> Pending</strong>.
@@ -187,7 +185,7 @@ export default function OrdersPage() {
               You haven&apos;t placed any orders yet.
             </p>
             <Link href="/">
-              <span className="inline-block bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white py-2 px-6 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity">
+              <span className="inline-block bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white py-2 px-6 rounded-full text-sm font-semibold hover:opacity-90 active:opacity-90 transition-opacity">
                 Shop Now
               </span>
             </Link>
@@ -199,7 +197,7 @@ export default function OrdersPage() {
               .map((order) => (
                 <div
                   key={order.id}
-                  className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg transition-shadow"
+                  className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg active:shadow-lg transition-shadow"
                 >
                   <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                     <div>
@@ -295,7 +293,7 @@ export default function OrdersPage() {
                         <button
                           className="w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
     text-sm md:text-md text-white font-semibold rounded-full shadow-lg  transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
-    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604] py-2 px-6 "
+    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604] py-2 px-6 active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] active:to-[#ff3604]"
                           onClick={() => {
                             handleCancelOrder(order.id);
                             toast.success(
@@ -308,7 +306,7 @@ export default function OrdersPage() {
                       )}
                       <button
                         className="w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]  text-white py-2 px-6 rounded-full text-sm font-semibold transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
-    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604]"
+    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604] active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] active:to-[#ff3604]"
                         onClick={() => {
                           setSelectedOrder(order);
                           setShowInvoiceModal(true);

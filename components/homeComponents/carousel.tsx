@@ -77,17 +77,17 @@ const Carousel: React.FC = () => {
 
       {/* Custom Navigation Buttons */}
       <button
-        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 hover:bg-red-500 hover:shadow-lg focus::bg-yellow-300 cursor-pointer"
+        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 hover:bg-red-500 active:bg-red-500 active:shadow-lg hover:shadow-lg focus::bg-yellow-300 cursor-pointer"
         onClick={() => sliderRef.current?.slickPrev()}
       >
-        <FaChevronLeft size={20} className="text-gray-900 hover:text-white" />
+        <FaChevronLeft size={20} className="text-gray-900 hover:text-white active:text-white" />
       </button>
 
       <button
-        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 hover:bg-red-500 hover:shadow-lg focus::bg-yellow-300 cursor-pointer"
+        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 hover:bg-red-500 active:bg-red-500 hover:shadow-lg focus::bg-yellow-300 cursor-pointer"
         onClick={() => sliderRef.current?.slickNext()}
       >
-        <FaChevronRight size={20} className="text-gray-900 hover:text-white" />
+        <FaChevronRight size={20} className="text-gray-900 hover:text-white active:text-white" />
       </button>
     </div>
   );

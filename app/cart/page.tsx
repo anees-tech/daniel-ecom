@@ -49,7 +49,7 @@ export default function CartClient() {
               <p className="text-gray-500 mb-4">Your cart is empty.</p>
               <Link
                 href="/"
-                className="inline-block bg-[#F05021] text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-[#EB1E24] transition-all"
+                className="inline-block bg-[#F05021] text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-[#EB1E24] active:bg-[#EB1E24] transition-all"
               >
                 Continue Shopping
               </Link>

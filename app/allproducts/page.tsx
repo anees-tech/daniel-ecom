@@ -68,7 +68,7 @@ export default function ProductsPage() {
         <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-4 capitalize">
           <HomeLink />
           <span className="text-gray-400">/</span>
-          <span className="text-red-500 hover:text-red-700">Products</span>
+          <span className="text-red-500 hover:text-red-700 active:text-red-700">Products</span>
         </div>
 
         <TextField text={"Products"} />

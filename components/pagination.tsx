@@ -73,7 +73,7 @@ export function Pagination({
           "w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 cursor-pointer",
           currentPage <= 1
             ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-gray-100"
+            : "hover:bg-gray-100 active:bg-gray-100"
         )}
         aria-label="Previous page"
       >
@@ -98,7 +98,7 @@ export function Pagination({
               "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium cursor-pointer",
               currentPage === pageNum
                 ? "bg-red-500 text-white"
-                : "border border-gray-300 hover:bg-gray-100 bg-white"
+                : "border border-gray-300 hover:bg-gray-100 bg-white active:bg-gray-100"
             )}
             aria-current={currentPage === pageNum ? "page" : undefined}
           >
@@ -114,7 +114,7 @@ export function Pagination({
           "w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 cursor-pointer",
           currentPage >= totalPages
             ? "opacity-50 cursor-not-allowed"
-            : "hover:bg-gray-100"
+            : "hover:bg-gray-100 active:bg-gray-100"
         )}
         aria-label="Next page"
       >

@@ -97,7 +97,7 @@ export default function ProductsPage() {
         <TextBox text={"Our Products"} />
         <Link
           href={"/allproducts"}
-          className="text-sm text-red-500 md:text-lg font-bold flex justify-center items-center gap-2 hover:bg-red-500 hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
+          className="text-sm text-red-500 md:text-lg flex justify-center items-center gap-2 hover:bg-red-500 active:bg-red-500 active:text-white hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
         >
           View All
           <IoIosArrowForward size={20} />
@@ -108,7 +108,7 @@ export default function ProductsPage() {
         <p className="text-gray-500 mb-6">
           Discover the most trending products in our store.
         </p>
-        <div className="flex flex-wrap gap-4 justify-center border-b border-gray-400">
+        <div className="flex flex-wrap gap-4 justify-center pb-4 border-b border-gray-400">
           <FilterProducts
             onFilterChange={handleFilterChange}
             isLoading={isLoading}

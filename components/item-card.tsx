@@ -120,15 +120,17 @@ export default function ItemCard({
         <div className="flex items-center gap-2">
           {originalPrice && originalPrice > currentPrice ? (
             <>
-              <span className="font-semibold text-red-500">
+              <span className="font-semibold text-green-500">
                 ${currentPrice.toFixed(2)}
               </span>
-              <span className="text-muted-foreground text-sm line-through">
+              <span className="text-muted-foreground text-sm line-through text-red-500">
                 ${originalPrice.toFixed(2)}
               </span>
             </>
           ) : (
-            <span className="font-semibold">${currentPrice.toFixed(2)}</span>
+            <span className="font-semibold text-green-500">
+              ${currentPrice.toFixed(2)}
+            </span>
           )}
         </div>
       </div>

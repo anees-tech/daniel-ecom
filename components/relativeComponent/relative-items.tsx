@@ -103,7 +103,7 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
         <TextBox text={"Relative"} />
         <Link
           href={`/category/${category}`}
-          className="text-sm text-red-500 md:text-lg font-bold flex justify-center items-center gap-2 hover:bg-red-500 hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
+          className="text-sm text-red-500 md:text-lg flex justify-center items-center gap-2 hover:bg-red-500 active:bg-red-500 active:text-white hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
         >
           View All
           <IoIosArrowForward size={20} />
@@ -121,16 +121,16 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
           <button
             type="button"
             onClick={handlePrev}
-            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer"
+            className="p-2 bg-gray-200 hover:bg-red-500 active:bg-red-500 rounded-full cursor-pointer"
           >
-            <FaChevronLeft size={16} className="hover:text-white" />
+            <FaChevronLeft size={16} className="hover:text-white active:text-white" />
           </button>
           <button
             type="button"
             onClick={handleNext}
-            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer"
+            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer active:bg-red-500"
           >
-            <FaChevronRight size={16} className="hover:text-white" />
+            <FaChevronRight size={16} className="hover:text-white active:text-white" />
           </button>
         </div>
       </div>

@@ -547,7 +547,7 @@ export default function ServiceDetailPage({
                 <>
                   <button
                     onClick={goToPrevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-red-500"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-red-500 active:bg-red-500 cursor-pointer"
                     aria-label="Previous image"
                   >
                     <ChevronLeft className="h-5 w-5 text-gray-700 hover:text-white" />
@@ -555,7 +555,7 @@ export default function ServiceDetailPage({
 
                   <button
                     onClick={goToNextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-red-500"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-red-500 active:bg-red-500 cursor-pointer"
                     aria-label="Next image"
                   >
                     <ChevronRight className="h-5 w-5 text-gray-700 hover:text-white" />
@@ -603,7 +603,7 @@ export default function ServiceDetailPage({
               </div>
 
               <div className="mt-auto">
-                <div className="bg-gray-50 p-4 rounded-xl mb-6 transform transition-transform hover:scale-102">
+                <div className="bg-gray-50 p-4 rounded-xl mb-6 transform transition-transform hover:scale-102 active:scale-102">
                   <div className="flex items-center text-gray-700">
                     <Clock className="h-5 w-5 mr-2 text-red-500" />
                     <span>Quick response time • Professional service</span>
@@ -611,7 +611,7 @@ export default function ServiceDetailPage({
                 </div>
 
                 <Link href="/contact">
-                  <div className="w-full">
+                  <div className="w-full cursor-pointer">
                     <Button text="Contact Us About This Service" />
                   </div>
                 </Link>
@@ -629,7 +629,7 @@ export default function ServiceDetailPage({
                   className={`w-20 h-20 relative rounded-lg cursor-pointer border-2 shadow-md animate-fade-in-up transition-all duration-300 hover:scale-105 ${
                     currentImageIndex === index
                       ? "border-red-500 ring-2 ring-red-500 ring-offset-2"
-                      : "border-white hover:border-red-200"
+                      : "border-white hover:border-red-200 active:border-red-200"
                   }`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
@@ -651,7 +651,7 @@ export default function ServiceDetailPage({
           style={{ animationDelay: "200ms" }}
         >
           <Link href="/services">
-            <div className="inline-flex items-center bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-sm text-red-500 hover:text-red-600 hover:bg-white transition-all hover:translate-x-[-5px]">
+            <div className="inline-flex items-center bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-sm text-red-500 hover:text-red-600 active:text-red-600 active:bg-white hover:bg-white transition-all hover:translate-x-[-2px] cursor-pointer">
               <ArrowLeft className="mr-2 h-5 w-5" />
               <span>Back to All Services</span>
             </div>

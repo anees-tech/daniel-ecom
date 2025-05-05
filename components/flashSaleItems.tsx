@@ -59,12 +59,12 @@ const FlashSaleCarousel = () => {
   };
 
   return (
-    <div className="relative mt-100 md:mt-50 w-full">
+    <div className="relative mt-120 md:mt-60 w-full">
       <div className="flex justify-between items-center pr-2 sm:pr-4 md:pr-8 lg:pr-12">
         <TextBox text={"Today's"} />
         <Link
           href={"/flashsaleproducts"}
-          className="text-sm text-red-500 md:text-lg font-bold flex justify-center items-center gap-2 hover:bg-red-500 hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
+          className="text-sm text-red-500 md:text-lg flex justify-center items-center gap-2 hover:bg-red-500 active:bg-red-500 active:text-white hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
         >
           View All
           <IoIosArrowForward size={20} />
@@ -78,21 +78,21 @@ const FlashSaleCarousel = () => {
           <button
             type="button"
             onClick={() => sliderRef.current?.slickPrev()}
-            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer"
+            className="p-2 bg-gray-200 hover:bg-red-500 active:bg-red-500 rounded-full cursor-pointer"
           >
             <FaChevronLeft
               size={16}
-              className="text-gray-900 hover:text-white"
+              className="text-gray-900 hover:text-white active:text-white"
             />
           </button>
           <button
             type="button"
             onClick={() => sliderRef.current?.slickNext()}
-            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer"
+            className="p-2 bg-gray-200 hover:bg-red-500 active:bg-red-500 rounded-full cursor-pointer"
           >
             <FaChevronRight
               size={16}
-              className="text-gray-900 hover:text-white"
+              className="text-gray-900 hover:text-white active:text-white"
             />
           </button>
         </div>
