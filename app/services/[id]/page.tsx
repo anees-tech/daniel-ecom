@@ -547,25 +547,25 @@ export default function ServiceDetailPage({
                 <>
                   <button
                     onClick={goToPrevImage}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-red-500"
                     aria-label="Previous image"
                   >
-                    <ChevronLeft className="h-5 w-5 text-gray-700" />
+                    <ChevronLeft className="h-5 w-5 text-gray-700 hover:text-white" />
                   </button>
 
                   <button
                     onClick={goToNextImage}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-red-500"
                     aria-label="Next image"
                   >
-                    <ChevronRight className="h-5 w-5 text-gray-700" />
+                    <ChevronRight className="h-5 w-5 text-gray-700 hover:text-white" />
                   </button>
                 </>
               )}
 
               {/* Slider indicators */}
               {allImages.length > 1 && (
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 overflow-scroll">
+                <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
                   {allImages.map((_, index) => (
                     <button
                       key={index}
