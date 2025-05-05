@@ -30,8 +30,8 @@ export default function CartClient() {
 
   return (
     <>
-      <div className="w-full pt-10 pb-20">
-        <h1 className="mx-3 sm:mx-5 md:mx-9 lg:mx-13 py-5 flex gap-1 md:gap-2 text-sm md:text-xl font-small mb-4 capitalize">
+      <div className="w-full pt-0 pb-20">
+        <h1 className="py-8 mx-4 sm:mx-6 md:mx-8 lg:mx-12 flex gap-1 md:gap-2 text-md md:text-xl font-small mb-4 capitalize">
           <HomeLink />
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-red-500">Cart</span>

@@ -6,6 +6,7 @@ import ItemCard from "../item-card";
 import ItemCardSkeleton from "../item-card-skeleton";
 import { Pagination } from "../pagination";
 import CategoryProductsInterface from "@/interfaces/categoriesInterface";
+import { usePathname } from "next/navigation";
 
 interface ProductListProps {
   productsArray: CategoryProductsInterface[];
@@ -13,6 +14,8 @@ interface ProductListProps {
 }
 
 function CategoryProducts({ productsArray, setIsLoading }: ProductListProps) {
+  const pathname = usePathname();
+  const isSearchPage = pathname.includes("search");
   const { selectedFilters } = useCategoryFilter();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -126,15 +129,17 @@ function CategoryProducts({ productsArray, setIsLoading }: ProductListProps) {
               </div>
             ))}
           </div>
-          {totalPages > 1 && (
-            <div className="mt-8 flex justify-center">
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
-          )}
+          {!isSearchPage
+            ? totalPages > 1 && (
+                <div className="mt-8 flex justify-center">
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
+                </div>
+              )
+            : null}
         </>
       )}
     </>

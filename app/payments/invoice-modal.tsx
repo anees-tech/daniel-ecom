@@ -980,7 +980,7 @@ export default function InvoiceModal({
               </p>
               <button
                 onClick={onClose}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-full"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-full cursor-pointer"
               >
                 Close
               </button>
@@ -996,7 +996,8 @@ export default function InvoiceModal({
               </p>
               <button
                 onClick={generateInvoicePDF}
-                className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:bg-red-600 text-white py-3 px-6 rounded-full w-full"
+                className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:bg-red-600 text-white py-3 px-6 rounded-full w-full transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center cursor-pointer
+    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604]"
               >
                 <Download className="h-5 w-5" />
                 Download Invoice

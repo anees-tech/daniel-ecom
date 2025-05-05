@@ -1,16 +1,16 @@
 "use client";
 import { Filter } from "lucide-react";
-import SideBar from "./SideBar";
-import CategoryProducts from "./categoryProducts";
 import Image from "next/image";
-import HomeLink from "../home-link";
-import TextField from "../text-field";
 import { useEffect, useState } from "react";
-import { getProducts } from "@/lib/products";
+import {getProducts } from "@/lib/products";
 import CategoryProductsInterface from "@/interfaces/categoriesInterface";
-import Loading from "./loading";
+import Loading from "@/components/categoryComponents/loading";
+import HomeLink from "@/components/home-link";
+import TextField from "@/components/text-field";
+import SideBar from "@/components/categoryComponents/SideBar";
+import CategoryProducts from "@/components/categoryComponents/categoryProducts";
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
+export default function ProductsPage() {
   const [products, setProducts] = useState<CategoryProductsInterface[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [size, setSizes] = useState<(string | number)[]>([]);
@@ -22,17 +22,14 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
       setIsLoading(true);
       const items = await getProducts();
 
-      const mappedProducts: CategoryProductsInterface[] = items
-        .filter(
-          (product) =>
-            product.category?.toLowerCase() === params.slug.toLowerCase()
-        )
-        .map((product) => ({
+      const mappedProducts: CategoryProductsInterface[] = items.map(
+        (product: any) => ({
           ...product,
           id: String(product.id),
-          brand: product.brand || "Unknown Brand",
-          material: product.material || "Unknown Material",
-        }));
+          brand: product.brand ?? "Unknown Brand",
+          material: product.material ?? "Unknown Material",
+        })
+      );
 
       const uniqueSizes: (string | number)[] = Array.from(
         new Set(
@@ -60,25 +57,21 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
     }
 
     fetchProducts();
-  }, [params.slug]); // Added dependency to refetch when slug changes
+  }, []); // Added dependency to refetch when slug changes
 
   return isLoading ? (
     <Loading />
   ) : (
-    <div className="min-h-screen flex flex-col pb-20">
+    <div className="min-h-screen flex flex-col pt-0 pb-20">
       {/* Page Layout with padding to avoid overlap */}
-      <div className="flex-1 py-8 relative">
-        <div className="px-4 sm:px-6 md:px-8 lg:px-12 flex flex-row gap-2 text-md md:text-xl font-small mb-4 capitalize">
+      <div className="flex-1 py-8 mt-0 lg:mt-0 relative">
+        <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-4 capitalize">
           <HomeLink />
           <span className="text-gray-400">/</span>
-          <span className="text-gray-400">Category</span>
-          <span className="text-gray-400">/</span>
-          <span className="text-red-500 hover:text-red-700">{params.slug}</span>
+          <span className="text-red-500 hover:text-red-700">Products</span>
         </div>
 
-        <TextField
-          text={params.slug[0].charAt(0).toUpperCase() + params.slug.slice(1)}
-        />
+        <TextField text={"Products"} />
 
         <Image
           src="/design.svg"

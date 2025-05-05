@@ -164,7 +164,7 @@ export default function Navbar() {
             {mainNavItems.map((item) => {
               if (item.title === "Shop") {
                 return (
-                  <div key={item.href}>
+                  <div key={item.href} className="cursor-pointer">
                     <div
                       className="flex items-center justify-between py-2 text-lg font-medium cursor-pointer hover:text-gray-400"
                       onClick={() => {
@@ -176,18 +176,18 @@ export default function Navbar() {
                         }
                       }}
                     >
-                      <span>{item.title}</span>
+                      <span className="cursor-pointer">{item.title}</span>
                       <ChevronDown className="h-4 w-4 transition-transform" />
                     </div>
                     <div
                       id="mobile-shop-content"
-                      className="hidden pl-4 space-y-2 mt-1 mb-2"
+                      className="hidden pl-4 space-y-2 mt-1 mb-2 cursor-pointer"
                     >
                       {item.children?.map((child) => (
                         <SheetClose asChild key={child.href}>
                           <Link
                             href={child.href}
-                            className="flex items-center py-2 px-2 text-base transition-colors hover:text-primary text-muted-foreground hover:bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:text-white rounded-md"
+                            className="cursor-pointer flex items-center py-2 px-2 text-base transition-colors hover:text-primary text-muted-foreground hover:bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:text-white rounded-md"
                           >
                             {child.title}
                           </Link>
@@ -349,7 +349,7 @@ export default function Navbar() {
                         alt={user.displayName || "User"}
                       />
                     ) : null}
-                    <AvatarFallback className="bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white text-xs">
+                    <AvatarFallback className="bg-red-500 text-white text-sm md:text-md font-bold">
                       {getUserInitials()}
                     </AvatarFallback>
                   </Avatar>

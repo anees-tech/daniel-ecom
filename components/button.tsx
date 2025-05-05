@@ -22,7 +22,10 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       className="flex items-center gap-2 px-3 md:px-5 py-1 md:py-2 
-        bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-md text-white font-semibold rounded-full shadow-lg transition-transform duration-300 ease-in-out transform hover:scale-100 hover:shadow-lg active:scale-95 cursor-pointer text-center"
+    bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
+    text-sm md:text-md text-white font-semibold rounded-full shadow-lg 
+    transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
+    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604]"
     >
       {text}
       {showIcon && Icon && <Icon size={20} />}

@@ -38,15 +38,30 @@ export async function getProducts(): Promise<Product[]> {
   }
 }
 
+export async function getFlashProducts(): Promise<Product[]> {
+  try {
+    const productsCollection = collection(firestore, "flashSaleItems");
+    const snapshot = await getDocs(productsCollection);
+
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Product[];
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    return [];
+  }
+}
+
 export async function getProductById(productId: string): Promise<Product> {
   try {
     // Check both collections in parallel for better performance
     const productDocRef = doc(firestore, "products", productId);
     const flashSaleDocRef = doc(firestore, "flashSaleItems", productId);
-    
+
     const [productSnapshot, flashSaleSnapshot] = await Promise.all([
       getDoc(productDocRef),
-      getDoc(flashSaleDocRef)
+      getDoc(flashSaleDocRef),
     ]);
 
     // Check if product exists in products collection
@@ -54,9 +69,9 @@ export async function getProductById(productId: string): Promise<Product> {
       console.log("Product found in 'products' collection");
       // Make sure we're returning a valid Product by using proper type assertion
       const productData = productSnapshot.data();
-      return { 
-        id: productSnapshot.id, 
-        ...productData
+      return {
+        id: productSnapshot.id,
+        ...productData,
       } as Product;
     }
 
@@ -65,9 +80,9 @@ export async function getProductById(productId: string): Promise<Product> {
       console.log("Product found in 'flashSaleItems' collection");
       // Make sure we're returning a valid Product by using proper type assertion
       const flashSaleData = flashSaleSnapshot.data();
-      return { 
-        id: flashSaleSnapshot.id, 
-        ...flashSaleData
+      return {
+        id: flashSaleSnapshot.id,
+        ...flashSaleData,
       } as Product;
     }
 

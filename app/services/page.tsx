@@ -65,9 +65,9 @@ export default function ServicesPage() {
         priority
         className="absolute right-0 -z-50"
       />
-      <div className="px-2 sm:px-4 md:px-8 lg:px-12 py-8">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-12 py-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize">
+        <nav className="flex items-center mb-8 text-md md:text-xl font-small capitalize">
           <HomeLink />
           <span className="mx-2 text-gray-400">/</span>
           <span className="text-red-500">Services</span>

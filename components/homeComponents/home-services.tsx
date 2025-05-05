@@ -28,7 +28,7 @@ export default function HomeServices() {
         );
         const services: HomeService[] = querySnapshot.docs.map((doc) => ({
           ...(doc.data() as Omit<HomeService, "createdAt">),
-          createdAt: doc.data().createdAt?.toDate?.().toString() || "", // handle Firestore Timestamp
+          createdAt: doc.data().createdAt?.toDate?.().toString() || "",
         }));
         setHomeServices(services);
       } catch (error) {
@@ -51,6 +51,18 @@ export default function HomeServices() {
 
   const serviceRows = chunkArray(homeServices, 2);
 
+  const SkeletonCard = () => (
+    <div className="bg-white shadow-lg rounded-xl p-6 flex flex-col items-start flex-1 animate-pulse">
+      <div className="flex flex-row items-center justify-between gap-2 w-full">
+        <div className="bg-gray-300 rounded-full w-14 h-14"></div>
+        <div className="bg-gray-300 h-8 w-12 rounded"></div>
+      </div>
+      <div className="bg-gray-300 h-5 w-3/4 mt-3 rounded"></div>
+      <div className="bg-gray-300 h-4 w-full mt-2 rounded"></div>
+      <div className="bg-gray-300 h-4 w-5/6 mt-2 rounded"></div>
+    </div>
+  );
+
   return (
     <section className="py-12">
       <TextBox text="Services" />
@@ -63,9 +75,14 @@ export default function HomeServices() {
       <div className="mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex flex-col lg:flex-row items-start gap-8 py-4">
         <div className="flex flex-col gap-6 lg:w-3/5">
           {isLoading ? (
-            <div className="flex justify-center items-center h-40">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
-            </div>
+            <>
+              {[serviceRows].map((_, index) => (
+                <div key={index} className="flex flex-col sm:flex-row gap-6">
+                  <SkeletonCard />
+                  <SkeletonCard />
+                </div>
+              ))}
+            </>
           ) : (
             serviceRows.map((row, rowIndex) => (
               <div

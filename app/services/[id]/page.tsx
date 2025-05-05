@@ -491,7 +491,7 @@ export default function ServiceDetailPage({
   });
 
   return (
-    <main className="min-h-screen pt-10 pb-20 relative overflow-hidden">
+    <main className="min-h-screen pt-0 pb-20 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-red-500 rounded-full filter blur-3xl opacity-10 -mr-32 -mt-32"></div>
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-500 rounded-full filter blur-3xl opacity-10 -ml-32 -mb-32"></div>
@@ -505,9 +505,9 @@ export default function ServiceDetailPage({
         className="absolute right-0 top-0 -z-10 opacity-50 animate-float"
       />
 
-      <div className="px-2 sm:px-4 md:px-8 lg:px-12 relative z-10">
+      <div className="px-2 sm:px-4 md:px-8 lg:px-12 relative z-10 py-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center mb-8 text-sm md:text-lg py-2 px-4 inline-flex animate-fade-in-down">
+        <nav className="items-center mb-4 text-md md:text-lg py-2 px-4 inline-flex animate-fade-in-down">
           <HomeLink />
           <ChevronRight className="mx-2 h-4 w-4 text-gray-400" />
           <Link
@@ -565,7 +565,7 @@ export default function ServiceDetailPage({
 
               {/* Slider indicators */}
               {allImages.length > 1 && (
-                <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-2 overflow-scroll">
                   {allImages.map((_, index) => (
                     <button
                       key={index}

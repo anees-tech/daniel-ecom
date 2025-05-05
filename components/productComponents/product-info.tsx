@@ -174,7 +174,7 @@ export default function ProductInfo({
                 <button
                   key={color.name}
                   onClick={() => setSelectedColor(color.name)}
-                  className={`w-9 h-9 rounded-full transition-all duration-300 transform hover:scale-105 ${
+                  className={`w-9 h-9 rounded-full transition-all duration-300 transform hover:scale-105 cursor-pointer ${
                     selectedColor === color.name
                       ? "ring-2 ring-offset-2 ring-black"
                       : ""
@@ -200,12 +200,12 @@ export default function ProductInfo({
                       key={size}
                       onClick={() => !isOutOfStock && setSelectedSize(size)}
                       disabled={isOutOfStock}
-                      className={`w-12 h-8 rounded-full border font-medium transition-all duration-300 ${
+                      className={`w-12 h-8 rounded-full border font-medium transition-all duration-300 cursor-pointer ${
                         selectedSize === size && !isOutOfStock
                           ? "bg-red-500 text-white border-red-500 shadow-md"
                           : isOutOfStock
-                          ? "border-gray-300 text-gray-400 bg-gray-100 line-through cursor-not-allowed"
-                          : "border-gray-300 text-gray-700 hover:bg-gray-100"
+                          ? "border-gray-300 text-gray-40 bg-gray-200 line-through cursor-not-allowed"
+                          : "border-gray-300 text-gray-700 hover:bg-orange-400 hover:text-white"
                       }`}
                     >
                       {size}
@@ -227,9 +227,9 @@ export default function ProductInfo({
               <button
                 onClick={() => handleQuantityChange(quantity - 1)}
                 disabled={quantity <= 1}
-                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center disabled:opacity-50 transition-all duration-300 hover:bg-gray-300"
+                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center disabled:opacity-50 transition-all duration-300 hover:bg-red-500 cursor-pointer"
               >
-                <Minus className="w-4 h-4" />
+                <Minus className="w-5 h-5 hover:text-white" />
               </button>
               <span className="w-12 text-center text-lg font-semibold">
                 {quantity}
@@ -237,9 +237,9 @@ export default function ProductInfo({
               <button
                 onClick={() => handleQuantityChange(quantity + 1)}
                 disabled={quantity >= product.stock}
-                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center disabled:opacity-50 transition-all duration-300 hover:bg-gray-300"
+                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center disabled:opacity-50 transition-all duration-300 hover:bg-red-500 cursor-pointer"
               >
-                <Plus className="w-4 h-4" />
+                <Plus className="w-5 h-5 hover:text-white" />
               </button>
             </div>
           </div>
@@ -260,7 +260,7 @@ export default function ProductInfo({
               color: selectedColor,
               size: selectedSize,
             });
-            toast("Item has been added to cart");
+            toast.success("Product has been added to cart");
           }}
         />
         <ProductReviewModal product={product} />

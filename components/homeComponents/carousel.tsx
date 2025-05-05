@@ -22,10 +22,12 @@ const Carousel: React.FC = () => {
     const fetchImages = async () => {
       try {
         const data = await getCarouselImages();
-        const formattedData = data.map((item: { id: string; url?: string }) => ({
-          id: item.id,
-          url: item.url || "", // Provide a default value if url is missing
-        }));
+        const formattedData = data.map(
+          (item: { id: string; url?: string }) => ({
+            id: item.id,
+            url: item.url || "", // Provide a default value if url is missing
+          })
+        );
         setImages(formattedData);
       } catch (error) {
         console.error("Error fetching carousel images:", error);
@@ -48,7 +50,12 @@ const Carousel: React.FC = () => {
     dotsClass: "slick-dots flex justify-center gap-2 absolute bottom-4 w-full",
   };
 
-  if (loading) return <div className="text-center py-10"><Loading/></div>;
+  if (loading)
+    return (
+      <div className="text-center py-10">
+        <Loading />
+      </div>
+    );
   if (!images || images.length === 0)
     return <div className="text-center py-10">No carousel images found.</div>;
 
@@ -70,17 +77,17 @@ const Carousel: React.FC = () => {
 
       {/* Custom Navigation Buttons */}
       <button
-        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 cursor-pointer"
+        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 hover:bg-red-500 hover:shadow-lg focus::bg-yellow-300 cursor-pointer"
         onClick={() => sliderRef.current?.slickPrev()}
       >
         <FaChevronLeft size={20} className="text-gray-900 hover:text-white" />
       </button>
 
       <button
-        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 hover:bg-gray-300 hover:shadow-lg active:bg-gray-400 cursor-pointer"
+        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white bg-opacity-60 rounded-full shadow-md transition-all duration-300 hover:bg-red-500 hover:shadow-lg focus::bg-yellow-300 cursor-pointer"
         onClick={() => sliderRef.current?.slickNext()}
       >
-        <FaChevronRight size={20} className="text-gray-700 hover:text-white" />
+        <FaChevronRight size={20} className="text-gray-900 hover:text-white" />
       </button>
     </div>
   );

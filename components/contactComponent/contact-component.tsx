@@ -4,6 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { Send } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -24,6 +25,7 @@ export default function ContactForm() {
     e.preventDefault();
     // Handle form submission logic here
     console.log("Form submitted:", formData);
+    toast.success("Message has been sent successfully");
     // Reset form after submission
     setFormData({
       firstName: "",
@@ -118,7 +120,8 @@ export default function ContactForm() {
         <div className="mt-10 flex justify-center">
           <button
             type="submit"
-            className="flex items-center gap-1 rounded-full  bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] px-5 py-2 text-sm font-medium text-white hover:bg-red-600 focus:outline-none"
+            className="flex items-center gap-1 rounded-full  bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] px-5 py-2 text-sm font-medium text-white focus:outline-none transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer
+    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604]"
           >
             <Send className="h-4 w-4" />
             Send

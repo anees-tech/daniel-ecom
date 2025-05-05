@@ -33,10 +33,10 @@ export default function FilterProducts({
       {["All", "Women", "Men", "Kids"].map((category) => (
         <button
           key={category}
-          className={`px-4 py-2 text-sm font-medium rounded-full border ${
+          className={`px-4 py-2 text-sm font-medium rounded-full border cursor-pointer ${
             selectedCategory === category.toLowerCase()
-              ? "bg-red-500 text-white"
-              : "text-gray-700"
+              ? "bg-red-500 text-white "
+              : "text-gray-700 hover:bg-orange-600 hover:text-white transition-all duration-300"
           } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
           onClick={() => setSelectedCategory(category.toLowerCase())}
           disabled={isLoading}

@@ -70,7 +70,7 @@ export function Pagination({
         onClick={() => handlePageChange(currentPage - 1)}
         disabled={currentPage <= 1}
         className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center border border-gray-300",
+          "w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 cursor-pointer",
           currentPage <= 1
             ? "opacity-50 cursor-not-allowed"
             : "hover:bg-gray-100"
@@ -95,9 +95,9 @@ export function Pagination({
             key={pageNum}
             onClick={() => handlePageChange(pageNum)}
             className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
+              "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium cursor-pointer",
               currentPage === pageNum
-                ? "bg-black text-white"
+                ? "bg-red-500 text-white"
                 : "border border-gray-300 hover:bg-gray-100 bg-white"
             )}
             aria-current={currentPage === pageNum ? "page" : undefined}
@@ -111,7 +111,7 @@ export function Pagination({
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={currentPage >= totalPages}
         className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center border border-gray-300",
+          "w-8 h-8 rounded-full flex items-center justify-center border border-gray-300 cursor-pointer",
           currentPage >= totalPages
             ? "opacity-50 cursor-not-allowed"
             : "hover:bg-gray-100"

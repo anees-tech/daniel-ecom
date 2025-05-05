@@ -13,6 +13,8 @@ import Image from "next/image";
 import productsDetails from "@/data/ItemProductDetail";
 import CategoryProductsInterface from "@/interfaces/categoriesInterface";
 import { getProducts } from "@/lib/products";
+import Link from "next/link";
+import { IoIosArrowForward } from "react-icons/io";
 
 interface RelativeItemsProps {
   category?: string;
@@ -97,7 +99,16 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
 
   return (
     <div className="relative mt-20 md:mt-10 w-full mb-20">
-      <TextBox text={"Relative"} />
+      <div className="flex justify-between items-center pr-2 sm:pr-4 md:pr-8 lg:pr-12">
+        <TextBox text={"Relative"} />
+        <Link
+          href={`/category/${category}`}
+          className="text-sm text-red-500 md:text-lg font-bold flex justify-center items-center gap-2 hover:bg-red-500 hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
+        >
+          View All
+          <IoIosArrowForward size={20} />
+        </Link>
+      </div>
 
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4 px-3 sm:px-4 lg:px-8 xl:px-12 mt-2">
@@ -110,16 +121,16 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
           <button
             type="button"
             onClick={handlePrev}
-            className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
+            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full"
           >
-            <FaChevronLeft size={16} />
+            <FaChevronLeft size={16} className="hover:text-white"/>
           </button>
           <button
             type="button"
             onClick={handleNext}
-            className="p-2 bg-gray-200 hover:bg-gray-300 rounded-full"
+            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full"
           >
-            <FaChevronRight size={16} />
+            <FaChevronRight size={16} className="hover:text-white"/>
           </button>
         </div>
       </div>

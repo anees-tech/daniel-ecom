@@ -11,7 +11,8 @@ import Image from "next/image";
 import ItemCardSkeleton from "./item-card-skeleton";
 import { getFlashSaleItems, FlashSaleItem } from "@/lib/flashSaleItems";
 import { Item } from "@radix-ui/react-dropdown-menu";
-
+import Link from "next/link";
+import { IoIosArrowForward } from "react-icons/io";
 const FlashSaleCarousel = () => {
   const sliderRef = useRef<Slider | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -59,25 +60,40 @@ const FlashSaleCarousel = () => {
 
   return (
     <div className="relative mt-100 md:mt-50 w-full">
-      <TextBox text={"Today's"} />
+      <div className="flex justify-between items-center pr-2 sm:pr-4 md:pr-8 lg:pr-12">
+        <TextBox text={"Today's"} />
+        <Link
+          href={"/flashsaleproducts"}
+          className="text-sm text-red-500 md:text-lg font-bold flex justify-center items-center gap-2 hover:bg-red-500 hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
+        >
+          View All
+          <IoIosArrowForward size={20} />
+        </Link>
+      </div>
 
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-4 px-3 sm:px-4 lg:px-8 xl:px-12 mt-2">
+      <div className="flex justify-between items-center mb-4 px-3 sm:px-4 lg:px-8 xl:px-12 mt-4">
         <h2 className="text-2xl font-bold">Flash Sales</h2>
         <div className="flex gap-2">
           <button
             type="button"
             onClick={() => sliderRef.current?.slickPrev()}
-            className="p-2 bg-gray-200 hover:bg-gray-500 rounded-full cursor-pointer"
+            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer"
           >
-            <FaChevronLeft size={16} className="hover:text-white" />
+            <FaChevronLeft
+              size={16}
+              className="text-gray-900 hover:text-white"
+            />
           </button>
           <button
             type="button"
             onClick={() => sliderRef.current?.slickNext()}
-            className="p-2 bg-gray-200 hover:bg-gray-500 rounded-full cursor-pointer"
+            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer"
           >
-            <FaChevronRight size={16} className="hover:text-white" />
+            <FaChevronRight
+              size={16}
+              className="text-gray-900 hover:text-white"
+            />
           </button>
         </div>
       </div>
@@ -90,7 +106,7 @@ const FlashSaleCarousel = () => {
         key={isMobile ? "mobile" : "desktop"}
       >
         {loading
-          ? Array(Item.length)
+          ? Array(4)
               .fill(null)
               .map((_, index) => (
                 <div key={index} className="px-2">
@@ -113,7 +129,7 @@ const FlashSaleCarousel = () => {
       </Slider>
 
       {/* Background Design */}
-      <div className="absolute right-0 -bottom-48 -z-50">
+      <div className="absolute right-0 bottom-0 -z-50">
         <Image
           src="/design.svg"
           alt="Design"

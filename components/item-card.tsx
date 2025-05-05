@@ -50,7 +50,10 @@ export default function ItemCard({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative aspect-square overflow-hidden bg-gray-100 p-4" style={{ position: 'relative' }}>
+      <div
+        className="relative aspect-square overflow-hidden bg-gray-100 p-4"
+        style={{ position: "relative" }}
+      >
         <Link href={`/product/${id}`} className="block relative w-full h-full">
           <Image
             src={image || "/placeholder.svg"}
@@ -64,8 +67,19 @@ export default function ItemCard({
         </Link>
         {discount > 0 && (
           <Badge className="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-full text-sm">
-            ${discount} OFF
+            {(((originalPrice - currentPrice) / originalPrice) * 100).toFixed(
+              0
+            )}
+            % OFF
           </Badge>
+        )}
+        {id.startsWith("sale") && (
+          <div className="absolute top-0 right-0 w-full h-full">
+            {/* Sale Ribbon */}
+            <div className="absolute right-[-30px] top-2 bg-green-600 text-white text-xs font-bold py-1 px-8 transform rotate-45 shadow-md">
+              SALE
+            </div>
+          </div>
         )}
 
         {/* Stock indicator */}

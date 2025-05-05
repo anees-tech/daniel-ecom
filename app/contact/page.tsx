@@ -6,8 +6,8 @@ import TextField from "@/components/text-field";
 
 export default function Contact() {
   return (
-    <div className="mx-2 sm:mx-4 md:mx-8 lg:mx-12 pt-10">
-      <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize">
+    <div className="mx-4 sm:mx-6 md:mx-8 lg:mx-12">
+      <nav className="py-8 flex items-center mb-2 text-md md:text-xl font-small capitalize">
         <HomeLink />
         <span className="mx-2 text-gray-400">/</span>
         <span className="text-red-500">Contact Us</span>

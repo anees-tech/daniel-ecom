@@ -6,6 +6,9 @@ import FilterProducts from "./home-product-filter";
 import DropDownFilter from "../drop-down-filter";
 import { getProducts } from "@/lib/products";
 import CategoryProductsInterface from "@/interfaces/categoriesInterface";
+import TextBox from "../text-box";
+import Link from "next/link";
+import { IoIosArrowForward } from "react-icons/io";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<CategoryProductsInterface[]>([]);
@@ -89,22 +92,32 @@ export default function ProductsPage() {
   }, [category, searchTerm, sortFilter, products]);
 
   return (
-    <div className="p-6 px-4 lg:px-8 xl:px-12" id="products">
-      <h2 className="text-2xl font-bold mb-4">What&apos;s trending now</h2>
-      <p className="text-gray-500 mb-6">
-        Discover the most trending products in our store.
-      </p>
-
-      <div className="flex flex-wrap gap-4 justify-center border-b border-gray-400">
-        <FilterProducts
-          onFilterChange={handleFilterChange}
-          isLoading={isLoading}
-        />
-        <DropDownFilter onSortChange={setSortFilter} />
+    <div className="mt-5">
+      <div className="flex justify-between items-center pr-2 sm:pr-4 md:pr-8 lg:pr-12">
+        <TextBox text={"Our Products"} />
+        <Link
+          href={"/allproducts"}
+          className="text-sm text-red-500 md:text-lg font-bold flex justify-center items-center gap-2 hover:bg-red-500 hover:text-white px-2 py-1 rounded-lg transition-all duration-300"
+        >
+          View All
+          <IoIosArrowForward size={20} />
+        </Link>
       </div>
-
-      <div className="mt-6">
-        <ProductList products={filteredProducts} />
+      <div className="p-6 px-4 lg:px-8 xl:px-12" id="products">
+        <h2 className="text-2xl font-bold mb-4">What&apos;s trending now</h2>
+        <p className="text-gray-500 mb-6">
+          Discover the most trending products in our store.
+        </p>
+        <div className="flex flex-wrap gap-4 justify-center border-b border-gray-400">
+          <FilterProducts
+            onFilterChange={handleFilterChange}
+            isLoading={isLoading}
+          />
+          <DropDownFilter onSortChange={setSortFilter} />
+        </div>
+        <div className="mt-6">
+          <ProductList products={filteredProducts} />
+        </div>
       </div>
     </div>
   );

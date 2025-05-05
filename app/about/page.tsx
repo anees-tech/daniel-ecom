@@ -147,8 +147,8 @@ export default function About() {
   }
 
   return (
-    <div className="bg-white mt-10">
-      <div className="px-2 sm:px-4 md:px-8 lg:px-12 flex flex-row gap-2 text-sm md:text-xl font-small mb-2 capitalize">
+    <div className="bg-white mt-0">
+      <div className="py-8 px-4 sm:px-6 md:px-8 lg:px-12 flex flex-row gap-2 text-md md:text-xl font-small mb-0 capitalize">
         <HomeLink />
         <span className="text-gray-400">/</span>
         <span className="text-red-500">About</span>

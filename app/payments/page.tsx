@@ -190,8 +190,8 @@ export default function Payments() {
 
   return (
     <div className="relative pb-20 h-full">
-      <div className="mt-10">
-        <nav className="flex items-center mb-8 text-sm md:text-xl font-small capitalize gap-1 md:gap-1 px-2 sm:px-4 md:px-8 lg:px-12">
+      <div className="mt-0">
+        <nav className="py-8 flex items-center mb-4 text-md md:text-xl font-small capitalize gap-1 md:gap-1 px-4 sm:px-6 md:px-8 lg:px-12">
           <HomeLink />
           <span className="mx-2 text-gray-400">/</span>
           <Link href={"/cart"} className="text-gray-400 hover:text-gray-700">
