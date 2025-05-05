@@ -117,20 +117,20 @@ const RelativeItems: React.FC<RelativeItemsProps> = ({ category }) => {
             ? `${category.charAt(0).toUpperCase() + category.slice(1)} Products`
             : "Related Products"}
         </h2>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-2">
           <button
             type="button"
             onClick={handlePrev}
-            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full"
+            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer"
           >
-            <FaChevronLeft size={16} className="hover:text-white"/>
+            <FaChevronLeft size={16} className="hover:text-white" />
           </button>
           <button
             type="button"
             onClick={handleNext}
-            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full"
+            className="p-2 bg-gray-200 hover:bg-red-500 rounded-full cursor-pointer"
           >
-            <FaChevronRight size={16} className="hover:text-white"/>
+            <FaChevronRight size={16} className="hover:text-white" />
           </button>
         </div>
       </div>
