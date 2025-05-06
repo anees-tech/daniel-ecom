@@ -95,7 +95,7 @@ export default function ItemCard(props: ProductCardEnhancedProps) {
           <div className="text-sm text-muted-foreground mb-1">
             {props.category}
           </div>{" "}
-          <div className="flex flex-col gap-4 z-20">
+          <div className="flex flex-col gap-4 z-0">
             <ProductQuickViewButton product={props} iconOnly />
           </div>
         </div>

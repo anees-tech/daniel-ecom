@@ -42,7 +42,7 @@ export default function ProductDetailModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogOverlay className="bg-black/50" />
-      <DialogContent className="sm:max-w-[95%] md:max-w-[90%] lg:max-w-[85%] xl:max-w-[80%] p-0 overflow-auto max-h-[90vh] scrollbar-hide bg-white">
+      <DialogContent className="max-w-[95vw] md:max-w-[90vw] lg:max-w-[85vw] xl:max-w-[80vw] p-0 max-h-[90vh] overflow-y-auto scrollbar-hide bg-white">
         <DialogTitle className="sr-only">{product.name}</DialogTitle>
         <div className="relative">
           <div className="sticky top-0 bg-white z-10 flex justify-between items-center p-4 border-none">
@@ -55,9 +55,9 @@ export default function ProductDetailModal({
             </button>
           </div>
 
-          <div className="grid md:grid-cols-6 gap-6 p-4 md:p-6 mx-auto">
+          <div className="flex flex-col md:grid md:grid-cols-6 gap-6 p-4 md:p-6">
             {/* Product Images - 3/7 width on medium screens and above */}
-            <div className="md:col-span-3">
+            <div className="w-full md:col-span-3">
               <ProductImages
                 product={product}
                 selectedImage={selectedImage}
@@ -66,7 +66,7 @@ export default function ProductDetailModal({
             </div>
 
             {/* Product Info - 3/7 width on medium screens and above */}
-            <div className="md:col-span-3">
+            <div className="w-full md:col-span-3">
               <ProductInfo
                 product={product}
                 selectedColor={selectedColor}

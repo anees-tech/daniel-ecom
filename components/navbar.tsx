@@ -455,9 +455,13 @@ export default function Navbar() {
                         className="flex items-center justify-between w-full px-4 py-3 text-left hover:bg-gray-50 cursor-pointer"
                         onClick={() => handleSuggestionClick(suggestion)}
                       >
-                        <div className="flex items-center gap-2">
-                          <Search className="h-4 w-4 text-gray-500" />
-                          <span>{suggestion}</span>
+                        <div className="flex gap-2">
+                          <div>
+                            <Search className="h-4 w-4 text-gray-500" />
+                          </div>
+                          <span className="overflow-hidden text-ellipsis line-clamp-1">
+                            {suggestion}
+                          </span>
                         </div>
                         <ArrowRight className="h-4 w-4 text-gray-400" />
                       </button>
@@ -500,7 +504,7 @@ export default function Navbar() {
       <Button
         variant="ghost"
         size="icon"
-        className="md:hidden text-white"
+        className="md:hidden text-white w-auto h-auto"
         onClick={() => setIsSearchOpen(!isSearchOpen)}
       >
         {isSearchOpen ? (
