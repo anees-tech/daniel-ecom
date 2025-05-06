@@ -90,12 +90,6 @@ export default function OrdersPage() {
   const [returnRequests, setReturnRequests] = useState<ReturnRequest[]>([]);
 
   useEffect(() => {
-    // Force clear cache and refetch on mount (for testing only)
-    console.log("OrdersPage: Force clearing cache and refetching...");
-    clearCache();
-  }, [clearCache]); // Only run once on mount
-
-  useEffect(() => {
     const fetchOrders = async () => {
       if (!user) return;
       setFetching(true);
@@ -129,6 +123,12 @@ export default function OrdersPage() {
     };
     if (user) fetchOrders();
   }, [user]);
+
+  useEffect(() => {
+    // Force clear cache and refetch on mount (for testing only)
+    console.log("OrdersPage: Force clearing cache and refetching...");
+    clearCache();
+  }, [clearCache]); // Only run once on mount
 
   useEffect(() => {
     const fetchReturnRequests = async () => {
@@ -458,19 +458,24 @@ export default function OrdersPage() {
                             )}
 
                             <div className="w-full mt-1 flex justify-end gap-2">
-                              {order.status === "Delivered" && !returnStatus && (
-                                <ProductReviewModal
-                                  onAddReview={handleAddReview}
-                                  product={{
-                                    id: item.id,
-                                    name: item.name,
-                                    image: item.image!,
-                                  }}
-                                />
-                              )}
+                              {order.status === "Delivered" &&
+                                !returnStatus && (
+                                  <ProductReviewModal
+                                    onAddReview={handleAddReview}
+                                    product={{
+                                      id: item.id,
+                                      name: item.name,
+                                      image: item.image!,
+                                    }}
+                                  />
+                                )}
                               {canReturn && (
                                 <button
-                                  className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                  className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 
+    bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
+    text-md md:text-md text-white font-semibold rounded-full shadow-lg 
+    transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
+    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604] active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604]"
                                   onClick={() =>
                                     handleOpenReturnModal(item, order)
                                   }
@@ -520,7 +525,7 @@ export default function OrdersPage() {
                     <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                       {order.status === "Pending" && (
                         <button
-                          className="w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
+                          className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
                             text-sm md:text-md text-white font-semibold rounded-full shadow-lg  transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
                             hover:bg-right hover:to-[#ff3604] py-2 px-6 active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] active:to-[#ff3604]"
                           onClick={() => handleCancelOrder(order.id)}
@@ -529,7 +534,7 @@ export default function OrdersPage() {
                         </button>
                       )}
                       <button
-                        className="w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]  text-white py-2 px-6 rounded-full text-sm font-semibold transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
+                        className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]  text-white py-2 px-6 rounded-full text-sm font-semibold transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
                             hover:bg-right  hover:to-[#ff3604] active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] active:to-[#ff3604]"
                         onClick={() => {
                           setSelectedOrder(order);

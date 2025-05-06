@@ -5,6 +5,8 @@ import { useCartStore } from "@/context/addToCartContext";
 import ProductReviewModal from "./product-reiw-modal";
 import Button from "../button";
 import { toast } from "sonner";
+import PaymentModal from "../paymentComponents/paymentModal";
+import { useState } from "react";
 
 interface ProductInfoProps {
   product: {
@@ -51,6 +53,7 @@ export default function ProductInfo({
   const fullStars = Math.floor(product.rating);
   const hasHalfStar = product.rating % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   // Ensure product.sizes is an array, default to empty if not
   const availableSizes = Array.isArray(product.sizes) ? product.sizes : [];
@@ -263,8 +266,24 @@ export default function ProductInfo({
             toast.success("Product has been added to cart");
           }}
         />
-        <ProductReviewModal product={product} />
+        <Button text={"Buy Now"} onClick={() => setIsPaymentModalOpen(true)} />
       </div>
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        taxRate={5}
+        products={[
+          {
+            id: product.id,
+            color: selectedColor,
+            size: selectedSize,
+            quantity: quantity,
+            name: product.name,
+            price: product.currentPrice,
+            image: product.image,
+          },
+        ]}
+      />
     </div>
   );
 }

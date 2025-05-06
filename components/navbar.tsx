@@ -1,13 +1,15 @@
 "use client";
 
+import type React from "react";
+
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Menu, X, ChevronDown } from "lucide-react";
+import { Search, Menu, X, ChevronDown, ArrowRight } from "lucide-react";
 import { useCartStore } from "@/context/addToCartContext";
 import { useUser } from "@/context/userContext";
 import { signOut } from "firebase/auth";
@@ -41,16 +43,35 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { AuthModal } from "./auth-modal";
-import { fetchCategories, Category } from "@/lib/categories";
+import { fetchCategories, type Category } from "@/lib/categories";
+import { getProducts } from "@/lib/products";
+
+const popularSearches = [
+  "man shoes",
+  "1 dollar items free shipping",
+  "woman clothing",
+  "mini drone",
+  "earbuds bluetooth",
+  "samsung s22 ultra",
+  "clothes for ladies",
+  "air pods",
+  "mobile",
+  "smart watch 2025",
+];
 
 export default function Navbar() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [debouncedValue, setDebouncedValue] = useState("");
+  const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   useEffect(() => {
     fetchCategories().then(setCategories);
   }, []);
+
   const pathname = usePathname();
   const cartCount = useCartStore((state) => state.getCartCount());
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -59,10 +80,84 @@ export default function Navbar() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isClient, setIsClient] = useState(false);
   const { user, loading } = useUser();
+  const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Debounce input value
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedValue(inputValue);
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
+  // Update suggestions when debounced value changes
+  useEffect(() => {
+    async function fetchSuggestions() {
+      if (debouncedValue) {
+        const items = await getProducts();
+
+        // Filter items where product.name includes debouncedValue (case-insensitive)
+        const filteredNames = items
+          .filter((product) =>
+            product.name?.toLowerCase().includes(debouncedValue.toLowerCase())
+          )
+          .map((product) => product.name) // Only take the name
+          .filter((name, index, self) => name && self.indexOf(name) === index)
+          .slice(0, 10); // Take only the top 10; // Unique names
+
+        setSuggestions(filteredNames); // Use the filtered names here
+      } else {
+        setSuggestions([]);
+      }
+    }
+
+    fetchSuggestions();
+  }, [debouncedValue]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+    if (e.target.value) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(false);
+    }
+  };
+
+  const handleInputFocus = () => {
+    setIsOpen(true);
+  };
+
+  const handleSuggestionClick = (suggestion: string) => {
+    setInputValue(suggestion);
+    setIsOpen(false);
+    // Navigate to search results page with the selected suggestion
+    router.push(`/search?query=${encodeURIComponent(suggestion)}`);
+  };
+
   const mainNavItems = [
     {
       title: "Home",
@@ -90,6 +185,15 @@ export default function Navbar() {
       description: "Reach out to us for inquiries, support, or feedback.",
     },
   ];
+
+  useEffect(() => {
+    if (cartCount > 0) {
+      setAnimate(true);
+      const timer = setTimeout(() => setAnimate(false), 300); // remove animation after 300ms
+      return () => clearTimeout(timer);
+    }
+  }, [cartCount]);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -127,8 +231,9 @@ export default function Navbar() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+    if (inputValue.trim()) {
+      router.push(`/search?query=${encodeURIComponent(inputValue.trim())}`);
+      setIsOpen(false);
       setIsSearchOpen(false);
     }
   };
@@ -136,7 +241,7 @@ export default function Navbar() {
   return (
     <div
       className={cn(
-        " flex items-center py-4 gap-3 md:gap-3 w-full px-4 md:px-6 lg:px-8 transition-all duration-300 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] rounded-b-[37px] sticky top-0 left-0 right-0 z-50 "
+        "flex items-center py-4 gap-3 md:gap-3 w-full px-4 md:px-6 lg:px-8 transition-all duration-300 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] rounded-b-[37px] sticky top-0 left-0 right-0 z-50"
       )}
     >
       <Sheet>
@@ -309,15 +414,85 @@ export default function Navbar() {
         )}
       >
         <form className="w-full" onSubmit={handleSearchSubmit}>
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder="Search products..."
-              className="search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-full border-none"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+          <div className="relative w-full" ref={searchRef}>
+            <div className="flex items-center rounded-full">
+              <Input
+                type="search"
+                placeholder="Search for products..."
+                value={inputValue}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                className="search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-full border border-gray-400"
+              />
+              <div className="flex items-center pr-1">
+                {/* <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  className="h-10 w-10 rounded-full"
+                >
+                  <Camera className="h-5 w-5 text-gray-500" />
+                  <span className="sr-only">Search with camera</span>
+                </Button> */}
+                <Button
+                  type="submit"
+                  size="icon"
+                  className="h-9 w-9 rounded-full bg-transparent text-red absolute right-1 cursor-pointer"
+                >
+                  <Search className="h-4 w-4" />
+                  <span className="sr-only">Search</span>
+                </Button>
+              </div>
+            </div>
+
+            {isOpen && (
+              <div className="absolute top-full left-0 right-0 z-10 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden">
+                {inputValue ? (
+                  <div className="max-h-[30vh] md:max-h-[70vh] overflow-y-auto">
+                    {suggestions.map((suggestion, index) => (
+                      <button
+                        key={index}
+                        className="flex items-center justify-between w-full px-4 py-3 text-left hover:bg-gray-50 cursor-pointer"
+                        onClick={() => handleSuggestionClick(suggestion)}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Search className="h-4 w-4 text-gray-500" />
+                          <span>{suggestion}</span>
+                        </div>
+                        <ArrowRight className="h-4 w-4 text-gray-400" />
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+                    <div className="max-h-[30vh] md:max-h-[70vh] overflow-y-auto">
+                      <h3 className="text-lg font-semibold mb-3">
+                        Discover more
+                      </h3>
+                      <div className="space-y-3">
+                        {popularSearches.map((search, index) => (
+                          <button
+                            key={index}
+                            className="block w-full text-left hover:text-gray-600 cursor-pointer"
+                            onClick={() => handleSuggestionClick(search)}
+                          >
+                            {search}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      {/* <h3 className="text-lg font-semibold mb-3 text-blue-500">
+                        Other recommendations
+                      </h3> */}
+                      <div className="space-y-3">
+                        {/* This would be populated with actual recommendations */}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </form>
       </div>
@@ -345,7 +520,7 @@ export default function Navbar() {
                   <Avatar className="h-6 w-6 md:h-8 md:w-8">
                     {user.photoURL ? (
                       <AvatarImage
-                        src={user.photoURL}
+                        src={user.photoURL || "/placeholder.svg"}
                         alt={user.displayName || "User"}
                       />
                     ) : null}
@@ -358,11 +533,6 @@ export default function Navbar() {
               <DropdownMenuContent align="end" className="w-56 bg-white">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {/* <DropdownMenuItem asChild>
-                  <Link href="/profile" className="cursor-pointer">
-                    Profile
-                  </Link>
-                </DropdownMenuItem> */}
                 <DropdownMenuItem asChild>
                   <Link href="/orders" className="cursor-pointer">
                     Orders
@@ -390,7 +560,13 @@ export default function Navbar() {
           <div className="relative bg-white p-1.5 md:p-3 rounded-full">
             <CartIcon />
             {isClient && cartCount > 0 && (
-              <span className="absolute -top-0 -right-0 bg-red-600 text-white text-xs px-2 rounded-full">
+              <span
+                className={`absolute -top-0 -right-0 bg-red-600 text-white text-xs px-2 rounded-full
+            transform transition-all duration-300
+            ${
+              animate ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"
+            }`}
+              >
                 {cartCount}
               </span>
             )}

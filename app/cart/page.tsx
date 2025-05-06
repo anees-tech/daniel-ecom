@@ -49,7 +49,11 @@ export default function CartClient() {
               <p className="text-gray-500 mb-4">Your cart is empty.</p>
               <Link
                 href="/"
-                className="inline-block bg-[#F05021] text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-[#EB1E24] active:bg-[#EB1E24] transition-all"
+                className="inline-block items-center gap-2 px-4 md:px-5 py-2 md:py-3 
+    bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
+    text-md md:text-md text-white font-semibold shadow-lg 
+    transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
+    hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604] active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604] text-white px-6 py-2 text-sm font-medium hover:bg-[#EB1E24] active:bg-[#EB1E24] transition-all rounded-full"
               >
                 Continue Shopping
               </Link>

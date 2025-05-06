@@ -1,13 +1,14 @@
 "use client";
 
 import type React from "react";
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import ProductQuickViewButton from "./product-quick-view-button";
+import { useState } from "react";
+import { ShoppingBag, Star } from "lucide-react";
+import ProductCardWithModal from "./productModal/product-card-with-modal";
 
 interface ProductCardEnhancedProps {
   id: string;
@@ -30,23 +31,12 @@ interface ProductCardEnhancedProps {
   features: string[];
 }
 
-export default function ItemCard({
-  id,
-  name,
-  currentPrice,
-  originalPrice,
-  image,
-  category = "Fashion",
-  discount = 0,
-  stock = 10,
-  rating = 4.5,
-  reviewsCount = 24,
-}: ProductCardEnhancedProps) {
+export default function ItemCard(props: ProductCardEnhancedProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
-      className="group relative bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-[0.25px] border-gray-500"
+      className="group relative bg-white rounded-md md:rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 border-[0.25px] border-gray-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -54,26 +44,31 @@ export default function ItemCard({
         className="relative aspect-square overflow-hidden bg-gray-100 p-4"
         style={{ position: "relative" }}
       >
-        <Link href={`/product/${id}`} className="block relative w-full h-full">
+        <Link
+          href={`/product/${props.id}`}
+          className="block relative w-full h-full"
+        >
           <Image
-            src={image || "/placeholder.svg"}
-            alt={name}
+            src={props.image || "/placeholder.svg"}
+            alt={props.name}
             fill
             className={cn(
               "object-contain transition-transform duration-500 p-4 shadow-sm",
-              isHovered ? "scale-110" : "scale-100"
+              isHovered ? "scale-105" : "scale-100"
             )}
           />
         </Link>
-        {discount > 0 && (
+        {props.discount > 0 && (
           <Badge className="absolute top-2 left-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white rounded-full text-sm">
-            {(((originalPrice - currentPrice) / originalPrice) * 100).toFixed(
-              0
-            )}
+            {(
+              ((props.originalPrice - props.currentPrice) /
+                props.originalPrice) *
+              100
+            ).toFixed(0)}
             % OFF
           </Badge>
         )}
-        {id.startsWith("sale") && (
+        {props.id.startsWith("sale") && (
           <div className="absolute top-0 right-0 w-full h-full">
             {/* Sale Ribbon */}
             <div className="absolute right-[-30px] top-2 bg-green-600 text-white text-xs font-bold py-1 px-8 transform rotate-45 shadow-md">
@@ -83,12 +78,12 @@ export default function ItemCard({
         )}
 
         {/* Stock indicator */}
-        {stock <= 5 && stock > 0 && (
+        {props.stock <= 5 && props.stock > 0 && (
           <div className="absolute bottom-2 left-2 bg-amber-100 text-amber-900 text-sm px-2 py-1 rounded-full">
-            Only {stock} left
+            Only {props.stock} left
           </div>
         )}
-        {stock === 0 && (
+        {props.stock === 0 && (
           <div className="absolute bottom-2 left-2 bg-red-100 text-red-900 text-sm px-2 py-1 rounded-full">
             Out of Stock
           </div>
@@ -96,9 +91,16 @@ export default function ItemCard({
       </div>
 
       <div className="p-4">
-        <div className="text-sm text-muted-foreground mb-1">{category}</div>
+        <div className="flex justify-between items-center">
+          <div className="text-sm text-muted-foreground mb-1">
+            {props.category}
+          </div>{" "}
+          <div className="flex flex-col gap-4 z-20">
+            <ProductQuickViewButton product={props} iconOnly />
+          </div>
+        </div>
         <h3 className="font-medium text-lg mb-1 line-clamp-1 group-hover:text-red-500 transition-colors">
-          {name}
+          {props.name}
         </h3>
         <div className="flex items-center gap-1 mb-2">
           <div className="flex">
@@ -106,7 +108,7 @@ export default function ItemCard({
               <Star
                 key={i}
                 className={`h-4 w-4 ${
-                  i < Math.floor(rating)
+                  i < Math.floor(props.rating)
                     ? "fill-amber-400 text-amber-400"
                     : "fill-gray-200 text-gray-200"
                 }`}
@@ -114,22 +116,22 @@ export default function ItemCard({
             ))}
           </div>
           <span className="text-xs text-muted-foreground">
-            ({reviewsCount})
+            ({props.reviewsCount})
           </span>
         </div>
         <div className="flex items-center gap-2">
-          {originalPrice && originalPrice > currentPrice ? (
+          {props.originalPrice && props.originalPrice > props.currentPrice ? (
             <>
               <span className="font-semibold text-green-500">
-                ${currentPrice.toFixed(2)}
+                ${props.currentPrice.toFixed(2)}
               </span>
               <span className="text-muted-foreground text-sm line-through text-red-500">
-                ${originalPrice.toFixed(2)}
+                ${props.originalPrice.toFixed(2)}
               </span>
             </>
           ) : (
             <span className="font-semibold text-green-500">
-              ${currentPrice.toFixed(2)}
+              ${props.currentPrice.toFixed(2)}
             </span>
           )}
         </div>
@@ -144,7 +146,7 @@ export default function ItemCard({
         <div className="w-full flex justify-center">
           <Link
             className="w-full gap-2 flex flex-row justify-center items-center py-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white transform transition-transform active:scale-95 rounded-full"
-            href={`/product/${id}`}
+            href={`/product/${props.id}`}
           >
             <ShoppingBag className="h-4 w-4" />
             Buy Now

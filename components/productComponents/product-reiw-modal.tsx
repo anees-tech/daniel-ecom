@@ -463,7 +463,7 @@ export default function ProductReviewModal({
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-sm border border-gray-400"
+                className="search bg-white pl-3 focus:border-orange-500 focus:ring-red-500/20 rounded-sm border border-gray-400"
               />
               {errors.name && (
                 <p className="text-sm text-red-500">{errors.name}</p>
@@ -479,7 +479,7 @@ export default function ProductReviewModal({
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 rows={4}
-                className="search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-sm border border-gray-400"
+                className="search bg-white pl-3 focus:border-orange-500 focus:ring-red-500/20 rounded-sm border border-gray-400"
               />
               {errors.comment && (
                 <p className="text-sm text-red-500">{errors.comment}</p>
