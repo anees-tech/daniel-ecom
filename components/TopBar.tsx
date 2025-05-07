@@ -112,10 +112,9 @@ const TopBar: React.FC = () => {
           />
           <div>
             <h4 className="font-semibold text-gray-800">{service.name}</h4>
-            <p className="hidden md:line-clamp-2 md:block text-sm text-gray-600">
+            <p className="hidden md:visible line-clamp-2 text-sm text-gray-600">
               {service.details}
             </p>
-
             <Link
               href={`/services/${service.id}`}
               className="text-blue-600 text-sm hover:underline"
