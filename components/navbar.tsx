@@ -463,7 +463,9 @@ export default function Navbar() {
                             {suggestion}
                           </span>
                         </div>
-                        <ArrowRight className="h-4 w-4 text-gray-400" />
+                        <div>
+                          <ArrowRight className="h-4 w-4 text-gray-400" />
+                        </div>
                       </button>
                     ))}
                   </div>
