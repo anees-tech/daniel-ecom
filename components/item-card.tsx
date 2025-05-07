@@ -93,8 +93,9 @@ export default function ItemCard(props: ProductCardEnhancedProps) {
       <div className="p-4">
         <div className="flex justify-between items-center">
           <div className="text-sm text-muted-foreground mb-1">
-            {props.category}
-          </div>{" "}
+            {props.category.charAt(0).toUpperCase() +
+              props.category.slice(1).toLowerCase()}
+          </div>
           <div className="flex flex-col gap-4 z-0">
             <ProductQuickViewButton product={props} iconOnly />
           </div>

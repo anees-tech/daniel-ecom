@@ -136,7 +136,10 @@ export default function ProductInfo({
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         <div>
           <h2 className="text-lg font-semibold text-gray-700">Category</h2>
-          <p className="text-gray-600">{product.category}</p>
+          <div className="text-gray-600">
+            {product.category.charAt(0).toUpperCase() +
+              product.category.slice(1).toLowerCase()}
+          </div>
         </div>
         <div>
           <h2 className="text-lg font-semibold text-gray-700">Brand</h2>

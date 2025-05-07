@@ -16,7 +16,7 @@ export default function ProductQuickViewButton({
   product,
   buttonText = "Quick View",
   iconOnly = false,
-  className = "cursor-pointer bg-gray-200 border-none p-2 md:p-3 w-auto h-auto shadow-lg",
+  className = "cursor-pointer bg-gray-200 border-none p-2 md:p-3 w-auto h-auto shadow-md",
 }: ProductQuickViewButtonProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -28,7 +28,7 @@ export default function ProductQuickViewButton({
         size={iconOnly ? "icon" : "default"}
         className={className}
       >
-        <Eye className="h-3 w-3 md:h-4 md:w-4 text-red-500" />
+        <Eye className="h-3 w-3 md:h-4 md:w-4 text-black-500" />
         {!iconOnly && buttonText}
       </Button>
 
