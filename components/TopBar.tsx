@@ -112,7 +112,7 @@ const TopBar: React.FC = () => {
           />
           <div>
             <h4 className="font-semibold text-gray-800">{service.name}</h4>
-            <p className="hidden md:visible line-clamp-2 text-sm text-gray-600">
+            <p className="hidden md:block md:h-[40px] line-clamp-0 text-sm text-gray-600 overflow-hidden">
               {service.details}
             </p>
             <Link

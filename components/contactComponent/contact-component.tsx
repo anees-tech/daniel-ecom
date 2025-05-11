@@ -5,10 +5,15 @@ import type React from "react";
 import { useState } from "react";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
+import { useUser } from "@/context/userContext";
+import { AuthModal } from "@/components/auth-modal";
 
 export default function ContactForm() {
+  const [modal, setModal] = useState(false);
+  const { user } = useUser();
   const [formData, setFormData] = useState({
     firstName: "",
+    lastName: "",
     phoneNumber: "",
     email: "",
     message: "",
@@ -23,12 +28,17 @@ export default function ContactForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      setModal(true);
+      toast.error("User Must be logged in to Contact.");
+    }
     // Handle form submission logic here
     console.log("Form submitted:", formData);
     toast.success("Message has been sent successfully");
     // Reset form after submission
     setFormData({
       firstName: "",
+      lastName: "",
       phoneNumber: "",
       email: "",
       message: "",
@@ -54,6 +64,24 @@ export default function ContactForm() {
                 name="firstName"
                 placeholder="Write Here"
                 value={formData.firstName}
+                onChange={handleChange}
+                required
+                className="mt-1 w-full rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm focus:border-red-500 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="firstName"
+                className="block text-sm font-normal text-gray-700"
+              >
+                Last Name*
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                placeholder="Write Here"
+                value={formData.lastName}
                 onChange={handleChange}
                 required
                 className="mt-1 w-full rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm focus:border-red-500 focus:outline-none"
@@ -128,6 +156,7 @@ export default function ContactForm() {
           </button>
         </div>
       </form>
+      <AuthModal isOpen={modal} onClose={() => setModal(false)} />
     </div>
   );
 }

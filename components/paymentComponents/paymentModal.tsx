@@ -2,13 +2,14 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import Image from "next/image";
 import Button from "@/components/button";
+import { AuthModal } from "@/components/auth-modal";
 import {
   Dialog,
   DialogContent,
@@ -72,6 +73,7 @@ export default function PaymentModal({
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedCard, setSelectedCard] = useState("mastercard");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [modal, setModal] = useState(false);
   const [cardDetails, setCardDetails] = useState({
     cardNumber: "",
     expDate: "",
@@ -268,7 +270,7 @@ export default function PaymentModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogOverlay className="bg-black/50" />
+      <DialogOverlay className="bg-black/50 Z-80" />
       <DialogContent className="sm:max-w-[90%] md:max-w-[80%] lg:max-w-[80%] p-0 overflow-y-auto scroll max-h-[90vh] bg-white scrollbar-hide rounded-sm md:rounded-lg">
         <DialogTitle className="sr-only">Complete Your Purchase</DialogTitle>
         <div className="relative pb-6">
@@ -639,6 +641,7 @@ export default function PaymentModal({
           </div>
         )}
       </DialogContent>
+      <AuthModal isOpen={modal} onClose={() => setModal(false)} />
     </Dialog>
   );
 }

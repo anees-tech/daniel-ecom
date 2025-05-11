@@ -7,7 +7,6 @@ import { Toaster } from "@/components/ui/sonner";
 import TopBar from "@/components/TopBar";
 import { Suspense } from "react";
 import Loading from "./loading"; // Import global loading UI
-import { AuthProvider } from "@/context/AuthContext";
 import { UserProvider } from "@/context/userContext";
 
 const geistSans = Geist({

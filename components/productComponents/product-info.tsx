@@ -7,6 +7,8 @@ import Button from "../button";
 import { toast } from "sonner";
 import PaymentModal from "../paymentComponents/paymentModal";
 import { useState } from "react";
+import { AuthModal } from "@/components/auth-modal";
+import { useUser } from "@/context/userContext";
 
 interface ProductInfoProps {
   product: {
@@ -53,6 +55,8 @@ export default function ProductInfo({
   const fullStars = Math.floor(product.rating);
   const hasHalfStar = product.rating % 1 >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+  const [modal, setModal] = useState(false);
+  const { user } = useUser();
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   // Ensure product.sizes is an array, default to empty if not
@@ -269,7 +273,20 @@ export default function ProductInfo({
             toast.success("Product has been added to cart");
           }}
         />
-        <Button text={"Buy Now"} onClick={() => setIsPaymentModalOpen(true)} />
+        <Button
+          text={"Buy Now"}
+          onClick={() => {
+            if (!user) {
+              setModal(true);
+              setIsPaymentModalOpen(false);
+              toast.error(
+                "User Must be logged in to make any kind of Payments."
+              );
+            } else {
+              setIsPaymentModalOpen(true);
+            }
+          }}
+        />
       </div>
       <PaymentModal
         isOpen={isPaymentModalOpen}
@@ -287,6 +304,7 @@ export default function ProductInfo({
           },
         ]}
       />
+      <AuthModal isOpen={modal} onClose={() => setModal(false)} />
     </div>
   );
 }

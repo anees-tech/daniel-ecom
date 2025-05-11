@@ -55,7 +55,7 @@ export default function ProductDetailModal({
             </button>
           </div>
 
-          <div className="flex flex-col md:grid md:grid-cols-6 gap-6 p-4 md:p-6">
+          <div className="flex flex-col md:grid md:grid-cols-6 gap-6 p-4 md:p-6 pt-0 mt-0">
             {/* Product Images - 3/7 width on medium screens and above */}
             <div className="w-full md:col-span-3">
               <ProductImages

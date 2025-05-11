@@ -9,14 +9,13 @@ import HomeLink from "@/components/home-link";
 import Link from "next/link";
 import { useUser } from "@/context/userContext";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import Image from "next/image";
 import TextField from "@/components/text-field";
 import Button from "@/components/button";
 import { useTaxStore } from "@/context/taxContext";
-import InvoiceModal from "./invoice-modal";
 import { addOrderToUserProfile, Order } from "@/lib/orders";
-
+import { AuthModal } from "@/components/auth-modal";
+import { toast } from "sonner";
 export default function Payments() {
   const { cart, clearCart } = useCartStore();
   const { user } = useUser();
@@ -28,6 +27,7 @@ export default function Payments() {
   const [selectedCard, setSelectedCard] = useState("mastercard");
   const { taxRate, setTaxRate } = useTaxStore();
   const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [modal, setModal] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
     firstName: "",
     apartment: "",
@@ -75,6 +75,10 @@ export default function Payments() {
   >();
   // Handle hydration mismatch
   useEffect(() => {
+    if (!user) {
+      setModal(true);
+      toast.error("User Must be logged in to make any kind of Payments.");
+    }
     setMounted(true);
   }, []);
 
@@ -106,12 +110,11 @@ export default function Payments() {
   const handleCheckout = async () => {
     // Check if user is logged in
     if (!user) {
-      toast.error("You must be logged in to place an order");
-      router.push("/?toast=not-logged-in");
-      return;
+      setModal(true);
+      toast.error("User Must be logged in to make any kind of Payments.");
     }
 
-    // Close payment modal if open
+    // Close payment modal if opens
     if (showPaymentModal) {
       setShowPaymentModal(false);
     }
@@ -134,7 +137,7 @@ export default function Payments() {
         deliveryFee: deliveryFee,
         customerInfo: {
           name: customerInfo.firstName || "Guest Customer",
-          email: customerInfo.email || user.email || "guest@example.com",
+          email: customerInfo.email || user?.email || "guest@example.com",
           address: customerInfo.address || "Address not provided",
           city: customerInfo.town || "City not provided",
           phone: customerInfo.phone || "Phone not provided",
@@ -171,7 +174,7 @@ export default function Payments() {
         status: "Pending",
       };
       // Save order to user's profile in Firestore
-      await addOrderToUserProfile(user.uid, order);
+      await addOrderToUserProfile(user!.uid, order);
 
       // Clear cart after successful order
       clearCart();
@@ -493,6 +496,7 @@ export default function Payments() {
         fill
         className="object-contain absolute -z-50 bottom-50"
       />
+      <AuthModal isOpen={modal} onClose={() => setModal(false)} />
     </div>
   );
 }
