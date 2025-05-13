@@ -6,13 +6,13 @@ export default function ProductInfoSkeleton() {
     <div className="w-full space-y-6">
       {/* Title and Rating Skeleton */}
       <div className="flex flex-col md:justify-between md:items-start gap-4">
-        <div className="flex flex-col gap-2 w-full">
-          <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-4 w-full">
+          <div className="flex items-center gap-3">
             {/* Title Skeleton */}
             <div className="h-9 w-3/5 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded-md"></div>
 
             {/* Price Skeleton */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 ml-1">
               <div className="h-8 w-24 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded-md"></div>
               <div className="h-6 w-16 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded-md"></div>
             </div>
