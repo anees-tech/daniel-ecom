@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -65,6 +64,7 @@ export default function Navbar() {
   const [inputValue, setInputValue] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [debouncedValue, setDebouncedValue] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -120,16 +120,15 @@ export default function Navbar() {
       if (debouncedValue) {
         const items = await getProducts();
 
-        // Filter items where product.name includes debouncedValue (case-insensitive)
         const filteredNames = items
           .filter((product) =>
             product.name?.toLowerCase().includes(debouncedValue.toLowerCase())
           )
-          .map((product) => product.name) // Only take the name
+          .map((product) => product.name)
           .filter((name, index, self) => name && self.indexOf(name) === index)
-          .slice(0, 10); // Take only the top 10; // Unique names
+          .slice(0, 10);
 
-        setSuggestions(filteredNames); // Use the filtered names here
+        setSuggestions(filteredNames);
       } else {
         setSuggestions([]);
       }
@@ -154,8 +153,52 @@ export default function Navbar() {
   const handleSuggestionClick = (suggestion: string) => {
     setInputValue(suggestion);
     setIsOpen(false);
-    // Navigate to search results page with the selected suggestion
     router.push(`/search?query=${encodeURIComponent(suggestion)}`);
+  };
+
+  const handleCategoryClick = (categoryTitle: string) => {
+    if (selectedCategory === categoryTitle) {
+      setSelectedCategory(null);
+    } else {
+      setSelectedCategory(categoryTitle);
+    }
+  };
+
+  const createSlug = (text: string) => {
+    return text
+      .toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+  };
+
+  const handleSubcategoryClick = (
+    categoryTitle: string,
+    subcategory: string | any
+  ) => {
+    const categorySlug = createSlug(categoryTitle);
+    const subcategorySlug = createSlug(
+      typeof subcategory === "string"
+        ? subcategory
+        : subcategory.title || subcategory
+    );
+
+    // Navigate to /category/categorySlug/subcategorySlug
+    router.push(`/productCategory/${categorySlug}/${subcategorySlug}`);
+    setSelectedCategory(null); // Close the dropdown after navigation
+  };
+
+  const handleCategoryNavigation = (
+    categoryTitle: string,
+    categoryHref?: string
+  ) => {
+    if (categoryHref) {
+      router.push(categoryHref);
+    } else {
+      const categorySlug = createSlug(categoryTitle);
+      // Navigate to /category/categorySlug for main category
+      router.push(`/category/${categorySlug}`);
+    }
+    setSelectedCategory(null); // Close the dropdown after navigation
   };
 
   const mainNavItems = [
@@ -189,7 +232,7 @@ export default function Navbar() {
   useEffect(() => {
     if (cartCount > 0) {
       setAnimate(true);
-      const timer = setTimeout(() => setAnimate(false), 300); // remove animation after 300ms
+      const timer = setTimeout(() => setAnimate(false), 300);
       return () => clearTimeout(timer);
     }
   }, [cartCount]);
@@ -255,7 +298,7 @@ export default function Navbar() {
           <SheetHeader className="mb-4">
             <SheetTitle>Menu</SheetTitle>
           </SheetHeader>
-          <nav className="grid gap-2 py-0 px-2 ">
+          <nav className="grid gap-2 py-0 px-2">
             <Link href="/" className="flex justify-center md:hidden">
               <div className="h-[80px] w-[80px] relative">
                 <Image
@@ -269,7 +312,7 @@ export default function Navbar() {
             {mainNavItems.map((item) => {
               if (item.title === "Shop") {
                 return (
-                  <div key={item.href} className="cursor-pointer">
+                  <div key={`mobile-${item.title}`} className="cursor-pointer">
                     <div
                       className="flex items-center justify-between py-2 text-lg font-medium cursor-pointer hover:text-gray-400"
                       onClick={() => {
@@ -288,22 +331,89 @@ export default function Navbar() {
                       id="mobile-shop-content"
                       className="hidden pl-4 space-y-2 mt-1 mb-2 cursor-pointer"
                     >
-                      {item.children?.map((child) => (
-                        <SheetClose asChild key={child.href}>
-                          <Link
-                            href={child.href}
-                            className="cursor-pointer flex items-center py-2 px-2 text-base transition-colors hover:text-primary text-muted-foreground hover:bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:text-white rounded-md"
-                          >
-                            {child.title}
-                          </Link>
-                        </SheetClose>
+                      {item.children?.map((category) => (
+                        <div
+                          key={`mobile-category-${
+                            category.id || category.title
+                          }`}
+                          className="space-y-1"
+                        >
+                          <div className="flex items-center justify-between py-2 px-2 text-base font-medium cursor-pointer hover:bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] hover:text-white rounded-md">
+                            <SheetClose asChild>
+                              <button
+                                onClick={() =>
+                                  handleCategoryNavigation(
+                                    category.title,
+                                    category.href
+                                  )
+                                }
+                                className="flex-1 text-left"
+                              >
+                                {category.title}
+                              </button>
+                            </SheetClose>
+                            {category.subcategories &&
+                              category.subcategories.length > 0 && (
+                                <button
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    const subcategoryContent =
+                                      document.getElementById(
+                                        `mobile-subcategory-${category.title
+                                          .toLowerCase()
+                                          .replace(/\s+/g, "-")}`
+                                      );
+                                    if (subcategoryContent) {
+                                      subcategoryContent.classList.toggle(
+                                        "hidden"
+                                      );
+                                    }
+                                  }}
+                                  className="p-1"
+                                >
+                                  <ArrowRight className="h-4 w-4" />
+                                </button>
+                              )}
+                          </div>
+                          {category.subcategories &&
+                            category.subcategories.length > 0 && (
+                              <div
+                                id={`mobile-subcategory-${category.title
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-")}`}
+                                className="hidden pl-4 space-y-1"
+                              >
+                                {category.subcategories.map(
+                                  (subcategory, subIndex) => (
+                                    <SheetClose
+                                      asChild
+                                      key={`mobile-subcategory-${category.id}-${subIndex}`}
+                                    >
+                                      <button
+                                        onClick={() =>
+                                          handleSubcategoryClick(
+                                            category.title,
+                                            subcategory
+                                          )
+                                        }
+                                        className="block w-full text-left py-1 px-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded"
+                                      >
+                                        {subcategory.title}
+                                      </button>
+                                    </SheetClose>
+                                  )
+                                )}
+                              </div>
+                            )}
+                        </div>
                       ))}
                     </div>
                   </div>
                 );
               }
               return (
-                <SheetClose asChild key={item.href}>
+                <SheetClose asChild key={`mobile-nav-${item.title}`}>
                   <Link
                     href={item.href}
                     className={cn(
@@ -347,44 +457,166 @@ export default function Navbar() {
           <NavigationMenuList>
             {mainNavItems.map((item) =>
               item.children ? (
-                <NavigationMenuItem key={item.href}>
+                <NavigationMenuItem key={`desktop-${item.title}`}>
                   <NavigationMenuTrigger className="text-white hover:bg-white/20 hover:text-white transition-colors duration-300">
                     {item.title}
                   </NavigationMenuTrigger>
                   <NavigationMenuContent className="bg-white">
-                    <ul className="grid w-[400px] gap-3 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                      {item.children.map((child) => (
-                        <li key={child.href}>
-                          <NavigationMenuLink asChild>
-                            <Link
-                              href={child.href}
-                              className="p-0 block select-none space-y-1 rounded-md md:p-3 leading-none no-underline outline-none transition-colors hover:bg-gradient-to-r hover:from-red-500/10 hover:to-orange-500/10 focus:bg-accent focus:text-accent-foreground"
-                            >
-                              <div className="text-sm font-medium leading-none">
-                                {child.title}
+                    <div className="flex w-[900px] min-h-[400px]">
+                      {/* Categories Column */}
+                      <div className="w-1/2 border-r border-gray-200">
+                        <div className="p-4">
+                          <h3 className="text-lg font-semibold mb-3 text-gray-800">
+                            Categories
+                          </h3>
+                          <ul className="space-y-1">
+                            {item.children.map((category) => (
+                              <li
+                                key={`desktop-category-${
+                                  category.id || category.title
+                                }`}
+                              >
+                                <div className="group relative">
+                                  <div
+                                    className={cn(
+                                      "flex items-center justify-between p-2 rounded-md transition-colors cursor-pointer",
+                                      selectedCategory === category.title
+                                        ? "bg-gradient-to-r from-red-500/20 to-orange-500/20"
+                                        : "hover:bg-gradient-to-r hover:from-red-500/10 hover:to-orange-500/10"
+                                    )}
+                                    onClick={() =>
+                                      handleCategoryClick(category.title)
+                                    }
+                                  >
+                                    <div className="flex-1">
+                                      <div className="text-sm font-medium leading-none">
+                                        {category.title}
+                                      </div>
+                                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                        {category.description}
+                                      </p>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          handleCategoryNavigation(
+                                            category.title,
+                                            category.href
+                                          );
+                                        }}
+                                        className="text-xs text-blue-600 hover:text-blue-800 px-2 py-1 rounded hover:bg-blue-50 transition-colors"
+                                      >
+                                        View All
+                                      </button>
+                                      {category.subcategories &&
+                                        category.subcategories.length > 0 && (
+                                          <ArrowRight
+                                            className={cn(
+                                              "h-4 w-4 text-gray-400 transition-transform",
+                                              selectedCategory ===
+                                                category.title
+                                                ? "rotate-90"
+                                                : ""
+                                            )}
+                                          />
+                                        )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Subcategories Column */}
+                      <div className="w-1/2">
+                        <div className="p-4">
+                          {selectedCategory ? (
+                            <>
+                              <div className="flex items-center justify-between mb-3">
+                                <h3 className="text-lg font-semibold text-gray-800">
+                                  {selectedCategory} Subcategories
+                                </h3>
+                                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                  {item.children.find(
+                                    (cat) => cat.title === selectedCategory
+                                  )?.subcategories?.length || 0}{" "}
+                                  items
+                                </span>
                               </div>
-                              <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                                {child.description}
+                              <ul className="space-y-1">
+                                {item.children
+                                  .find((cat) => cat.title === selectedCategory)
+                                  ?.subcategories?.map(
+                                    (subcategory, subIndex) => (
+                                      <li
+                                        key={`desktop-subcategory-${selectedCategory}-${subIndex}`}
+                                      >
+                                        <button
+                                          onClick={() =>
+                                            handleSubcategoryClick(
+                                              selectedCategory,
+                                              subcategory
+                                            )
+                                          }
+                                          className="block w-full text-left p-3 rounded-md hover:bg-gradient-to-r hover:from-red-500/10 hover:to-orange-500/10 transition-colors group border border-transparent hover:border-red-200"
+                                        >
+                                          <div className="flex items-center justify-between">
+                                            <div>
+                                              <div className="text-sm font-medium leading-none">
+                                                {subcategory.title}
+                                              </div>
+                                              <div className="text-xs text-gray-500 mt-1">
+                                                Click to browse{" "}
+                                                {subcategory.title}
+                                              </div>
+                                            </div>
+                                            <ArrowRight className="h-4 w-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                          </div>
+                                        </button>
+                                      </li>
+                                    )
+                                  ) || (
+                                  <li className="text-sm text-gray-500 italic p-3 text-center bg-gray-50 rounded-md">
+                                    No subcategories available for{" "}
+                                    {selectedCategory}
+                                  </li>
+                                )}
+                              </ul>
+                            </>
+                          ) : (
+                            <div className="text-center text-gray-500 mt-16">
+                              <div className="mb-4">
+                                <ArrowRight className="h-12 w-12 mx-auto text-gray-300" />
+                              </div>
+                              <p className="text-sm font-medium">
+                                Select a category
                               </p>
-                            </Link>
-                          </NavigationMenuLink>
-                        </li>
-                      ))}
-                    </ul>
+                              <p className="text-xs text-gray-400 mt-1">
+                                Click on a category to see its subcategories
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </NavigationMenuContent>
                 </NavigationMenuItem>
               ) : (
-                <NavigationMenuItem key={item.href}>
-                  <Link href={item.href} legacyBehavior passHref>
-                    <NavigationMenuLink
+                <NavigationMenuItem key={`desktop-nav-${item.title}`}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href={item.href}
                       className={cn(
                         navigationMenuTriggerStyle(),
                         "text-white hover:bg-white/20 hover:text-white transition-colors duration-300"
                       )}
                     >
                       {item.title}
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
               )
             )}
@@ -425,15 +657,6 @@ export default function Navbar() {
                 className="search bg-white pl-8 focus:border-orange-500 focus:ring-red-500/20 rounded-full border border-gray-400"
               />
               <div className="flex items-center pr-1">
-                {/* <Button
-                  type="button"
-                  size="icon"
-                  variant="ghost"
-                  className="h-10 w-10 rounded-full"
-                >
-                  <Camera className="h-5 w-5 text-gray-500" />
-                  <span className="sr-only">Search with camera</span>
-                </Button> */}
                 <Button
                   type="submit"
                   size="icon"
@@ -451,7 +674,7 @@ export default function Navbar() {
                   <div className="max-h-[30vh] md:max-h-[70vh] overflow-y-auto">
                     {suggestions.map((suggestion, index) => (
                       <button
-                        key={index}
+                        key={`suggestion-${index}`}
                         className="flex items-center justify-between w-full px-4 py-3 text-left hover:bg-gray-50 cursor-pointer"
                         onClick={() => handleSuggestionClick(suggestion)}
                       >
@@ -478,7 +701,7 @@ export default function Navbar() {
                       <div className="space-y-3">
                         {popularSearches.map((search, index) => (
                           <button
-                            key={index}
+                            key={`popular-${index}`}
                             className="block w-full text-left hover:text-gray-600 cursor-pointer"
                             onClick={() => handleSuggestionClick(search)}
                           >
@@ -488,9 +711,6 @@ export default function Navbar() {
                       </div>
                     </div>
                     <div>
-                      {/* <h3 className="text-lg font-semibold mb-3 text-blue-500">
-                        Other recommendations
-                      </h3> */}
                       <div className="space-y-3">
                         {/* This would be populated with actual recommendations */}
                       </div>

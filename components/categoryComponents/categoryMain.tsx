@@ -10,7 +10,11 @@ import { getProducts } from "@/lib/products";
 import CategoryProductsInterface from "@/interfaces/categoriesInterface";
 import Loading from "./loading";
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
+export default function CategoryPage({
+  params,
+}: {
+  params: { slug: string[] };
+}) {
   const [products, setProducts] = useState<CategoryProductsInterface[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
   const [size, setSizes] = useState<(string | number)[]>([]);
@@ -18,15 +22,22 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log(params.slug);
     async function fetchProducts() {
       setIsLoading(true);
       const items = await getProducts();
 
       const mappedProducts: CategoryProductsInterface[] = items
-        .filter(
-          (product) =>
-            product.category?.toLowerCase() === params.slug.toLowerCase()
-        )
+        .filter((product) => {
+          const matchesCategory =
+            product.category?.toLowerCase() === params.slug[0].toLowerCase();
+          const matchesSubcategory = params.slug[1]
+            ? product.subcategory?.toLowerCase() ===
+              params.slug[1].toLowerCase()
+            : true;
+
+          return matchesCategory && matchesSubcategory;
+        })
         .map((product) => ({
           ...product,
           id: String(product.id),
@@ -73,11 +84,25 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
           <span className="text-gray-400">/</span>
           <span className="text-gray-400">Category</span>
           <span className="text-gray-400">/</span>
-          <span className="text-red-500 hover:text-red-700">{params.slug}</span>
+          <span className="text-red-500">
+            {params.slug[0]}
+          </span>
+          {params.slug[1] ? (
+            <div className="flex gap-2">
+              <span className="text-gray-400">/</span>
+              <span className="text-red-500">
+                {params.slug[1]}
+              </span>
+            </div>
+          ) : null}
         </div>
 
         <TextField
-          text={params.slug[0].charAt(0).toUpperCase() + params.slug.slice(1)}
+          text={
+            params.slug[1]?
+            params.slug[1][0].charAt(0).toUpperCase() + params.slug[1].slice(1):
+            params.slug[0][0].charAt(0).toUpperCase() + params.slug[0].slice(1)
+          }
         />
 
         <Image

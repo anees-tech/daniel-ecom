@@ -16,6 +16,7 @@ interface Product {
   id: string;
   name: string;
   category: string;
+  subcategory: string;
   images: string[];
   colors: { name: string; hex?: string }[];
   image: string;

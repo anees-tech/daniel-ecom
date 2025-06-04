@@ -2,6 +2,7 @@ interface CategoryProductsInterface {
   id: string;
   name: string;
   category: string;
+  subcategory: string;
   images: string[];
   image: string;
   currentPrice: number;

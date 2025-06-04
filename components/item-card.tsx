@@ -8,10 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import ProductQuickViewButton from "./product-quick-view-button";
 import { useState } from "react";
 import { ShoppingBag, Star } from "lucide-react";
-import ProductCardWithModal from "./productModal/product-card-with-modal";
 
 interface ProductCardEnhancedProps {
   id: string;
+  subcategory:string;
   name: string;
   category: string;
   images: string[];
