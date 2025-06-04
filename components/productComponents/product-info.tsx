@@ -15,6 +15,7 @@ interface ProductInfoProps {
     id: string;
     name: string;
     category: string;
+    subcategory: string;
     currentPrice: number;
     originalPrice: number;
     discount?: number;
@@ -137,7 +138,7 @@ export default function ProductInfo({
       </div>
 
       {/* Category, Brand, Material */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div>
           <h2 className="text-lg font-semibold text-gray-700">Category</h2>
           <div className="text-gray-600">
@@ -145,6 +146,15 @@ export default function ProductInfo({
               product.category.slice(1).toLowerCase()}
           </div>
         </div>
+        {product.subcategory ? (
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">Subcategory</h2>
+            <div className="text-gray-600">
+              {product.subcategory.charAt(0).toUpperCase() +
+                product.subcategory.slice(1).toLowerCase()}
+            </div>
+          </div>
+        ) : null}
         <div>
           <h2 className="text-lg font-semibold text-gray-700">Brand</h2>
           <p className="text-gray-600">{product.brand}</p>
