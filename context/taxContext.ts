@@ -8,14 +8,14 @@ interface TaxState {
   taxRate: number;
   setTaxRate: (rate: number) => void;
   clearTax: () => void;
+  initializeTax: () => Promise<void>;
 }
-const globalTax = await fetchGlobalTax();
-console.log("Global tax fetcasghed:", globalTax);
+
 const TAX_EXPIRATION_TIME = 60 * 60 * 1000;
 
 export const useTaxStore = create<TaxState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       taxRate: 0.1,
 
       setTaxRate: (rate) => {
@@ -29,6 +29,17 @@ export const useTaxStore = create<TaxState>()(
           sessionStorage.removeItem("tax_expiry");
         }
       },
+
+      initializeTax: async () => {
+        try {
+          const globalTax = await fetchGlobalTax();
+          console.log("Global tax fetched:", globalTax);
+          set({ taxRate: globalTax || 0.1 });
+        } catch (error) {
+          console.error("Failed to fetch global tax:", error);
+          set({ taxRate: 0.1 }); // fallback
+        }
+      },
     }),
     {
       name: "tax-storage",
@@ -40,29 +51,29 @@ export const useTaxStore = create<TaxState>()(
   )
 );
 
+const setTaxExpiry = () => {
+  if (typeof window !== "undefined") {
+    const expiry = new Date().getTime() + TAX_EXPIRATION_TIME;
+    sessionStorage.setItem("tax_expiry", expiry.toString());
+  }
+};
+
 const checkTaxExpiration = () => {
   if (typeof window !== "undefined") {
     const expiry = sessionStorage.getItem("tax_expiry");
-    if (expiry && Date.now() > Number(expiry)) {
+    if (expiry && new Date().getTime() > parseInt(expiry)) {
       useTaxStore.getState().clearTax();
+      return true;
     }
   }
+  return false;
 };
 
-const setTaxExpiry = () => {
-  if (typeof window !== "undefined") {
-    sessionStorage.setItem(
-      "tax_expiry",
-      String(Date.now() + TAX_EXPIRATION_TIME)
-    );
-  }
-};
-
-// Fetch and set global tax on load
+// Initialize tax when the store is created (client-side only)
 if (typeof window !== "undefined") {
-  (async () => {
-    const globalTax = await fetchGlobalTax();
-    useTaxStore.getState().setTaxRate(globalTax);
-    checkTaxExpiration();
-  })();
+  const store = useTaxStore.getState();
+  if (!checkTaxExpiration()) {
+    store.initializeTax();
+  }
 }
+
