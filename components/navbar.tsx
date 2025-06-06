@@ -631,10 +631,10 @@ export default function Navbar() {
               </div>
             </button>
           ) : (
-            <div className="flex items-center">
-              <div className="text-sm font-medium text-white mr-2 hidden md:block">
+            <div className="hidden">
+              {/* <div className="text-sm font-medium text-white mr-2 hidden md:block">
                 {user.displayName || user.email?.split("@")[0]}
-              </div>
+              </div> */}
             </div>
           ))}
       </div>
@@ -710,11 +710,11 @@ export default function Navbar() {
                         ))}
                       </div>
                     </div>
-                    <div>
-                      <div className="space-y-3">
+                    {/* <div>
+                      <div className="space-y-3"> */}
                         {/* This would be populated with actual recommendations */}
-                      </div>
-                    </div>
+                      {/* </div>
+                    </div> */}
                   </div>
                 )}
               </div>
