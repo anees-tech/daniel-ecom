@@ -1,6 +1,6 @@
 "use client";
-// 
-// 
+//
+//
 import { Star, Plus, Minus } from "lucide-react";
 import { useCartStore } from "@/context/addToCartContext";
 import ProductReviewModal from "./product-reiw-modal";
@@ -138,8 +138,8 @@ export default function ProductInfo({
         </div>
       </div>
 
-      {/* Category, Brand, Material */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Category and Subcategory */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-2">
         <div>
           <h2 className="text-lg font-semibold text-gray-700">Category</h2>
           <div className="text-gray-600">
@@ -156,6 +156,10 @@ export default function ProductInfo({
             </div>
           </div>
         ) : null}
+      </div>
+
+      {/* Brand and Material */}
+      <div className="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-2">
         <div>
           <h2 className="text-lg font-semibold text-gray-700">Brand</h2>
           <p className="text-gray-600">{product.brand}</p>
