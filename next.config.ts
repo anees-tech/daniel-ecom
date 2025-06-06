@@ -21,9 +21,21 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**.vercel-storage.com",
+        hostname: "firebasestorage.googleapis.com",
+        port: "",
+        pathname: "/v0/b/**",
       },
     ],
+    // Increase timeout for image optimization
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "attachment",
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+  // Add experimental features for better image handling
+  experimental: {
+    serverActions: {
+      allowedOrigins: ["firebasestorage.googleapis.com"],
+    },
   },
 };
 

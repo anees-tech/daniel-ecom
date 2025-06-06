@@ -2,6 +2,9 @@ import { Star } from "lucide-react";
 import React from "react";
 
 export default function ProductInfoSkeleton() {
+  // Use fixed widths instead of Math.random() to avoid hydration mismatch
+  const descriptionWidths = [85, 92, 78, 88]; // Fixed percentages
+
   return (
     <div className="w-full space-y-6">
       {/* Title and Rating Skeleton */}
@@ -35,15 +38,13 @@ export default function ProductInfoSkeleton() {
         <div>
           <div className="h-7 w-24 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded-md mb-2"></div>
           <div className="space-y-2">
-            {Array(4)
-              .fill(0)
-              .map((_, i) => (
-                <div
-                  key={i}
-                  className="h-4 w-full bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded-md"
-                  style={{ width: `${Math.floor(Math.random() * 30) + 70}%` }}
-                ></div>
-              ))}
+            {descriptionWidths.map((width, i) => (
+              <div
+                key={i}
+                className="h-4 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-shimmer bg-[length:200%_100%] rounded-md"
+                style={{ width: `${width}%` }}
+              ></div>
+            ))}
           </div>
 
           {/* SKU Skeleton */}
