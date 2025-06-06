@@ -20,6 +20,9 @@ import { addOrderToUserProfile } from "@/lib/orders";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/userContext"; // Import your user context
 import { toast } from "sonner";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 // Add these imports for Stripe
 import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
@@ -121,25 +124,6 @@ interface PaymentModalProps {
   onSuccess?: (orderId: string) => void; // Optional callback for success
 }
 
-interface CustomerInfo {
-  firstName: string;
-  apartment: string;
-  phone: string;
-  town: string;
-  address: string;
-  email: string;
-}
-
-interface PaymentDetails {
-  deliveryMethod: string;
-  paymentMethod: string;
-  cardType?: string;
-  cardNumber?: string;
-  expDate?: string;
-  cvv?: string;
-  cardholderName?: string;
-}
-
 export default function PaymentModal({
   isOpen,
   onClose,
@@ -152,20 +136,43 @@ export default function PaymentModal({
 
   const [deliveryMethod, setDeliveryMethod] = useState("standard");
   const [paymentMethod, setPaymentMethod] = useState("card");
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  // const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [modal, setModal] = useState(false);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [showStripeModal, setShowStripeModal] = useState(false);
 
-  const [customerInfo, setCustomerInfo] = useState({
-    firstName: "",
-    apartment: "",
-    phone: "",
-    town: "",
-    address: "",
-    email: user?.email || "",
+  // Zod schema for customer information validation
+  const customerInfoSchema = z.object({
+    firstName: z.string().min(1, "First Name is required"),
+    apartment: z.string().optional(),
+    phone: z.string().min(10, "Phone Number is required"), // Basic phone validation
+    town: z.string().min(1, "Town/City is required"),
+    address: z.string().min(1, "Street Address is required"),
+    email: z.string().email("Invalid email address").min(1, "Email Address is required"),
   });
+
+  // Use React Hook Form
+  const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<z.infer<typeof customerInfoSchema>>({
+    resolver: zodResolver(customerInfoSchema),
+    defaultValues: {
+      firstName: "",
+      apartment: "",
+      phone: "",
+      town: "",
+      address: "",
+      email: user?.email || "",
+    },
+    mode: "onBlur",
+  });
+
+  const customerInfo = watch(); // Watch all form fields to get current values
+
+  useEffect(() => {
+    if (user?.email) {
+      setValue("email", user.email);
+    }
+  }, [user?.email, setValue]);
 
   // Calculate totals
   const subtotal = products.reduce(
@@ -175,36 +182,6 @@ export default function PaymentModal({
   const deliveryFee = deliveryMethod === "standard" ? 100 : 0;
   const tax = subtotal * (taxRate / 100);
   const totalPrice = subtotal + tax + deliveryFee;
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setCustomerInfo((prev) => ({
-      ...prev,
-      [id]: value,
-    }));
-  };
-
-  const validateForm = () => {
-    // Basic validation
-    if (!customerInfo.firstName) {
-      toast.error("Please enter your name");
-      return false;
-    }
-    if (!customerInfo.email) {
-      toast.error("Please enter your email");
-      return false;
-    }
-    if (!customerInfo.address) {
-      toast.error("Please enter your address");
-      return false;
-    }
-    if (!customerInfo.phone) {
-      toast.error("Please enter your phone number");
-      return false;
-    }
-
-    return true;
-  };
 
   const createPaymentIntent = async () => {
     if (totalPrice <= 0) {
@@ -242,7 +219,7 @@ export default function PaymentModal({
       } else {
         toast.error(data.error || "Failed to initialize payment.");
         console.error(
-          "FRONTEND: No clientSecret in response or error:",
+          "FRONTEND: No clientSecret in response or error from create-payment-intent:",
           data.error
         );
       }
@@ -253,6 +230,8 @@ export default function PaymentModal({
       );
       toast.error("Failed to initialize payment. Please try again.");
     }
+
+    return true;
   };
 
   const proceedToStripePayment = async () => {
@@ -264,16 +243,6 @@ export default function PaymentModal({
     }
     if (products.length === 0) {
       toast.error("Your cart is empty.");
-      return;
-    }
-    if (
-      !customerInfo.firstName ||
-      !customerInfo.email ||
-      !customerInfo.address ||
-      !customerInfo.town ||
-      !customerInfo.phone
-    ) {
-      toast.error("Please fill in all required customer information fields.");
       return;
     }
     console.log("FRONTEND: Proceeding to call createPaymentIntent");
@@ -348,11 +317,6 @@ export default function PaymentModal({
       return;
     }
 
-    // Validate form
-    if (!validateForm()) {
-      return;
-    }
-
     // Check if user is logged in
     if (!user) {
       toast.error("You must be logged in to place an order");
@@ -391,10 +355,8 @@ export default function PaymentModal({
         paymentDetails: {
           transactionId: "COD" + Math.floor(Math.random() * 1000000),
           status: "Pending",
-          date: new Date().toLocaleDateString(),
-          expectedDelivery: new Date(
-            Date.now() + 5 * 24 * 60 * 60 * 1000
-          ).toLocaleDateString(),
+          date: new Date().toISOString(),
+          expectedDelivery: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
         },
         invoice: {
           invoiceId: `INV-${Date.now()}`,
@@ -469,10 +431,9 @@ export default function PaymentModal({
                       id="firstName"
                       placeholder="Write here"
                       className={inputStyle}
-                      value={customerInfo.firstName}
-                      onChange={handleInputChange}
-                      required
+                      {...register("firstName")}
                     />
+                    {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="apartment">
@@ -482,9 +443,9 @@ export default function PaymentModal({
                       id="apartment"
                       placeholder="Write here"
                       className={inputStyle}
-                      value={customerInfo.apartment}
-                      onChange={handleInputChange}
+                      {...register("apartment")}
                     />
+                    {errors.apartment && <p className="text-red-500 text-xs mt-1">{errors.apartment.message}</p>}
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -494,10 +455,9 @@ export default function PaymentModal({
                       id="phone"
                       placeholder="Write here"
                       className={inputStyle}
-                      value={customerInfo.phone}
-                      onChange={handleInputChange}
-                      required
+                      {...register("phone")}
                     />
+                    {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="town">Town/City*</Label>
@@ -505,10 +465,9 @@ export default function PaymentModal({
                       id="town"
                       placeholder="Write here"
                       className={inputStyle}
-                      value={customerInfo.town}
-                      onChange={handleInputChange}
-                      required
+                      {...register("town")}
                     />
+                    {errors.town && <p className="text-red-500 text-xs mt-1">{errors.town.message}</p>}
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -517,10 +476,9 @@ export default function PaymentModal({
                     id="address"
                     placeholder="Write here"
                     className={inputStyle}
-                    value={customerInfo.address}
-                    onChange={handleInputChange}
-                    required
+                    {...register("address")}
                   />
+                  {errors.address && <p className="text-red-500 text-xs mt-1">{errors.address.message}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address*</Label>
@@ -528,11 +486,10 @@ export default function PaymentModal({
                     id="email"
                     placeholder="Write here"
                     className={inputStyle}
-                    value={customerInfo.email}
-                    onChange={handleInputChange}
-                    required
                     type="email"
+                    {...register("email")}
                   />
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                 </div>
                 <div className="text-xs text-muted-foreground">
                   <span className="text-red-500">*</span> Required fields
@@ -667,7 +624,7 @@ export default function PaymentModal({
                   <div className="flex flex-row justify-center">
                     <Button
                       text="Proceed to Secure Payment"
-                      onClick={proceedToStripePayment}
+                      onClick={handleSubmit(proceedToStripePayment)}
                     />
                   </div>
                 )}
@@ -680,7 +637,7 @@ export default function PaymentModal({
                           ? "Processing..."
                           : "Complete Purchase (Cash)"
                       }
-                      onClick={handleCheckout}
+                      onClick={handleSubmit(handleCheckout)}
                       disabled={isProcessing}
                     />
                   </div>
