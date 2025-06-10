@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import Button from "./button"; // Assuming you have a Button component
+import Button from "./button";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { firestore } from "@/lib/firebaseConfig";
 import { toast } from "sonner";
@@ -43,7 +43,7 @@ export default function ReturnItemModal({
   orderId,
   userId,
   orderCreatedAt,
-  onSuccess, // Add this prop
+  onSuccess,
 }: ReturnItemModalProps) {
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,18 +62,28 @@ export default function ReturnItemModal({
 
     try {
       const returnsCollectionRef = collection(firestore, "returns");
-      await addDoc(returnsCollectionRef, {
+      
+      // Generate unique QR code data
+      const qrCodeData = `RETURN-${orderId}-${item.id}-${Date.now()}`;
+      
+      const returnData = {
         userId: userId,
         orderId: orderId,
-        orderCreatedAt: orderCreatedAt, // Store original order date
+        orderCreatedAt: orderCreatedAt,
         itemId: item.id,
         itemName: item.name,
         itemQuantity: item.quantity,
         itemPrice: item.price,
         reason: reason.trim(),
         requestedAt: serverTimestamp(),
-        status: "Pending", // Initial status for the return request
-      });
+        status: "Pending",
+        qrCode: qrCodeData,
+        adminMessage: "",
+      };
+
+      console.log("Creating return request:", returnData); // Debug log
+      
+      await addDoc(returnsCollectionRef, returnData);
 
       toast.success("Return request submitted successfully.");
       setReason(""); // Clear reason

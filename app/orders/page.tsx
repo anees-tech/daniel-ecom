@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/userContext";
-import { useReturnStore } from "@/context/returnContext"; // Import return store
+import { useReturnStore } from "@/context/returnContext";
 import {
   collection,
   getDocs,
@@ -20,8 +20,10 @@ import TextField from "@/components/text-field";
 import Loading from "../loading";
 import InvoiceModal from "../payments/invoice-modal";
 import ProductReviewModal from "@/components/productComponents/product-reiw-modal";
-import ReturnItemModal from "@/components/return-item-modal"; // Import return modal
+import ReturnItemModal from "@/components/return-item-modal";
+import ReturnManagement from "@/components/return-management"; // Import new component
 import { toast } from "sonner";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface OrderItem {
   id: string;
@@ -288,7 +290,7 @@ export default function OrdersPage() {
         <span className="text-gray-400">/</span>
         <span className="text-red-500">Orders</span>
       </div>
-      <TextField text={"Orders"} />
+      <TextField text={"Orders & Returns"} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
         <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 mb-6">
@@ -300,149 +302,132 @@ export default function OrdersPage() {
             delivery.
           </p>
         </div>
-        {!user ? (
-          <div className="bg-white rounded-lg shadow-md p-8 text-center">
-            <Image
-              src="/empty-box.svg"
-              alt="Please login"
-              width={120}
-              height={120}
-              className="mx-auto mb-4"
-            />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">
-              Please Login
-            </h3>
-            <p className="text-gray-500 mb-4">
-              You need to be logged in to view your orders.
-            </p>
-            <Link href="/">
-              <span className="inline-block bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white py-2 px-6 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity">
-                Go to Login
-              </span>
-            </Link>
-          </div>
-        ) : orders.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-md p-8 text-center">
-            <Image
-              src="/empty-box.svg"
-              alt="No orders"
-              width={120}
-              height={120}
-              className="mx-auto mb-4"
-            />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">
-              No Orders Found
-            </h3>
-            <p className="text-gray-500 mb-4">
-              You haven&apos;t placed any orders yet.
-            </p>
-            <Link href="/">
-              <span className="inline-block bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white py-2 px-6 rounded-full text-sm font-semibold hover:opacity-90 active:opacity-90 transition-opacity">
-                Shop Now
-              </span>
-            </Link>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {orders
-              .filter((order) => order.status !== "Cancelled")
-              .map((order) => (
-                <div
-                  key={order.id}
-                  className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg active:shadow-lg transition-shadow"
+
+        {/* Add Tabs for Orders and Returns */}
+        <Tabs defaultValue="orders" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="orders">My Orders ({orders.length})</TabsTrigger>
+            <TabsTrigger value="returns">Return Management ({returnRequests.length})</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="orders" className="mt-6">
+            {orders.length === 0 ? (
+              <div className="text-center py-12 bg-gray-50 rounded-lg">
+                <div className="text-gray-400 text-6xl mb-4">📦</div>
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  No Orders Found
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  You haven&apos;t placed any orders yet.
+                </p>
+                <Link
+                  href="/allproducts"
+                  className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] text-white font-semibold rounded-full hover:shadow-lg transition-shadow"
                 >
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-                    <div>
-                      <span className="text-gray-500 text-sm">Order ID:</span>
-                      <span className="font-semibold ml-2 text-gray-800">
-                        {order.id}
-                      </span>
-                    </div>
-                    <div>
-                      <span className="text-gray-500 text-sm">Status:</span>
-                      <span
-                        className={`ml-2 font-medium px-3 py-1 rounded-full text-xs ${
-                          order.status === "Completed"
-                            ? "bg-green-100 text-green-800"
-                            : order.status === "Pending"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : order.status === "Processing"
-                            ? "bg-blue-100 text-blue-800"
-                            : order.status === "Delivered"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {order.status}
-                      </span>
-                    </div>
-                  </div>
+                  Start Shopping
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {orders
+                  .filter((order) => order.status !== "Cancelled")
+                  .map((order) => (
+                    <div
+                      key={order.id}
+                      className="border rounded-lg p-6 shadow-md bg-white hover:shadow-lg active:shadow-lg transition-shadow"
+                    >
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                        <div>
+                          <span className="text-gray-500 text-sm">Order ID:</span>
+                          <span className="font-semibold ml-2 text-gray-800">
+                            {order.id}
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-gray-500 text-sm">Status:</span>
+                          <span
+                            className={`ml-2 font-medium px-3 py-1 rounded-full text-xs ${
+                              order.status === "Completed"
+                                ? "bg-green-100 text-green-800"
+                                : order.status === "Pending"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : order.status === "Processing"
+                                ? "bg-blue-100 text-blue-800"
+                                : order.status === "Delivered"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-gray-100 text-gray-800"
+                            }`}
+                          >
+                            {order.status}
+                          </span>
+                        </div>
+                      </div>
 
-                  <div className="text-sm text-gray-500 mb-4">
-                    Placed on:{" "}
-                    {order.createdAt
-                      ? new Date(order.createdAt).toLocaleString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })
-                      : "N/A"}
-                  </div>
+                      <div className="text-sm text-gray-500 mb-4">
+                        Placed on:{" "}
+                        {order.createdAt
+                          ? new Date(order.createdAt).toLocaleString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : "N/A"}
+                      </div>
 
-                  <div className="border-t border-b py-4 my-4">
-                    <h4 className="font-medium text-gray-800 mb-2">Items:</h4>
-                    <ul className="space-y-4">
-                      {order.items.map((item, idx) => {
-                        const canReturn =
-                          order.status === "Delivered" &&
-                          isWithinReturnPeriod(order.createdAt) &&
-                          !getReturnStatus(order.id, item.id); // Only allow return if no existing request
+                      <div className="border-t border-b py-4 my-4">
+                        <h4 className="font-medium text-gray-800 mb-2">Items:</h4>
+                        <ul className="space-y-4">
+                          {order.items.map((item, idx) => {
+                            const canReturn =
+                              order.status === "Delivered" &&
+                              isWithinReturnPeriod(order.createdAt) &&
+                              !getReturnStatus(order.id, item.id); // Only allow return if no existing request
 
-                        const returnStatus = getReturnStatus(order.id, item.id);
+                            const returnStatus = getReturnStatus(order.id, item.id);
 
-                        // Add this debug log
-                        console.log(`Order ${order.id}, Item ${idx}:`, {
-                          status: order.status,
-                          createdAt: order.createdAt,
-                          withinPeriod: isWithinReturnPeriod(order.createdAt),
-                          canReturn,
-                        });
+                            // Add this debug log
+                            console.log(`Order ${order.id}, Item ${idx}:`, {
+                              status: order.status,
+                              createdAt: order.createdAt,
+                              withinPeriod: isWithinReturnPeriod(order.createdAt),
+                              canReturn,
+                            });
 
-                        return (
-                          <li key={idx} className="flex flex-col gap-2">
-                            <div className="flex justify-between items-start">
-                              <div className="flex-1 flex items-center gap-3">
-                                <div className="h-12 w-12 overflow-hidden rounded-md border border-gray-200 flex-shrink-0">
-                                  <Image
-                                    src={
-                                      item.image ||
-                                      "/placeholder.svg?height=48&width=48"
-                                    }
-                                    alt={item.name}
-                                    width={48}
-                                    height={48}
-                                    className="h-full w-full object-cover"
-                                  />
+                            return (
+                              <li key={idx} className="flex flex-col gap-2">
+                                <div className="flex justify-between items-start">
+                                  <div className="flex-1 flex items-center gap-3">
+                                    <div className="h-12 w-12 overflow-hidden rounded-md border border-gray-200 flex-shrink-0">
+                                      <Image
+                                        src={
+                                          item.image ||
+                                          "/placeholder.svg?height=48&width=48"
+                                        }
+                                        alt={item.name}
+                                        width={48}
+                                        height={48}
+                                        className="h-full w-full object-cover"
+                                      />
+                                    </div>
+                                    <div>
+                                      <span className="font-medium text-sm">
+                                        {item.name}
+                                      </span>
+                                      <span className="text-gray-500 text-xs block">
+                                        x{item.quantity}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div className="text-right font-medium text-sm">
+                                    ${(item.price * item.quantity).toFixed(2)}
+                                  </div>
                                 </div>
-                                <div>
-                                  <span className="font-medium text-sm">
-                                    {item.name}
-                                  </span>
-                                  <span className="text-gray-500 text-xs block">
-                                    x{item.quantity}
-                                  </span>
-                                </div>
-                              </div>
-                              <div className="text-right font-medium text-sm">
-                                ${(item.price * item.quantity).toFixed(2)}
-                              </div>
-                            </div>
 
-                            {returnStatus && (
-                              <span
-                                className={`absolute top-0 right-0 px-2 py-1 text-xs rounded-full 
+                                {returnStatus && (
+                                  <span
+                                    className={`absolute top-0 right-0 px-2 py-1 text-xs rounded-full 
                   ${
                     returnStatus === "Pending"
                       ? "bg-yellow-100 text-yellow-800"
@@ -452,103 +437,109 @@ export default function OrdersPage() {
                       ? "bg-red-100 text-red-800"
                       : "bg-gray-100 text-gray-800"
                   }`}
-                              >
-                                Return {returnStatus}
-                              </span>
-                            )}
-
-                            <div className="w-full mt-1 flex justify-end gap-2">
-                              {order.status === "Delivered" &&
-                                !returnStatus && (
-                                  <ProductReviewModal
-                                    onAddReview={handleAddReview}
-                                    product={{
-                                      id: item.id,
-                                      name: item.name,
-                                      image: item.image!,
-                                    }}
-                                  />
+                                  >
+                                    Return {returnStatus}
+                                  </span>
                                 )}
-                              {canReturn && (
-                                <button
-                                  className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 
+
+                                <div className="w-full mt-1 flex justify-end gap-2">
+                                  {order.status === "Delivered" &&
+                                    !returnStatus && (
+                                      <ProductReviewModal
+                                        onAddReview={handleAddReview}
+                                        product={{
+                                          id: item.id,
+                                          name: item.name,
+                                          image: item.image!,
+                                        }}
+                                      />
+                                    )}
+                                  {canReturn && (
+                                    <button
+                                      className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 
     bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
     text-md md:text-md text-white font-semibold rounded-full shadow-lg 
     transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
     hover:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604] active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] hover:to-[#ff3604]"
-                                  onClick={() =>
-                                    handleOpenReturnModal(item, order)
-                                  }
-                                >
-                                  Return Item
-                                </button>
-                              )}
-                              {returnStatus && (
-                                <div className="text-sm">
-                                  <span
-                                    className={`${
-                                      returnStatus === "Pending"
-                                        ? "text-yellow-600"
-                                        : returnStatus === "Approved"
-                                        ? "text-green-600"
-                                        : returnStatus === "Rejected"
-                                        ? "text-red-600"
-                                        : "text-gray-600"
-                                    }`}
-                                  >
-                                    Return request: {returnStatus}
-                                  </span>
+                                      onClick={() =>
+                                        handleOpenReturnModal(item, order)
+                                      }
+                                    >
+                                      Return Item
+                                    </button>
+                                  )}
+                                  {returnStatus && (
+                                    <div className="text-sm">
+                                      <span
+                                        className={`${
+                                          returnStatus === "Pending"
+                                            ? "text-yellow-600"
+                                            : returnStatus === "Approved"
+                                            ? "text-green-600"
+                                            : returnStatus === "Rejected"
+                                            ? "text-red-600"
+                                            : "text-gray-600"
+                                        }`}
+                                      >
+                                        Return request: {returnStatus}
+                                      </span>
+                                    </div>
+                                  )}
                                 </div>
-                              )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                          <span className="text-gray-500">Total:</span>
+                          <span className="ml-2 text-lg font-bold text-gray-800">
+                            ${order.total.toFixed(2)}
+                          </span>
+                          {order.invoice && (
+                            <div className="mt-1 text-xs text-gray-400">
+                              Invoice: {order.invoice.invoiceId} |{" "}
+                              {order.invoice.date &&
+                                new Date(order.invoice.date).toLocaleString()}
                             </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                    <div>
-                      <span className="text-gray-500">Total:</span>
-                      <span className="ml-2 text-lg font-bold text-gray-800">
-                        ${order.total.toFixed(2)}
-                      </span>
-                      {order.invoice && (
-                        <div className="mt-1 text-xs text-gray-400">
-                          Invoice: {order.invoice.invoiceId} |{" "}
-                          {order.invoice.date &&
-                            new Date(order.invoice.date).toLocaleString()}
+                          )}
                         </div>
-                      )}
-                    </div>
 
-                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                      {order.status === "Pending" && (
-                        <button
-                          className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
+                        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                          {order.status === "Pending" && (
+                            <button
+                              className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
                             text-sm md:text-md text-white font-semibold rounded-full shadow-lg  transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
                             hover:bg-right hover:to-[#ff3604] py-2 px-6 active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] active:to-[#ff3604]"
-                          onClick={() => handleCancelOrder(order.id)}
-                        >
-                          Cancel Order
-                        </button>
-                      )}
-                      <button
-                        className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]  text-white py-2 px-6 rounded-full text-sm font-semibold transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
+                            onClick={() => handleCancelOrder(order.id)}
+                          >
+                            Cancel Order
+                          </button>
+                        )}
+                        <button
+                          className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]  text-white py-2 px-6 rounded-full text-sm font-semibold transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
                             hover:bg-right  hover:to-[#ff3604] active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] active:to-[#ff3604]"
-                        onClick={() => {
-                          setSelectedOrder(order);
-                          setShowInvoiceModal(true);
-                        }}
-                      >
-                        Download Invoice
-                      </button>
+                          onClick={() => {
+                            setSelectedOrder(order);
+                            setShowInvoiceModal(true);
+                          }}
+                        >
+                          Download Invoice
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-          </div>
-        )}
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="returns" className="mt-6">
+            <ReturnManagement returnRequests={returnRequests} />
+          </TabsContent>
+        </Tabs>
       </div>
 
       {selectedOrder && showInvoiceModal && (
