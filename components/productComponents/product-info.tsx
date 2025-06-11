@@ -176,24 +176,6 @@ export default function ProductInfo({
         </div>
       </div>
 
-      {/* Features */}
-      {(product.features ?? []).length > 0 && (
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Features</h2>
-          <ul className="grid gap-2 text-gray-700 text-sm">
-            {product.features!.map((feature: string, index: number) => (
-              <li
-                key={index}
-                className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-lg shadow-sm"
-              >
-                <span className="text-green-500 text-lg">✓</span>
-                <span className="leading-snug">{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
       {/* Colors and Sizes */}
       <div className="flex flex-col gap-2">
         {/* Colors */}

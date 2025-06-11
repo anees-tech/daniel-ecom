@@ -28,14 +28,26 @@ export default function ProductDetailPage({
   const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
+    const processProductData = (productData: any) => {
+      if (!productData) {
+        return null;
+      }
+      let updatedImages = productData.images ? [...productData.images] : [];
+      if (productData.image && !updatedImages.includes(productData.image)) {
+        updatedImages.unshift(productData.image); // Prepend the main image
+      }
+      return { ...productData, images: updatedImages };
+    };
+
     async function fetchProduct() {
       try {
         setIsLoading(true);
         const { productId } = await params;
         const firestoreProduct = await getProductById(productId);
 
-        setProduct(firestoreProduct);
-        setSelectedColor(firestoreProduct?.colors?.[0]?.name || "");
+        const processedProduct = processProductData(firestoreProduct);
+        setProduct(processedProduct);
+        setSelectedColor(processedProduct?.colors?.[0]?.name || "");
       } catch (error) {
         console.error("Error fetching product:", error);
 
@@ -45,8 +57,9 @@ export default function ProductDetailPage({
           const foundProduct =
             products.find((p) => p.id === oProductId) || products[0];
 
-          setProduct(foundProduct);
-          setSelectedColor(foundProduct?.colors?.[0]?.name || "");
+          const processedFallbackProduct = processProductData(foundProduct);
+          setProduct(processedFallbackProduct);
+          setSelectedColor(processedFallbackProduct?.colors?.[0]?.name || "");
         } catch (fallbackError) {
           console.error("Even fallback failed:", fallbackError);
         }
@@ -63,7 +76,7 @@ export default function ProductDetailPage({
       setQuantity(newQuantity);
     }
   };
-
+  console.log("Product Detail Page Rendered", product);
   if (isLoading) {
     return <Loading/>; // 👈 only one global loader
   }
@@ -114,6 +127,26 @@ export default function ProductDetailPage({
             </div>
           </div>
         </div>
+
+        {/* Features Section */}
+        {(product?.features ?? []).length > 0 && (
+          <div className="mt-10">
+            <TextBox text="Features" />
+            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-sm md:shadow-md mt-4">
+              <ul className="grid gap-2 text-gray-700 text-sm">
+                {product.features!.map((feature: string, index: number) => (
+                  <li
+                    key={index}
+                    className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-lg shadow-sm"
+                  >
+                    <span className="text-green-500 text-lg">✓</span>
+                    <span className="leading-snug">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
 
         {/* Reviews Section */}
         <div className="relative mt-10">

@@ -160,10 +160,10 @@ export default function OrdersPage() {
             status: data.status || "Pending",
             requestedAt: data.requestedAt,
             itemName: data.itemName,
-            itemPrice:data.itemPrice,
-            itemQuantity:data.itemQuantity,
-            reason:data.reason,
-            qrCode:data.qrCode,
+            itemPrice: data.itemPrice,
+            itemQuantity: data.itemQuantity,
+            reason: data.reason,
+            qrCode: data.qrCode,
           };
         });
 
@@ -205,10 +205,10 @@ export default function OrdersPage() {
           status: data.status || "Pending",
           requestedAt: data.requestedAt,
           itemName: data.itemName,
-          itemPrice:data.itemPrice,
-          itemQuantity:data.itemQuantity,
-          reason:data.reason,
-          qrCode:data.qrCode,
+          itemPrice: data.itemPrice,
+          itemQuantity: data.itemQuantity,
+          reason: data.reason,
+          qrCode: data.qrCode,
         };
       });
 
@@ -322,8 +322,12 @@ export default function OrdersPage() {
         {/* Add Tabs for Orders and Returns */}
         <Tabs defaultValue="orders" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="orders">My Orders ({orders.length})</TabsTrigger>
-            <TabsTrigger value="returns">Return Management ({returnRequests.length})</TabsTrigger>
+            <TabsTrigger value="orders">
+              My Orders ({orders.length})
+            </TabsTrigger>
+            <TabsTrigger value="returns">
+              Return Management ({returnRequests.length})
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="orders" className="mt-6">
@@ -354,7 +358,9 @@ export default function OrdersPage() {
                     >
                       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
                         <div>
-                          <span className="text-gray-500 text-sm">Order ID:</span>
+                          <span className="text-gray-500 text-sm">
+                            Order ID:
+                          </span>
                           <span className="font-semibold ml-2 text-gray-800">
                             {order.id}
                           </span>
@@ -393,7 +399,9 @@ export default function OrdersPage() {
                       </div>
 
                       <div className="border-t border-b py-4 my-4">
-                        <h4 className="font-medium text-gray-800 mb-2">Items:</h4>
+                        <h4 className="font-medium text-gray-800 mb-2">
+                          Items:
+                        </h4>
                         <ul className="space-y-4">
                           {order.items.map((item, idx) => {
                             const canReturn =
@@ -401,13 +409,18 @@ export default function OrdersPage() {
                               isWithinReturnPeriod(order.createdAt) &&
                               !getReturnStatus(order.id, item.id); // Only allow return if no existing request
 
-                            const returnStatus = getReturnStatus(order.id, item.id);
+                            const returnStatus = getReturnStatus(
+                              order.id,
+                              item.id
+                            );
 
                             // Add this debug log
                             console.log(`Order ${order.id}, Item ${idx}:`, {
                               status: order.status,
                               createdAt: order.createdAt,
-                              withinPeriod: isWithinReturnPeriod(order.createdAt),
+                              withinPeriod: isWithinReturnPeriod(
+                                order.createdAt
+                              ),
                               canReturn,
                             });
 
@@ -437,7 +450,7 @@ export default function OrdersPage() {
                                     </div>
                                   </div>
                                   <div className="text-right font-medium text-sm">
-                                     €{(item.price * item.quantity).toFixed(2)}
+                                    €{(item.price * item.quantity).toFixed(2)}
                                   </div>
                                 </div>
 
@@ -512,7 +525,7 @@ export default function OrdersPage() {
                         <div>
                           <span className="text-gray-500">Total:</span>
                           <span className="ml-2 text-lg font-bold text-gray-800">
-                             €{order.total.toFixed(2)}
+                            €{order.total.toFixed(2)}
                           </span>
                           {order.invoice && (
                             <div className="mt-1 text-xs text-gray-400">
@@ -529,25 +542,25 @@ export default function OrdersPage() {
                               className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B] bg-[length:200%_200%] bg-left
                             text-sm md:text-md text-white font-semibold rounded-full shadow-lg  transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
                             hover:bg-right hover:to-[#ff3604] py-2 px-6 active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] active:to-[#ff3604]"
-                            onClick={() => handleCancelOrder(order.id)}
-                          >
-                            Cancel Order
-                          </button>
-                        )}
-                        <button
-                          className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]  text-white py-2 px-6 rounded-full text-sm font-semibold transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
+                              onClick={() => handleCancelOrder(order.id)}
+                            >
+                              Cancel Order
+                            </button>
+                          )}
+                          <button
+                            className="flex items-center gap-2 px-4 md:px-5 py-2 md:py-3 w-full sm:w-auto bg-gradient-to-r from-[#EB1E24] via-[#F05021] to-[#F8A51B]  text-white py-2 px-6 rounded-full text-sm font-semibold transition-all duration-500 ease-out transform hover:shadow-xl cursor-pointer text-center
                             hover:bg-right  hover:to-[#ff3604] active:bg-right hover:from-[#EB1E24] hover:via-[#F05021] active:to-[#ff3604]"
-                          onClick={() => {
-                            setSelectedOrder(order);
-                            setShowInvoiceModal(true);
-                          }}
-                        >
-                          Download Invoice
-                        </button>
+                            onClick={() => {
+                              setSelectedOrder(order);
+                              setShowInvoiceModal(true);
+                            }}
+                          >
+                            Download Invoice
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
           </TabsContent>
