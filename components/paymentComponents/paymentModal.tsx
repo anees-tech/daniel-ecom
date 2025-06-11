@@ -528,7 +528,7 @@ export default function PaymentModal({
                       </div>
                       <div className="text-sm md:text-base whitespace-nowrap">
                         <span className="text-emerald-500">
-                          ${item.price.toFixed(2)}
+                           €{item.price.toFixed(2)}
                         </span>{" "}
                         x{" "}
                         <span className="text-emerald-500">
@@ -542,13 +542,13 @@ export default function PaymentModal({
                 {/* Subtotal - Sum of all products */}
                 <div className="flex justify-between items-center border-t pt-2">
                   <span className="font-medium">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium"> €{subtotal.toFixed(2)}</span>
                 </div>
 
                 {/* Tax */}
                 <div className="flex justify-between items-center">
                   <span className="font-medium">Tax ({taxRate}%)</span>
-                  <span className="font-medium">${tax.toFixed(2)}</span>
+                  <span className="font-medium"> €{tax.toFixed(2)}</span>
                 </div>
 
                 {/* Delivery Options */}
@@ -566,7 +566,7 @@ export default function PaymentModal({
                         <RadioGroupItem value="standard" id="standard" />
                         <Label htmlFor="standard">Standard Delivery</Label>
                       </div>
-                      <span className="text-emerald-500">$100</span>
+                      <span className="text-emerald-500"> €100</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">

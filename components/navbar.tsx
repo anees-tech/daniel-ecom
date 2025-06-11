@@ -486,7 +486,7 @@ export default function Navbar() {
                                     )}
                                     onClick={() =>
                                       handleCategoryClick(category.title)
-                                    }
+                                    } // Full row click shows subcategories
                                   >
                                     <div className="flex-1">
                                       <div className="text-sm font-medium leading-none">
@@ -496,32 +496,17 @@ export default function Navbar() {
                                         {category.description}
                                       </p>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                      <button
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          handleCategoryNavigation(
-                                            category.title,
-                                            category.href
-                                          );
-                                        }}
-                                        className="text-xs text-blue-600 hover:text-blue-800 px-2 py-1 rounded hover:bg-blue-50 transition-colors"
-                                      >
-                                        View All
-                                      </button>
-                                      {category.subcategories &&
-                                        category.subcategories.length > 0 && (
-                                          <ArrowRight
-                                            className={cn(
-                                              "h-4 w-4 text-gray-400 transition-transform",
-                                              selectedCategory ===
-                                                category.title
-                                                ? "rotate-90"
-                                                : ""
-                                            )}
-                                          />
-                                        )}
-                                    </div>
+                                    {category.subcategories &&
+                                      category.subcategories.length > 0 && (
+                                        <ArrowRight
+                                          className={cn(
+                                            "h-4 w-4 text-gray-400 transition-transform",
+                                            selectedCategory === category.title
+                                              ? "rotate-90"
+                                              : ""
+                                          )}
+                                        />
+                                      )}
                                   </div>
                                 </div>
                               </li>
@@ -712,8 +697,8 @@ export default function Navbar() {
                     </div>
                     {/* <div>
                       <div className="space-y-3"> */}
-                        {/* This would be populated with actual recommendations */}
-                      {/* </div>
+                    {/* This would be populated with actual recommendations */}
+                    {/* </div>
                     </div> */}
                   </div>
                 )}

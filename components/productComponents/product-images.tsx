@@ -103,8 +103,9 @@ export default function ProductImages({
                 <Image
                   src={image || "/placeholder.svg"}
                   alt={`${productName} thumbnail ${index + 1}`}
-                  width={100}
-                  height={100}
+                  width={300}
+                  height={300}
+                  quality={100} // High quality
                   className="object-cover w-full h-full"
                 />
               </div>
@@ -133,19 +134,23 @@ export default function ProductImages({
           <Image
             src={images[selectedImage] || "/placeholder.svg"}
             alt={productName}
-            width={200}
-            height={200}
+            width={700} // Use larger dimensions
+            height={700}
+            quality={100} // High quality
+            priority
             className="object-contain w-full h-auto"
           />
 
-          {/* Zoom Lens */}
+          {/* Zoom Lens - only apply when zooming */}
           {isZooming && (
             <div
-              className="absolute top-0 left-0 w-full h-full bg-white bg-opacity-0 pointer-events-none transition"
+              className="absolute top-0 left-0 w-full h-full pointer-events-none"
               style={{
                 backgroundImage: `url(${images[selectedImage]})`,
+                backgroundRepeat: "no-repeat",
                 backgroundSize: "200%",
                 backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                zIndex: 10,
               }}
             />
           )}
@@ -186,7 +191,7 @@ export default function ProductImages({
                     alt={`${productName} thumbnail ${index + 1}`}
                     width={100}
                     height={100}
-                    className="object-cover w-full h-full"
+                    className="object-contain w-full h-full"
                   />
                 </div>
               ))}

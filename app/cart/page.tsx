@@ -101,7 +101,7 @@ export default function CartClient() {
                         </div>
 
                         <div className="text-center text-gray-500">
-                          ${item.price.toFixed(2)}
+                           €{item.price.toFixed(2)}
                         </div>
 
                         <div className="flex items-center justify-center gap-20">
@@ -197,7 +197,7 @@ export default function CartClient() {
                                 {item.size && ` | Size: ${item.size}`}
                               </p>
                               <p className="text-sm text-gray-500 mt-1">
-                                ${item.price.toFixed(2)}
+                                 €{item.price.toFixed(2)}
                               </p>
                             </div>
                           </div>
@@ -281,13 +281,13 @@ export default function CartClient() {
                     <div className="flex justify-between text-sm">
                       <span>Subtotal</span>
                       <span className="font-medium">
-                        ${totalPrice.toFixed(2)}
+                         €{totalPrice.toFixed(2)}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Tax</span>
                       <span className="font-medium">
-                        ${(totalPrice * (taxRate / 100)).toFixed(2)}
+                         €{(totalPrice * (taxRate / 100)).toFixed(2)}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
@@ -299,7 +299,7 @@ export default function CartClient() {
                       <div className="flex justify-between font-medium">
                         <span>Total</span>
                         <span>
-                          $
+                           €
                           {(totalPrice + totalPrice * (taxRate / 100)).toFixed(
                             2
                           )}

@@ -469,18 +469,18 @@ export default function Payments() {
                 <div key={item.id} className="flex justify-between items-center">
                   <span>{item.name}</span>
                   <div>
-                    <span className="text-emerald-500">${item.price}</span> x{" "}
+                    <span className="text-emerald-500"> €{item.price}</span> x{" "}
                     <span className="text-emerald-500">{item.quantity}</span>
                   </div>
                 </div>
               ))}
               <div className="flex justify-between items-center border-t pt-2">
                 <span className="font-medium">Subtotal</span>
-                <span className="font-medium">${subtotal.toFixed(2)}</span>
+                <span className="font-medium"> €{subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="font-medium">Tax ({taxRate}%)</span>
-                <span className="font-medium">${tax.toFixed(2)}</span>
+                <span className="font-medium"> €{tax.toFixed(2)}</span>
               </div>
               <div className="space-y-2 border-t pt-2">
                 <span className="font-medium block mb-2">Delivery Options</span>
@@ -490,7 +490,7 @@ export default function Payments() {
                       <RadioGroupItem value="standard" id="standard" />
                       <Label htmlFor="standard">Standard Delivery</Label>
                     </div>
-                    <span className="text-emerald-500">$100</span>
+                    <span className="text-emerald-500"> €100</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
@@ -534,7 +534,7 @@ export default function Payments() {
               </div>
               <div className="flex justify-between items-center border-t pt-2">
                 <span className="font-bold">Total</span>
-                <span className="font-bold">${cart.length > 0 ? totalPrice.toFixed(2) : "0.00"}</span>
+                <span className="font-bold"> €{cart.length > 0 ? totalPrice.toFixed(2) : "0.00"}</span>
               </div>
               {/* Button to initiate Stripe payment process */}
               {paymentMethod === "card" && !showStripeModal && (

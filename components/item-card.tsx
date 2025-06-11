@@ -51,9 +51,11 @@ export default function ItemCard(props: ProductCardEnhancedProps) {
           <Image
             src={props.image || "/placeholder.svg"}
             alt={props.name}
-            fill
+            width={500}
+            height={500}
+            quality={100}
             className={cn(
-              "object-contain transition-transform duration-500 p-4 shadow-sm",
+              "object-cover transition-transform duration-500 p-4 shadow-sm",
               isHovered ? "scale-105" : "scale-100"
             )}
           />
@@ -124,15 +126,15 @@ export default function ItemCard(props: ProductCardEnhancedProps) {
           {props.originalPrice && props.originalPrice > props.currentPrice ? (
             <>
               <span className="font-semibold text-green-500">
-                ${props.currentPrice.toFixed(2)}
+                 €{props.currentPrice.toFixed(2)}
               </span>
               <span className="text-muted-foreground text-sm line-through text-red-500">
-                ${props.originalPrice.toFixed(2)}
+                 €{props.originalPrice.toFixed(2)}
               </span>
             </>
           ) : (
             <span className="font-semibold text-green-500">
-              ${props.currentPrice.toFixed(2)}
+               €{props.currentPrice.toFixed(2)}
             </span>
           )}
         </div>

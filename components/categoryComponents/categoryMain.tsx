@@ -29,11 +29,19 @@ export default function CategoryPage({
 
       const mappedProducts: CategoryProductsInterface[] = items
         .filter((product) => {
-          const matchesCategory =
-            product.category?.toLowerCase() === params.slug[0].toLowerCase();
+          const normalize = (str: string) =>
+            str.toLowerCase().replace(/[\s-]+/g, "");
+
+          const matchesCategory = product.category
+            ? normalize(product.category).includes(normalize(params.slug[0]))
+            : false;
+
           const matchesSubcategory = params.slug[1]
-            ? product.subcategory?.toLowerCase() ===
-              params.slug[1].toLowerCase()
+            ? product.subcategory
+              ? normalize(product.subcategory).includes(
+                  normalize(params.slug[1])
+                )
+              : false
             : true;
 
           return matchesCategory && matchesSubcategory;
@@ -84,24 +92,22 @@ export default function CategoryPage({
           <span className="text-gray-400">/</span>
           <span className="text-gray-400">Category</span>
           <span className="text-gray-400">/</span>
-          <span className="text-red-500">
-            {params.slug[0]}
-          </span>
+          <span className="text-red-500">{params.slug[0]}</span>
           {params.slug[1] ? (
             <div className="flex gap-2">
               <span className="text-gray-400">/</span>
-              <span className="text-red-500">
-                {params.slug[1]}
-              </span>
+              <span className="text-red-500">{params.slug[1]}</span>
             </div>
           ) : null}
         </div>
 
         <TextField
           text={
-            params.slug[1]?
-            params.slug[1][0].charAt(0).toUpperCase() + params.slug[1].slice(1):
-            params.slug[0][0].charAt(0).toUpperCase() + params.slug[0].slice(1)
+            params.slug[1]
+              ? params.slug[1][0].charAt(0).toUpperCase() +
+                params.slug[1].slice(1)
+              : params.slug[0][0].charAt(0).toUpperCase() +
+                params.slug[0].slice(1)
           }
         />
 
