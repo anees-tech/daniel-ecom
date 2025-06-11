@@ -25,7 +25,7 @@ export default function ProductDetailPage({
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState("");
-  const [selectedSize, setSelectedSize] = useState("XS");
+  const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
     async function fetchProduct() {

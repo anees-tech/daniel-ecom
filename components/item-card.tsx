@@ -56,7 +56,6 @@ export default function ItemCard(props: ProductCardEnhancedProps) {
             quality={100}
             className={cn(
               "object-cover transition-transform duration-500 p-4 shadow-sm",
-              isHovered ? "scale-105" : "scale-100"
             )}
           />
         </Link>
