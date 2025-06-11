@@ -266,8 +266,8 @@ export default function InvoiceModal({
       item.size || "N/A",
       item.color || "N/A",
       item.quantity,
-      `$${item.price.toFixed(2)}`,
-      `$${(item.price * item.quantity).toFixed(2)}`,
+      `€${item.price.toFixed(2)}`,
+      `€${(item.price * item.quantity).toFixed(2)}`,
     ]);
 
     // Add the table with custom styling and dynamic pagination
@@ -339,16 +339,16 @@ export default function InvoiceModal({
       doc.setFont("helvetica", "bold");
       doc.setTextColor(60, 60, 60);
       doc.text(
-        `$${orderData.subtotal.toFixed(2)}`,
+        `€${orderData.subtotal.toFixed(2)}`,
         pageWidth - 25,
         newFinalY + 10,
         { align: "right" }
       );
-      doc.text(`$${orderData.tax.toFixed(2)}`, pageWidth - 25, newFinalY + 20, {
+      doc.text(`€${orderData.tax.toFixed(2)}`, pageWidth - 25, newFinalY + 20, {
         align: "right",
       });
       doc.text(
-        `$${orderData.shipping.toFixed(2)}`,
+        `€${orderData.shipping.toFixed(2)}`,
         pageWidth - 25,
         newFinalY + 30,
         { align: "right" }
@@ -363,7 +363,7 @@ export default function InvoiceModal({
       doc.setTextColor(220, 38, 38);
       doc.text(`TOTAL:`, pageWidth - 60, newFinalY + 48, { align: "right" });
       doc.text(
-        `$${orderData.total.toFixed(2)}`,
+        `€${orderData.total.toFixed(2)}`,
         pageWidth - 25,
         newFinalY + 48,
         { align: "right" }
@@ -387,16 +387,16 @@ export default function InvoiceModal({
       doc.setFont("helvetica", "bold");
       doc.setTextColor(60, 60, 60);
       doc.text(
-        `$${orderData.subtotal.toFixed(2)}`,
+        `€${orderData.subtotal.toFixed(2)}`,
         pageWidth - 25,
         finalY + 10,
         { align: "right" }
       );
-      doc.text(`$${orderData.tax.toFixed(2)}`, pageWidth - 25, finalY + 20, {
+      doc.text(`€${orderData.tax.toFixed(2)}`, pageWidth - 25, finalY + 20, {
         align: "right",
       });
       doc.text(
-        `$${orderData.shipping.toFixed(2)}`,
+        `€${orderData.shipping.toFixed(2)}`,
         pageWidth - 25,
         finalY + 30,
         { align: "right" }
@@ -410,7 +410,7 @@ export default function InvoiceModal({
       doc.setFontSize(12);
       doc.setTextColor(220, 38, 38);
       doc.text(`TOTAL:`, pageWidth - 60, finalY + 48, { align: "right" });
-      doc.text(`$${orderData.total.toFixed(2)}`, pageWidth - 25, finalY + 48, {
+      doc.text(`€${orderData.total.toFixed(2)}`, pageWidth - 25, finalY + 48, {
         align: "right",
       });
     }

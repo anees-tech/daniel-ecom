@@ -59,11 +59,17 @@ interface Order {
 }
 
 interface ReturnRequest {
+  requestedAt: string;
   id: string;
   orderId: string;
   itemId: string;
-  status: string;
-  requestedAt: string;
+  itemName: string;
+  itemPrice: number;
+  itemQuantity: number;
+  reason: string;
+  status: "Pending" | "Approved" | "Rejected" | "Processing" | "Completed";
+  qrCode: string;
+  adminMessage?: string;
 }
 
 export default function OrdersPage() {
@@ -153,6 +159,11 @@ export default function OrdersPage() {
             itemId: data.itemId,
             status: data.status || "Pending",
             requestedAt: data.requestedAt,
+            itemName: data.itemName,
+            itemPrice:data.itemPrice,
+            itemQuantity:data.itemQuantity,
+            reason:data.reason,
+            qrCode:data.qrCode,
           };
         });
 
@@ -193,6 +204,11 @@ export default function OrdersPage() {
           itemId: data.itemId,
           status: data.status || "Pending",
           requestedAt: data.requestedAt,
+          itemName: data.itemName,
+          itemPrice:data.itemPrice,
+          itemQuantity:data.itemQuantity,
+          reason:data.reason,
+          qrCode:data.qrCode,
         };
       });
 
@@ -421,7 +437,7 @@ export default function OrdersPage() {
                                     </div>
                                   </div>
                                   <div className="text-right font-medium text-sm">
-                                    ${(item.price * item.quantity).toFixed(2)}
+                                     €{(item.price * item.quantity).toFixed(2)}
                                   </div>
                                 </div>
 
@@ -496,7 +512,7 @@ export default function OrdersPage() {
                         <div>
                           <span className="text-gray-500">Total:</span>
                           <span className="ml-2 text-lg font-bold text-gray-800">
-                            ${order.total.toFixed(2)}
+                             €{order.total.toFixed(2)}
                           </span>
                           {order.invoice && (
                             <div className="mt-1 text-xs text-gray-400">
