@@ -33,7 +33,7 @@ const Hero = () => {
 
           setHeroData({
             title: data.title || "",
-            subtitle: data.subtitle || "" ,
+            subtitle: data.subtitle || "",
             loading: false,
           });
         }
@@ -96,14 +96,14 @@ const Hero = () => {
             width={100}
             height={100}
             alt={"location"}
-            className="w-12 h-12 md:w-24 md:h-24 absolute top-5 left-0 md:left-30 md:-top-60 -z-50"
+            className="w-12 h-12 md:w-24 md:h-24 absolute top-5 left-0 md:left-30 md:-top-70 -z-50"
           />
           <Image
             src={"/location2.svg"}
             width={50}
             height={50}
             alt={"location"}
-            className="w-6 h-6 md:w-12 md:h-12 absolute right-0 top-5 md:right-20 md:-top-40 -z-50"
+            className="w-6 h-6 md:w-12 md:h-12 absolute right-0 top-5 md:right-20 md:-top-50 -z-50"
           />
           <Image
             src={"/cart1.svg"}
@@ -122,10 +122,10 @@ const Hero = () => {
           <div className="relative flex justify-center items-center top-40 right-0 md:top-10 md:right-10 xl:top-5">
             <Image
               src={"/product.svg"}
-              width={420}
-              height={420}
+              width={500}
+              height={500}
               alt={"rectangle"}
-              className="w-70 h-70 md:w-90 md:h-90 lg:w-100 lg:h-100 absolute -z-50"
+              className="w-70 h-70 md:w-100 md:h-100 lg:w-110 lg:h-110 absolute -z-50"
             />
             <div className="absolute">
               <Carousel />
@@ -138,3 +138,94 @@ const Hero = () => {
 };
 
 export default Hero;
+
+// import { useState, useEffect } from "react";
+// import Link from "next/link";
+// import "../../style/HeroStyle.css";
+// import Button from "../button";
+// import Carousel from "./carousel";
+// import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+// import { firestore } from "@/lib/firebaseConfig";
+
+// const Hero = () => {
+//   const [heroData, setHeroData] = useState({
+//     title: "",
+//     subtitle: "",
+//     loading: true,
+//   });
+
+//   useEffect(() => {
+//     const fetchHeroData = async () => {
+//       try {
+//         // Create a query to get the latest document from the carouseltitle collection
+//         const q = query(
+//           collection(firestore, "carouseltitle"),
+//           orderBy("createdAt", "desc"),
+//           limit(1)
+//         );
+
+//         const querySnapshot = await getDocs(q);
+
+//         if (!querySnapshot.empty) {
+//           const doc = querySnapshot.docs[0];
+//           const data = doc.data();
+
+//           setHeroData({
+//             title: data.title || "",
+//             subtitle: data.subtitle || "",
+//             loading: false,
+//           });
+//         }
+//       } catch (error) {
+//         console.error("Error fetching hero data:", error);
+//         setHeroData({
+//           title:
+//             "Providing a high-quality textile range for your senior centers according to your wishes.",
+//           subtitle: "Find the best this season 🔥",
+//           loading: false,
+//         });
+//       }
+//     };
+
+//     fetchHeroData();
+//   }, []);
+
+//   return (
+//     <div className=" w-full h-screen flex">
+//       <div className=" w-full h-full flex flex-col md:flex-row justify-center items-center">
+//         {/* Left Side - Text Content - Exactly Half Width */}
+//         <div className="w-full md:w-1/2 h-full flex flex-col justify-center items-center md:items-start text-center md:text-left px-8 py-8">
+//           {/* Heading with Hover Effect */}
+//           {heroData.loading ? (
+//             <div className="animate-pulse h-20 w-full bg-gray-200 rounded"></div>
+//           ) : (
+//             <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-semibold bg-clip-text leading-tight bg-gradient-to-r text-transparent from-[#EB1E24] via-[#F05021] to-[#F8A51B] transition-all duration-300 hover:text-opacity-80 mb-6">
+//               {heroData.title}
+//             </h1>
+//           )}
+
+//           {/* Subtext with Hover Effect */}
+//           {heroData.loading ? (
+//             <div className="animate-pulse h-6 w-3/4 bg-gray-200 rounded mb-8"></div>
+//           ) : (
+//             <p className="text-lg md:text-xl text-gray-700 transition-all duration-300 hover:text-gray-900 mb-10">
+//               {heroData.subtitle}
+//             </p>
+//           )}
+
+//           {/* Button with Hover, Active & Shadow Effects */}
+//           <Link href="#products" className="inline-block">
+//             <Button text="Shop Now" />
+//           </Link>
+//         </div>
+
+//         {/* Right Side - Carousel Component - Exactly Half Width, Full Height */}
+//         <div className="w-full md:w-1/2 h-full">
+//           <Carousel />
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Hero;
