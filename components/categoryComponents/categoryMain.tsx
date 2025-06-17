@@ -23,20 +23,30 @@ export default function CategoryPage({
 
   useEffect(() => {
     console.log(params.slug);
+    if (params.slug[1]) {
+      params.slug[1] = decodeURIComponent(params.slug[1]);
+    }
+    if (params.slug[0]) {
+      params.slug[0] = decodeURIComponent(params.slug[0]);
+    }
     async function fetchProducts() {
       setIsLoading(true);
       const items = await getProducts();
 
       const mappedProducts: CategoryProductsInterface[] = items
         .filter((product) => {
-          const normalize = (str: string) =>
-            str.toLowerCase().replace(/[\s-]+/g, "");
+          const normalize = (str: string) => str.toLowerCase();
 
-          const matchesCategory = product.category
-            ? normalize(product.category).includes(normalize(params.slug[0]))
-            : false;
+          const hasCategory = !!params.slug?.[0];
+          const hasSubcategory = !!params.slug?.[1];
 
-          const matchesSubcategory = params.slug[1]
+          const matchesCategory = hasCategory
+            ? product.category
+              ? product.category === params.slug[0]
+              : false
+            : true;
+
+          const matchesSubcategory = hasSubcategory
             ? product.subcategory
               ? normalize(product.subcategory).includes(
                   normalize(params.slug[1])
@@ -44,7 +54,14 @@ export default function CategoryPage({
               : false
             : true;
 
-          return matchesCategory && matchesSubcategory;
+          // If only category is present, use only category filter
+          // If both are present, apply both
+          // If neither is present, return false (optional, based on use case)
+          return hasCategory && hasSubcategory
+            ? matchesCategory && matchesSubcategory
+            : hasCategory
+            ? matchesCategory
+            : false;
         })
         .map((product) => ({
           ...product,
