@@ -8,6 +8,7 @@ import TopBar from "@/components/TopBar";
 import { Suspense } from "react";
 import Loading from "./loading"; // Import global loading UI
 import { UserProvider } from "@/context/userContext";
+import ClearCategoriesClient from "@/components/clearCategory";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
         <UserProvider>
+          <ClearCategoriesClient />
           <TopBar />
           <Navbar />
           <Suspense fallback={<Loading />}>{children}</Suspense>

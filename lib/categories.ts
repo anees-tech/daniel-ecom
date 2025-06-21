@@ -66,3 +66,7 @@ export async function fetchCategories(): Promise<Category[]> {
     return [];
   }
 }
+
+export function clearCategoriesFromLocalStorage() {
+  localStorage.removeItem(LOCAL_STORAGE_KEY);
+}
