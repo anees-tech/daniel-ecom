@@ -32,17 +32,22 @@ export default function CategoryPage({
     async function fetchProducts() {
       setIsLoading(true);
       const items = await getProducts();
+      console.log(items);
+      const normalize = (str: string) =>
+        str
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, "") // remove all special characters
+          .replace(/\s+/g, " ") // collapse multiple spaces
+          .trim();
 
       const mappedProducts: CategoryProductsInterface[] = items
         .filter((product) => {
-          const normalize = (str: string) => str.toLowerCase();
-
           const hasCategory = !!params.slug?.[0];
           const hasSubcategory = !!params.slug?.[1];
 
           const matchesCategory = hasCategory
             ? product.category
-              ? product.category === params.slug[0]
+              ? normalize(product.category) === normalize(params.slug[0])
               : false
             : true;
 
@@ -96,7 +101,7 @@ export default function CategoryPage({
     }
 
     fetchProducts();
-  }, [params.slug]); // Added dependency to refetch when slug changes
+  }, [params.slug[0], params.slug[1]]); // Added dependency to refetch when slug changes
 
   return isLoading ? (
     <Loading />
